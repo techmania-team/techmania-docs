@@ -2,7 +2,7 @@ Applies to version: 0.4
 
 Due to the variety of note types, it is possible to place notes in a way that is considered invalid. These placements may cause the game to freeze when loading, make some notes unplayable, or make the pattern hard to read. The editor prevents you from making some, but not all, of the invalid placements. For now it is up to the pattern author to fully avoid these placements. The editor will be able to detect more invalid placements in the future.
 
-Please refer to the [Terminology](English/Terminology.md) page when necessary.
+Please refer to the [Terminology](Terminology.md) page when necessary.
 
 # Universal: all notes
 * Notes can not be placed at the exact same (pulse, lane) with each other.
