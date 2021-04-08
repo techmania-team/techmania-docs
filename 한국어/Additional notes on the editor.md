@@ -1,16 +1,17 @@
-Applies to version: 0.4
+기준 버전: 0.4
 
-# File and folder structure
-The track folder is located in the same folder as TECHMANIA.exe, named `Tracks`. Each subfolder in `Tracks` corresponds to one track. Each track folder contains all resource files, as well as a `track.tech` file that contains the patterns and metadata. The content of `track.tech` is an object of type [TrackBase](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs), serialized as JSON.
+# 파일과 폴더의 구조
+노래 폴더는 TECHMANIA의 최상위 디렉토리에 `Tracks`라는 이름으로 존재합니다. `Tracks` 폴더의 하위 디렉토리는 여러 개의 폴더로 구성할 수 있으며, 폴더 하나당 한 곡의 리소스를 포함합니다. 각각의 곡 폴더에 들어있는 `track.tech` 파일은 그 곡의 메타데이터와 패턴 정보를 담고 있습니다. 이 파일은 JSON 형식이며, [TrackBase](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs) 스크립트에서 이 파일을 읽습니다.
 
-By default, a track folder is named `<Artist> - <Title> - <creation time>`, but the name does not matter. The game reads in artist and title from `track.tech`, not the folder's name.
 
-# Supported media formats
-* Audio: .wav, .ogg
-* Video: .wmv, .mp4
-* Image: .jpg, .png
+곡 폴더 이름의 기본 형식은 `<아티스트> - <제목> - <만든 시간>`입니다. 다만, 실제 게임 내에 표시되는 정보는 `track.tech`에서 불러오므로, 폴더 이름의 형식에는 제약이 없습니다.
 
-# Other notes
+# 지원하는 미디어 형식
+* 소리: WAV, OGG
+* 동영상: WMV, MP4
+* 그림: JPG, PNG
 
-* The preview button in the bottom bar is always grayed out. This is a placeholder for a feature to be added in a future version.
-* The editor will always leave at least 1 empty scan at the end of the pattern. If you place a note in the last scan, a new scan will be added. However, removing all notes from the last scan will not delete that scan; close and re-open a pattern to delete excessive empty scans.
+# 기타
+
+* 화면 하단의 미리보기 버튼은 현재 비활성화되어 있습니다. 후속 버전에서 기능을 제공할 예정입니다.
+* 패턴 편집기는 항상 맨 뒤에 빈 마디 한 개를 남겨놓습니다. 이 마디에 노트를 생성하면 패턴의 맨 뒤에 빈 마디가 추가로 생성됩니다. 다만, 맨 마지막 마디에서 모든 노트를 삭제해도 그 마디가 없어지지 않습니다. 패턴 맨 뒤쪽의 빈 마디를 삭제하려면 패턴을 저장하고 편집기를 닫은 뒤, 편집기를 다시 실행하여 패턴을 여십시오.

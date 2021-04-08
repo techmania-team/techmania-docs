@@ -1,38 +1,39 @@
-Applies to version: 0.4
+기준 버전: 0.4
 
-This page explains the specification of TECHMANIA's .tech format.
+TECHMANIA에서 사용하는 Track.tech 파일의 형식을 소개하는 문서입니다.
 
-If you are working on applications to parse, manipulate or convert .tech files, consider doing it in C# so you can include [Track.cs](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs) and call `TrackBase.Serialize` and `TrackBase.Deserialize`, making it unnecessary to read the following.
+이 파일을 분석하여 이용하거나 다른 형식으로 변환하는 프로그램을 만들려면, C#을 이용하는 것을 권장합니다. 프로젝트에 [Track.cs](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs) 파일을 추가하고, `TrackBase.Serialize` 와 `TrackBase.Deserialize` 메소드를 호출하십시오. 아래 내용을 읽을 필요 없이 TECH 파일을 이용할 수 있습니다.
 
-# track.tech
+# Track.tech
 ```
 {
 	"version": "2",
 	"trackMetadata": {
-		"guid": <guid>,
-		"title": <title>,
-		"artist": <artist>,
-		"genre": <genre>,
-		"additionalCredits": <additional credits>,
-		"eyecatchImage": <filename of eyecatch image>,
-		"previewTrack": <filename of preview track>,
-		"previewStartTime": <preview start time>,
-		"previewEndTime": <preview end time>
+		"guid": <GUID>,
+		"title": <곡 제목>,
+		"artist": <아티스트>,
+		"genre": <장르>,
+		"additionalCredits": <곡의 추가 정보>,
+		"eyecatchImage": <미리보기 이미지 파일>,
+		"previewTrack": <미리듣기 음악 파일>,
+		"previewStartTime": <프리뷰 시작 시점>,
+		"previewEndTime": <프리뷰 종료 시점>
 	},
 	"patterns": [
-		<pattern 1>,
-		<pattern 2>,
+		<패턴 1>,
+		<패턴 2>,
 		<...>,
-		<pattern n>
+		<패턴 n>
 	]
 }
 ```
 
-* `version` must be "2".
-* `guid` is a unique identifier of each track. In a future version TECHMANIA may use this identifier to save per-track options, such as background brightness. Therefore, once a track is created, its GUID should never change. TECHMANIA generates a GUID when you create a new track, but if you need to generate your own, you can use any GUID Generator, such as [this one](https://www.guidgenerator.com/online-guid-generator.aspx).
-* `version`, `guid`, `title`, `artist`, `genre`, `additionalCredits`, `eyecatchImage`, `previewTrack` are strings, so you need to write quotation marks around the values. `previewStartTime` and `previewEndTime` are numbers, no quotation marks needed.
-* All filenames in `track.tech` are without folders, but with extensions.
-* Make sure to write a comma at the end of every line, except for the last line between any pair of parentheses.
+* `version`의 값은 항상 "2"입니다.
+* `guid`는 각 노래의 고유한 ID입니다. 후속 버전에서 곡별 설정 지원을 위해 이 GUID를 사용할 수 있습니다. 따라서 노래 데이터를 생성하면, 이 GUID가 바뀌어서는 안 됩니다. TECHMANIA는 곡 데이터를 생성할 때 GUID를 만듭니다. 필요하다면 [GUID 생성기](https://www.guidgenerator.com/online-guid-generator.aspx)를 직접 이용할 수 있습니다.
+* `version`, `guid`, `title`, `artist`, `genre`, `additionalCredits`, `eyecatchImage`, `previewTrack`는 문자열 필드입니다. 반드시 값을 큰따옴표 안에 채우십시오.
+* `previewStartTime` and `previewEndTime`는 실수 필드입니다.
+* `track.tech` 안에 들어가는 파일명은 디렉토리 경로를 포함하지 않고, 확장자를 포함합니다. 또한, 파일명은 대소문자를 구분합니다.
+* 중괄호 한 쌍 안에서는 마지막 줄을 제외하고 요소를 구분하는 모든 줄의 맨 끝에 쉼표(,)가 필요합니다.
 
 # Pattern
 ```
