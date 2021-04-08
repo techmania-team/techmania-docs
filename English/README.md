@@ -1,12 +1,12 @@
 # TECHMANIA Documentation
 
-[Additional notes on the editor](Additional%20notes%20on%20the%20editor.md)
+[Additional notes on the editor](Additional_notes_on_the_editor.md)
 
-[How to play](How%20to%20play.md)
+[How to play](How_to_play.md)
 
-[Invalid note placements](Invalid%20note%20placements.md)
+[Invalid note placements](Invalid_note_placements.md)
 
-[Offset and latency](Offset%20and%20latency.md)
+[Offset and latency](Offset_and_latency.md)
 
 [Rulesets](Rulesets.md)
 
@@ -14,14 +14,14 @@
 
 [Terminology](Terminology.md)
 
-[track.tech specification](track.tech%20specification.md)
+[track.tech specification](track.tech_specification.md)
 
 # TECHMANIA Converter Documentation
 
-[.bms support](Converter/.bms%20support.md)
+[.bms support](Converter/bms_support.md)
 
-[.pt converter options](Converter/.pt%20converter%20options.md)
+[.pt converter options](Converter/pt_converter_options.md)
 
-[.pt metadata searching](Converter/.pt%20metadata%20searching.md)
+[.pt metadata searching](Converter/pt_metadata_searching.md)
 
-[.pt support](Converter/.pt%20support.md)
+[.pt support](Converter/pt_support.md)
