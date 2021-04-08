@@ -1,7 +1,7 @@
 Applies to version: 0.4
 
 # File and folder structure
-The track folder is located in the same folder as TECHMANIA.exe, named `Tracks`. Each subfolder in `Tracks` corresponds to one track. Each track folder contains all resource files, as well as a `track.tech` file that contains the patterns and metadata. The content of `track.tech` is an object of type [TrackBase](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Track.cs), serialized as JSON.
+The track folder is located in the same folder as TECHMANIA.exe, named `Tracks`. Each subfolder in `Tracks` corresponds to one track. Each track folder contains all resource files, as well as a `track.tech` file that contains the patterns and metadata. The content of `track.tech` is an object of type [TrackBase](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs), serialized as JSON.
 
 By default, a track folder is named `<Artist> - <Title> - <creation time>`, but the name does not matter. The game reads in artist and title from `track.tech`, not the folder's name.
 
