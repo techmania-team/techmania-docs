@@ -142,7 +142,7 @@ MISS 및 BREAK 판정이 발생하면 각각 현재 피버 게이지의 25% 및 
 
 ## Combo(콤보)
 
-Ongoing long notes (hold, drag, repeat hold) add 1 combo each 60 pulses (1/4 beat).
+롱 노트(홀딩 노트/드래그 노트/연타 홀딩 노트)의 경우 60틱(= 1/4박)에 1 콤보씩 콤보를 누적시킵니다.
 
 ## Rank(랭크 조건)
 
