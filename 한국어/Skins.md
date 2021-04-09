@@ -40,6 +40,7 @@
 
 타일 인덱스는 0부터 시작하고 행 기준으로 정렬되어 있습니다.
 예를 들어, 위에 예시로 첨부한 이미지 중 두번째 이미지에 해당하는 스프라이트 시트의 JSON 객체파일은 다음과 같습니다.
+
 ```
 {
   "filename": "sprite sheet.png",
@@ -60,6 +61,7 @@
 ![An image showing the same sprite sheet scaled with bilinear filter on and off, and producing an artifact when on](https://imgur.com/n6nWt55.png)
 
 파일명을 제외한 나머지 항목들은 필수가 아니며, 생략할 경우 다음과 같은 값들이 자동으로 채워집니다.
+
 * `rows`: 1
 * `columns`: 1
 * `firstIndex`: 0
