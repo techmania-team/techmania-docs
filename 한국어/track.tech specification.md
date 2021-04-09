@@ -30,60 +30,64 @@ TECHMANIA에서 사용하는 Track.tech 파일의 형식을 소개하는 문서�
 
 * `version`의 값은 항상 "2"입니다.
 * `guid`는 각 노래의 고유한 ID입니다. 후속 버전에서 곡별 설정 지원을 위해 이 GUID를 사용할 수 있습니다. 따라서 노래 데이터를 생성하면, 이 GUID가 바뀌어서는 안 됩니다. TECHMANIA는 곡 데이터를 생성할 때 GUID를 만듭니다. 필요하다면 [GUID 생성기](https://www.guidgenerator.com/online-guid-generator.aspx)를 직접 이용할 수 있습니다.
-* `version`, `guid`, `title`, `artist`, `genre`, `additionalCredits`, `eyecatchImage`, `previewTrack`는 문자열 필드입니다. 반드시 값을 큰따옴표 안에 채우십시오.
-* `previewStartTime` and `previewEndTime`는 실수 필드입니다.
-* `track.tech` 안에 들어가는 파일명은 디렉토리 경로를 포함하지 않고, 확장자를 포함합니다. 또한, 파일명은 대소문자를 구분합니다.
+* 각 필드의 자료형
+ * 문자열: `version`, `guid`, `title`, `artist`, `genre`, `additionalCredits`, `eyecatchImage`, `previewTrack`
+ * 실수: `previewStartTime`, `previewEndTime`
+* `track.tech` 안에 들어가는 파일명은 디렉토리 경로 없이, 이름과 확장자만 포함합니다. 파일 이름은 대소문자를 구분합니다.
 * 중괄호 한 쌍 안에서는 마지막 줄을 제외하고 요소를 구분하는 모든 줄의 맨 끝에 쉼표(,)가 필요합니다.
 
-# Pattern
+# 패턴
 ```
 		{
 			"patternMetadata": {
-				"guid": <guid>,
-				"patternName": <pattern name>,
-				"level": <level>,
-				"controlScheme": <control scheme>,
-				"lanes": <lanes>,
-				"author": <pattern author>,
-				"backingTrack": <filename of backing track>,
-				"backImage": <filename of background image>,
-				"bga": <filename of BGA>,
-				"bgaOffset": <BGA offset>,
-				"firstBeatOffset": <first beat offset>,
-				"initBpm": <initial BPM>,
-				"bps": <Beats Per Scan>
+				"guid": <GUID>,
+				"patternName": <패턴 이름>,
+				"level": <Level>,
+				"controlScheme": <조작 방식>,
+				"lanes": <트랙 수>,
+				"author": <패턴 제작자>,
+				"backingTrack": <배경 음악의 이름>,
+				"backImage": <배경 이미지 파일의 이름>,
+				"bga": <BGA 파일의 이름>,
+				"bgaOffset": <BGA 시작점>,
+				"firstBeatOffset": <첫 비트의 시작점>,
+				"initBpm": <마스터 템포>,
+				"bps": <스크롤 영역당 박자 수>
 			},
 			"bpmEvents": [
-				<BPM event 1>,
+				<템포 1>,
 				<...>,
-				<BPM event n>
+				<템포 n>
 			],
 			"packedNotes": [
-				<note 1>,
+				<일반 노트 1>,
 				<...>,
-				<note n>
+				<일반 노트 n>
 			],
 			"packedHoldNotes": [
-				<hold note 1>,
+				<홀딩 노트 1>,
 				<...>,
-				<hold note n>
+				<홀딩 노트 n>
 			],
 			"packedDragNotes": [
-				<drag note 1>,
+				<드래그 노트 1>,
 				<...>,
-				<drag note n>
+				<드래그 노트 n>
 			]
 		}
 ```
 
-* `guid` is, again, a unique identifier for this pattern.
-* `guid`, `patternName`, `author`, `backingTrack`, `backImage`, `bga` are strings; `level`, `controlScheme`, `lanes`, `bps` are integers; `bgaOffset`, `firstBeatOffset`, `initBpm` are floating point numbers (non-integers allowed).
-* `controlScheme` is 0 for Touch, 1 for Keys, and 2 for KM.
-* `lanes` is currently unused.
-* `backingTrack`, `backImage`, and `bga` are optional. Write "" if there is none.
-* Check the tooltips in the editor for explanations on BGA offset, first beat offset and Beats Per Scan.
+* `guid`는 각 패턴을 구분하는 고유한 ID입니다.
+* 각 필드의 자료형
+ * 문자열: `guid`, `patternName`, `author`, `backingTrack`, `backImage`, `bga`
+ * 정수: `level`, `controlScheme`, `lanes`, `bps`
+ * 실수: `bgaOffset`, `firstBeatOffset`, `initBpm`
+* `controlScheme`의 값은 0(터치), 1(키보드), 또는 2(키보드, 마우스)입니다.
+* `lanes`는 현재는 사용하지 않는 필드입니다.
+* `backingTrack`, `backImage`, `bga` 필드는 선택 사항입니다. 각 파일이 없다면 빈 문자열("")을 기록합니다.
+* BGA, 첫 비트의 시작점과 스크롤 영역당 박자 수는 에디터의 설명을 참조하십시오.
 
-# BPM event
+# 템포
 
 ```
 				{
@@ -95,7 +99,7 @@ TECHMANIA에서 사용하는 Track.tech 파일의 형식을 소개하는 문서�
 * `pulse` is an integer; `bpm` is a floating point number.
 * `pulse` describes the position of this event. A pulse is 1/240 of a beat.
 
-# Note
+# 노트
 
 The `packedNotes` section covers all note types without a duration: Basic, Chain Head, Chain Node, Repeat Head, and Repeat. Each note is represented as a string in one of the following two formats:
 * `<type>|<pulse>|<lane>|<keysound>`
@@ -114,7 +118,7 @@ Other notes:
 * Lanes are numbered 0 to 63 from top to bottom.
 * `keysound` is optional. Leave this part empty if a note has no keysound, but the `|` before it cannot be omitted.
 
-# Hold note
+# 홀딩 노트
 
 The `packedHoldNotes` section covers notes of type Hold, Repeat Head Hold and Repeat Hold. Each note is represented as a string in one of the following two formats:
 * `<type>|<lane>|<pulse>|<duration>|<keysound>`
@@ -127,7 +131,7 @@ Notice that `pulse` and `lane` are reversed in this section. This is a bug from 
 Other notes:
 * `duration` is in integer pulses.
 
-# Drag note
+# 드래그 노트
 
 This section covers all drag notes. Each drag note is represented as the following structure:
 
