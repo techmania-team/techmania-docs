@@ -1,51 +1,66 @@
-Applies to version: 0.4
+기준 버전 : 0.4
 
-TECHMANIA provides 2 ways to adjust the timing of notes and judgements: note offset and input latency. Calibrate and adjust them from the options menu.
+TECHMANIA는 노트의 판정 타이밍을 최적화하기 위해 `노트 오프셋`와 `입력 지연값` 조정 기능을 제공하고 있습니다.
+옵션에서 각 항목을 조정할 수 있습니다.
 
-# How timing works
+# 판정 타이밍이 결정되는 방식
 
-Each note has a "**correct time**", which means the correct time to play this note is exactly this many seconds after the backing track starts. This is also the moment when the scanline will pass the note's exact center.
+각 노트들은 배경 음악이 재생된 후 정확히 몇 초 후에 연주하는 경우 최고의 판정을 얻게 되는 소위 "**정확한 플레이 시점**"이 있습니다.
+이는 판정 라인이 노트의 한가운데를 지나가는 시점과 동일합니다.
 
-TECHMANIA runs a timer, which starts when the backing track starts. When the player plays a note, the game asks the timer for the "**current time**". Then, the game compares current time to the note's correct time, and reaches a judgement based on the time difference.
+TECHMANIA에서는 배경 음악이 재생됨과 동시에 타이머를 가동시킵니다.
+플레이어가 노트를 연주하는 순간 게임이 타이머로부터 "**현재 시각**"을 전달받고, 전달받은 현재 시각을 해당 노트의 정확한 플레이 시점과 비교하여 그 차이를 토대로 판정을 매깁니다.
 
-To complicate matters, input devices, especially touchscreens, have input lags, meaning the moment the game receives input is noticeably later than the moment the player made that input.
+다만 입력 장치(특히 터치스크린)에는 필연적으로 입력 지연이 존재하므로, 게임이 타이머로부터 전달 받는 현재 시각은 실제로 플레이어가 노트를 재생하기 위해 입력을 수행한 시점보다 다소 늦습니다.
 
-As an example, say some note's correct time is 2000 ms.
+예를 들어 어느 노트의 정확한 플레이 시점이 2000 ms라고 가정합니다.
 
-At 1990 ms, the player touches the note on a touchscreen with 50 ms lag.
+배경 음악이 재생된 후 정확히 1990 ms 이후에 플레이어가 50 ms의 입력 지연을 가진 터치스크린으로 터치를 수행합니다.
 
-At 2040 ms, the game receives the touch. The current time is 2040 ms, the correct time is 2000 ms, so the game thinks the player played the note 40 ms too late.
+게임은 타이머의 시각이 2040 ms가 되는 순간 터치 입력을 인식합니다.
+노트의 정확한 플레이 시점이 2000 ms이고 타이머로부터 전달 받은 현재 시각이 2400 ms이므로, 게임은 플레이어가 노트를 40 ms 느리게 연주했다고 판단합니다.
 
-The note's keysound also plays at 2040 ms, when it ideally should play at 1990 ms.
+본래 1990 ms 시점에 노트를 터치함과 동시에 재생되었어야 하는 노트의 키사운드 또한 실제로 2040 ms 시점에 재생됩니다.
 
-# Note offset
+# 노트 오프셋
 
-Note offset moves notes ahead or behind in time, by modifying their correct time. [1]
+노트 오프셋은 각 노트의 정확한 플레이 시점을 앞당기거나 뒤늦춰주는 수치입니다. [1]
 
-In the example above, say the player sets the note offset to -50 ms. Then, the note's correct time becomes 1950 ms.
+위의 예시에 추가로 플레이어가 노트 오프셋 수치를 -50 ms로 설정했다고 가정합니다.
+그 경우 노트의 정확한 플레이 시점은 1950 ms로 조정됩니다.
 
-At 1940 ms, the player touches the note. At 1990 ms, the game receives the touch, and again thinks the player played the note 40 ms too late.
+배경 음악이 재생된 후 정확히 1940 ms 이후에 플레이어가 노트를 터치합니다.
 
-However, the keysound now plays at 1990 ms, which should sound more in sync with the backing track.
+게임은 타이머의 시각이 1990 ms가 되는 순간 터치 입력을 인식하고, 이 경우에도 플레어가 노트를 40 ms 느리게 연주했다고 판단합니다.
 
-# Input latency
+다만 키사운드는 1990 ms에 재생되므로 배경 음악과의 싱크가 조금 더 개선되는 효과가 생깁니다.
 
-Input latency compensates the calculated time difference without actually moving the notes.
+# 입력 지연값
 
-In the example above, say the player sets the input latency to 50 ms. The note's correct time is still 2000 ms.
+입력 지연값은 실제 노트들의 정확한 플레이 시점을 변경하지 않고 최종적으로 계산된 타이머의 현재 시각과 노트의 정확한 플레이 시점간의 차이를 보정합니다.
 
-At 1990 ms, the player touches the note. At 2040 ms, the game receives the touch, calculates the time difference as 40 ms, and then subtracts another 50 ms due to input latency. The final judgement is that the player played the note 10 ms too early, which is closer to what the player actually did.
+위의 예시에 추가로 플레이어가 입력 지연값을 50 ms로 설정했다고 가정합니다.
+이 경우에도 노트의 정확한 플레이 시점은 여전히 2000 ms입니다.
 
-However, the keysound still plays at 2040 ms.
+배경 음악이 재생된 후 정확히 1990 ms 이후에 플레이어가 노트를 누릅니다.
+게임은 타이머의 시각이 2040 ms가 되는 순간 터치 입력을 인식하고, 타이머의 현재 시각과 노트의 정확한 플레이 시점의 차이인 40 ms를 계산한 뒤 입력 지연값인 50 ms만큼 보정을 가합니다.
+이로서 게임은 최종적으로 플레이어가 해당 노트를 10 ms 일찍 입력했다고 판정하고, 이는 실제 플레이어가 수행한 터치로부터 받는 체감 판정과 가깝습니다.
 
-# Setting both
+다만 키사운드는 여전히 2040 ms에 재생됩니다.
 
-One recommended way to set note offset and input latency is to make them the opposite of each other.
+# 양쪽 모두를 사용
 
-In the example above, say the player sets the note offset to -50ms, and input latency to 50 ms. Then, the note's correct time becomes 1950 ms.
+노트 오프셋과 입력 지연값을 모두 사용하는 경우, 서로 반대의 값을 가지도록 설정하는 것을 추천합니다.
 
-At 1940 ms, the player touches the note. At 1990 ms, the game receives the touch, calculates the time difference as (40 - 50) = -10 ms, and the keysound plays at 1990 ms.
+위의 예시에서 플레이어가 노트 오프셋을 -50 ms로, 입력 지연값을 50 ms으로 설정했다고 가정합니다.
+이 경우 노트의 정확한 플레이 시점은 1950 ms로 조정됩니다.
+
+배경 음악이 재생된 후 정확히 1940 ms 이후에 플레이어가 노트를 터치합니다.
+게임은 타이머의 시각이 1990 ms가 되는 순간 터치 입력을 인식하고, 입력 지연값을 고려하여 최종 판정을 (40 - 50) = -10 ms로 계산합니다.
+키사운드의 경우 1990 ms에 재생됩니다.
 
 ---
 
-[1] Under the hood this is implemented by running a second timer which is ahead/behind the base timer by the offset amount. Playable notes run on the second timer, while backing track, BGA and hidden notes run on the base timer. However I feel "note offset modifies correct time" is an easier explanation, and in the end they achieve the same effect.
+[1] 게임 내 실제 구동 방식은 기존에 게임에서 사용하는 타이머보다 노트 오프셋 수치만큼 이른 혹은 늦은 또다른 타이머를 추가하여 이루어집니다.
+배경 음악, BGA 및 반주 트랙의 노트들은 기존 타이머를 따르고 연주 트랙의 노트들만 이 두번째 타이머를 따르도록 하는 방식입니다.
+다만 여기에서는 "노트 오프셋 수치가 노트의 정확한 플레이 시점을 변경한다"라고 설명하는 편이 더 이해하기 쉬울 것이라 판단하여 그렇게 기술하였고, 어느 쪽이든 결과적으로는 동일한 체감 판정 조정 효과를 줍니다.

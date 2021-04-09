@@ -1,45 +1,48 @@
-Applies to version: 0.4
+기준 버전 : 0.4
 
-Due to the variety of note types, it is possible to place notes in a way that is considered invalid. These placements may cause the game to freeze when loading, make some notes unplayable, or make the pattern hard to read. The editor prevents you from making some, but not all, of the invalid placements. For now it is up to the pattern author to fully avoid these placements. The editor will be able to detect more invalid placements in the future.
+여러 유형의 노트들이 올바르지 않은 방식으로 조합되는 경우 패턴 로딩 시 문제가 발생하거나 일부 노트들이 정상적으로 플레이 불가능한 상태가 될 수 있습니다.
+기본적으로 편집기에서 올바르지 않은 노트 배치 방식을 방지하지만, 모든 경우에 대해 방지하는 것은 아닙니다.
+이러한 노트 배치 방식을 지양해야 하는 일은 패턴 제작자의 몫입니다.
+차후 편집기에서 더 다양한 경우의 비정상적인 노트 배치 방식들을 감지 및 방지하도록 편집기를 개선할 예정입니다.
 
-Please refer to the [Terminology](Terminology.md) page when necessary.
+필요한 경우 [용어집](Terminology.md) 페이지를 참고하여 주십시오.
 
-# Universal: all notes
-* Notes can not be placed at the exact same (pulse, lane) with each other.
-* Notes can not be placed before pulse 0.
-* Notes can not be placed above lane 0 or below lane 63.
+# 공통사항 : 모든 노트
+* 같은 트랙의 같은 틱 값에 여러 노트들을 중복으로 배치할 수 없습니다.
+* 틱값이 0 보다 앞에 오는 노트를 배치할 수 없습니다.
+* 유효한 트랙 범위(0 ~ 63) 이외의 곳에 노트를 배치할 수 없습니다.
 
-# Universal: long notes (drag, hold, repeat hold)
-* Long notes can not cover other notes.
+# 공통사항 : 롱 노트 (드래그 노트, 홀딩 노트, 연타 홀딩 노트)
+* 롱 노트는 다른 노트들을 가리도록 배치할 수 없습니다.
 
-# Chain notes
-* Each chain head must be connected to at least 1 chain node.
-* Each chain node must be connected to a chain head.
-* No 2 chain heads or chain nodes can be placed at the same pulse. This includes hidden notes.
-* Chain paths can not cross scans.
-* Chain paths can not cover other notes.
+# 연결형 노트
+* 모든 연결형 노트 머리 부분은 최소 1개 이상의 연결부를 가져야 합니다.
+* 각 연결부는 반드시 연결형 노트의 머리 부분과 연결되어 있어야 합니다.
+* 서로 같은 틱값을 가지는 연결형 노트들을 배치할 수 없습니다. 이는 반주 트랙에 위치한 연결형 노트들도 포함합니다.
+* 연결형 노트의 진행 경로는 스크롤 구간을 벗어날 수 없습니다.
+* 연결형 노트의 진행 경로는 다른 노트들을 가리도록 배치할 수 없습니다.
 
-# Drag notes
-* Drag curves can not cross scans.
-* Inside a drag note, each anchor must be placed to the right of the previous one.
-* On an anchor, the left control point must be to the left of the anchor, and the right control point must be to the right.
-* The anchors and control points can not be set in a way that makes the curve flow to the left at any point.
-* A drag note must contain at least 2 anchors.
+# 드래그 노트
+* 드래그 노트의 진행 경로는 스크롤 구간을 벗어날 수 없습니다.
+* 하나의 드래그 노트 내에서 각 고정점의 위치는 항상 이전의 고정점보다 우측에 위치해야 합니다.
+* 하나의 고정점에서 좌측 곡선 결정부는 항상 고정점의 좌측에, 우측 곡선 결정부는 항상 고정점에 우측에 위치해야 합니다.
+* 고정점과 곡선 결정부는 드래그 노트의 진행 방향이 왼쪽으로 결정되도록 배치할 수 없습니다.
+* 각 드래그 노트는 최소 2개의 고정점을 포함해야 합니다.
 
-# Hold notes
-* Hold notes can not be longer than 2 scans.
+# 홀딩 노트
+* 홀딩 노트의 길이는 스크롤 구간 2칸을 넘을 수 없습니다.
 
-# Repeat notes
-* Each repeat head must be connected to at least 1 repeat note.
-* Each repeat note (including repeat hold note) must be connected to a repeat head.
-* Repeat notes can not be more than 2 scans away from the repeat head it's connected to. Note that crossing scans is allowed, but discouraged.
-* The end points of repeat hold notes can not be more than 2 scans away from the repeat head it's connected to.
-* Repeat paths can not cover other notes.
+# 연타 노트
+* 모든 연타 노트 머리 부분은 최소 1개 이상의 연타 노트와 연결되어 있어야 합니다.
+* 연타 홀딩 노트를 포함한 모든 연타 노트는 반드시 연타 노트 머리 부분과 연결되어 있어야 합니다.
+* 연타 노트는 연타 노트 머리 부분보다 스크롤 구간 2칸 넘게 떨어져있을 수 없습니다. 연타 노트 머리 부분보다 스크롤 구간 1칸 넘게 떨어져있는 연타 노트를 생성하는 것은 가능하지만 권장하지 않으므로 가급적 지양하는 것이 좋습니다.
+* 연타 홀딩 노트의 마지막 지점 또한 연타 노트 머리부분보다 스크롤 구간 2칸 넘게 떨어져있을 수 없습니다.
+* 연타 노트의 경로는 다른 노트들을 가리도록 배치할 수 없습니다.
 
-# Interaction between different types
-* Chain paths, repeat paths, hold trails, repeat hold trails and drag curves can not cross each other.
+# 여러 유형의 노트 조합에 따른 제약
+* 연결형 노트의 진행 경로, 연타 노트의 전체 경로, 홀딩 노트의 및 연타 홀딩 노트의 경로, 드래그 노트의 진행 경로 등은 서로 겹쳐질 수 없습니다.
 
-# Control-scheme-specific
-* In Keys, drag notes can not cross lanes.
-* In KM, no 2 basic notes, chain heads, chain nodes or drag heads can be placed at the same pulse.
-* In KM, no basic notes, chain heads, chain nodes or drag heads can be placed at a pulse where a drag curve is present.
+# 플레이 방식에 따른 제약
+* 키보드 플레이 방식의 패턴에서 드래그 노트는 트랙 사이를 가로지를 수 없습니다.
+* 키보드&마우스 플레이 방식의 패턴에서 노트/연결형 노트 머리 부분/연결형 노트 연결부/드래그 노트가 같은 틱에 2개 이상 위치할 수 없습니다.
+* 키보드&마우스 플레이 방식의 패턴에서 곡선 형태의 드래그 노트가 있는 경우 해당 노트의 진행 경로 동안 다른 노트/연결형 노트 머리 부분/연결형 노트 연결부/드래그 노트가 위치할 수 없습니다.

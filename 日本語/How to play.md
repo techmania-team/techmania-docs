@@ -1,88 +1,99 @@
-Applies to version: 0.4
+適用バージョン：0.4
 
-When a scanline passes the center of a note, play it!
+判定ラインがノートの真ん中を通すときにプレイしましょう！
 
 ![Animation showing a note and a scanline](https://i.imgur.com/OKvXPun.gif)
 
-TECHMANIA supports 3 different control schemes. When selecting a pattern, the icon to the left of its name tells you which control scheme to use.
+TECHMANIAは3つのプレイタイプをサポートします。
+パターンの選択画面で、パターン名の左に表示されるアイコンがそのパターンのプレイタイプを表します。
 
 ![An arrow pointing to 3 control scheme icons in the pattern selection screen](https://imgur.com/qchs9iT.png)
 
-Launch the in-game tutorials to view video demonstrations.
+ゲーム内のチュートリアルを実行選んで各プレイタイプの紹介映像を見ることができます。
 
-# ![Touch icon](https://imgur.com/OEKXJvN.png) Touch
+# ![Touch icon](https://imgur.com/OEKXJvN.png) Touch(タッチ)
 
-The Touch control scheme requires a touchscreen. You can test your touchscreen from the options menu. It is also recommended that you go to system settings and turn off visual feedback for touches, as they may cause the game to lag. On Windows 10, this option can be found in Settings - Ease of Access - Mouse pointer - Change touch feedback.
+タッチプレイタイプには、タッチスクリーンを使ってプレイします。
+オプションで、タッチスクリーンの動作をテストすることができます。
+画面にタッチポイントを表示してくれる機能を使っている場合、ゲーム中遅延(ラグ)を引き起こすため、システム設定から例の機能を落とすことをお勧めします。
+Windows 10の場合、`スタートボタン - 設定 - 簡単操作 - カーソルとポインターのサイズ - タッチのフィードバックを変更する`項目で例の機能を落とすことができます。
 
-### ![](https://imgur.com/XeUKzrk.png) Basic note
-Touch the note when the scanline passes its center.
+### ![](https://imgur.com/XeUKzrk.png) ノート
+判定ラインがノートの真ん中を通すときにノートをタッチしてください。
 
-### ![](https://imgur.com/D9ihf4e.png) Chain note
-Touch and drag along the chain, following the speed of the scanline.
+### ![](https://imgur.com/D9ihf4e.png) 連結型ノート
+判定ラインの速度に合わせてノートの進行経路に沿ってドラッグしてください。
 
-### ![](https://imgur.com/i3W1PZq.png) Drag note
-Touch and drag along the curve, following the speed of the scanline. You do not need to release your finger on time.
+### ![](https://imgur.com/i3W1PZq.png) ドラッグノート
+判定ラインの速度に合わせてノートの進行経路に沿ってドラッグしてください。
+ノートの終点で指を必ず離す必要はありません。
 
-### ![](https://imgur.com/fUgg8DL.png) Hold note
-Touch and hold your finger on the note head, until the scanline reaches the end of the note. You do not need to release your finger on time.
+### ![](https://imgur.com/fUgg8DL.png) ホールディングノート
+判定ラインがノートの終点を通すまでノートの頭部の押し続けてください。
+ノートの終点で指を必ず離す必要はありません。
 
-### ![](https://imgur.com/EUnxJxG.png) Repeat note
-Touch the note head when the scanline passes its center, as well as any little note after it.
+### ![](https://imgur.com/EUnxJxG.png) 連打ノート
+判定ラインがノートの頭部と後ろについてくる小さなノートを通すたびにノートの頭部をタッチしてください。
+連打ホールディングノートの場合、ホールディングノートと同じく、ノート頭部を押し続けてください。
 
-For long notes, hold your finger on the note head, the same way as with hold notes.
+# ![Keys icon](https://imgur.com/0jWEtsx.png) Keys(キーボード)
 
-# ![Keys icon](https://imgur.com/0jWEtsx.png) Keys
-
-The Keys control scheme uses these 4 rows of keys on your keyboard. Each row corresponds to one of four lanes on the screen. To play a note in a certain lane, press any key in the corresponding row.
+キーボードプレイタイプには、キーボードにある四行のボタンを使ってプレイします。
+キーボードの四行のボタンは、画面に表示される四つの横線に対応します。
+ある横線に位置するノートをプレイするには、キーボードの該当する行のいずれかのボタンを押してください。
 
 ![Tutorial screenshot showing the correspondence between rows and lanes](https://imgur.com/914c0g9.png)
 
-Currently only the QWERTY keyboard layout is supported.
+現在QWERTY配列のキーボードのみサポートしています。
 
-### ![](https://imgur.com/XeUKzrk.png) Basic note
-Press a key when the scanline passes the note’s center.
+### ![](https://imgur.com/XeUKzrk.png) ノート
+判定ラインがノートの真ん中を通すときにキーボードボタンを押してください。
 
-### ![](https://imgur.com/D9ihf4e.png) Chain note
-Play each node as a separate basic note.
+### ![](https://imgur.com/D9ihf4e.png) 連結型ノート
+接続されている各ノートを一般ノートのようにとプレイしてください。
 
-### ![](https://imgur.com/i3W1PZq.png) Drag note
-Press and hold a key until the note head reaches the end of the curve. You do not need to release the key on time.
+### ![](https://imgur.com/i3W1PZq.png) ドラッグノート
+ノートの頭部がノートの終点に到達するまでキーボードボタンの押し続けてください。
+ノートの終点で必ずキーボードボタンを離す必要はありません。
 
-### ![](https://imgur.com/fUgg8DL.png) Hold note
-Press and hold a key until the scanline reaches the end of the note. You do not need to release the key on time.
+### ![](https://imgur.com/fUgg8DL.png) ホールディングノート
+判定ラインがノートの終点を通すまでキーボードボタンの押し続けてください。
+ノートの終点で必ずキーボードボタンを離す必要はありません。
 
-### ![](https://imgur.com/EUnxJxG.png) Repeat note
-Press a key when the scanline passes the note head’s center, as well as any little note after it.
+### ![](https://imgur.com/EUnxJxG.png) 連打ノート
+判定ラインがノートの頭部と後ろについてくる小さなノートを通すたびにキーボードボタンを押してください。
+連打ホールディングノートの場合、ホールディングノートと同じく、キーボードボタンを押し続けてください。
 
-For long notes, hold the key, the same way as with drag and hold notes.
+# ![KM icon](https://imgur.com/oiSj3Qc.png) KM(キーボード&マウス)
 
-# ![KM icon](https://imgur.com/oiSj3Qc.png) KM
+キーボード&マウスプレイタイプには、キーボードとマウスの両方を使ってプレイします。
+ノート/連結型ノート/ドラッグノートはマウスを使い、ホールディングノートや連打ノートはキーボードを使ってプレイします。
+キーボードプレイタイプとは異なり、ノートが位置する横線に関係なく、どんなキーボードボタンを押してもOKです。
 
-KM stands for Keyboard and Mouse. In the KM control scheme, you use the mouse to play some types of notes (basic, chain, drag), and the keyboard to play the other types (hold, repeat). Different from the Keys control scheme, here you can press any key in any row to play the keyboard notes, wherever they are.
+### ![](https://imgur.com/XeUKzrk.png) ノート
+判定ラインがノートの真ん中を通すときにノートをマウスでクリックしてください。
 
-### ![](https://imgur.com/XeUKzrk.png) Basic note
-Click the note when the scanline passes its center.
+### ![](https://imgur.com/D9ihf4e.png) 連結型ノート
+判定ラインの速度に合わせてノートの進行経路に沿ってマウスをドラッグしてください。
 
-### ![](https://imgur.com/D9ihf4e.png) Chain note
-Click and drag along the chain, following the speed of the scanline.
+### ![](https://imgur.com/i3W1PZq.png) ドラッグノート
+判定ラインの速度に合わせてノートの進行経路に沿ってマウスをドラッグしてください。
+ノートの終点で必ずマウスボタンを離す必要はありません。
 
-### ![](https://imgur.com/i3W1PZq.png) Drag note
-Click and drag along the curve, following the speed of the scanline. You do not need to release the mouse button on time.
+### ![](https://imgur.com/fUgg8DL.png) ホールディングノート
+判定ラインがノートの終点を通すまでキーボードボタンの押し続けてください。
+ノートの終点で必ずキーボードボタンを離す必要はありません。
 
-### ![](https://imgur.com/fUgg8DL.png) Hold note
-Press and hold any key until the scanline reaches the end of the note. You do not need to release the key on time.
+### ![](https://imgur.com/EUnxJxG.png) 連打ノート
+判定ラインがノートの頭部と後ろについてくる小さなノートを通すたびにキーボードボタンを押してください。
+連打ホールディングノートの場合、ホールディングノートと同じく、キーボードボタンを押し続けてください。
 
-### ![](https://imgur.com/EUnxJxG.png) Repeat note
-Press any key when the scanline passes the note head’s center, as well as any little note after it.
+# FEVER(フィーバー)について
 
-For long notes, hold the key, the same way as with hold notes.
+プレイタイプに関係なく、次の方法でFEVERを発動することができます。
 
-# About Fever
+* FEVERボタンをタッチ
+* キーボードのSpace/Backspace/テンキー0/テンキーEnterボタンを押す
+* マウスでFEVERボタンをクリック
 
-Regardless of control scheme, you can activate Fever in any of the following ways:
-
-* Touching the Fever button
-* Pressing Space/Backspace/Numpad 0/Numpad Enter
-* Clicking the Fever button
-
-While active, Fever will improve the judgement of notes played, and recover HP faster.
+FEVER発動中、ノートの判定がよくなり、体力回復量が増加します。
