@@ -193,22 +193,25 @@
 
 ![An image showing the meaning of distanceToNote, height and spaceBetweenJudgementAndCombo](https://imgur.com/J3VP1qF.png)
 
-3가지 항목 모두 픽셀 수(정수값)입니다. 해상도와 관계없이 게임의 창 높이는 1080 픽셀로 고정된 것으로 간주하고, As a reference, the game window's height is always 1080 pixels regardless of resolution. All sprites in the combo text will be scaled so that their heights are equal to `height`, while keeping their aspect ratios unchanged.
+3가지 항목 모두 픽셀 수(정수값)입니다. 해상도와 관계없이 게임의 창 높이 = 1080 픽셀로 간주하여 이를 기준삼아 값을 입력합니다. 모든 스프라이트 이미지는 콤보 스킨이 `height` 만큼의 높이를 가지도록 크기가 자동적으로 조정되고, 스프라이트 이미지 자체의 높이:너비 비율은 유지됩니다.
 
-While each judgement and combo digit may play animations of their own, the game also plays a built-in animation on the entire combo text as a whole, including a fade-in, a fade-out and scaling. Currently this animation cannot be customized.
+판정 텍스트와 콤보 폰트는 각각 콤보 스킨에서 지정한 애니메이션을 따라 나타나게 되지만, 게임 내에서 콤보 스킨 전체에 대해 페이드 인/페이드 아웃 효과 및 자동적인 크기 조정을 비롯한 자체 애니메이션을 추가로 적용시킵니다. 
+현재 해당 자체 애니메이션에 대한 커스터마이징은 지원하지 않고 있습니다.
 
-# Reloading skins
+# 스킨 새로고침
 
-By default, TECHMANIA only loads skins when:
-* Starting up
-* The player changes skins in the select skin menu
+기본적으로 TECHMANIA가 스킨 설정을 새로 불러들이는 시점은 다음과 같습니다.
+* 게임 구동
+* 플레이어가 옵션의 스킨 선택 메뉴에서 스킨을 변경하는 경우
 
-In the select skin menu, there's an option to also reload the skins each time you load a pattern. This may be useful for making and testing new skins, but it increases load time, so remember to turn it off after you complete your skin.
+스킨 선택 메뉴에는 패턴을 불러올 때마다 스킨 설정을 새로 불러들이도록 하는 옵션 기능이 따로 마련되어 있습니다.
+새로운 스킨을 제작 중이거나 테스트할 때 옵션으로 되돌아가지 않고 패턴을 재시작하는 것만으로 변경점을 바로바로 확인할 수 있으므로 편리한 기능이지만, 스킨을 불러들이는 시간이 더해져 로딩 시간이 길어집니다.
+스킨 제작 또는 테스트 중이 아니라면 해당 기능을 끄는 것을 추천합니다.
 
-# JSON tips
+# JSON 객체파일 작성시 팁
 
-Keep the following in mind when writing JSON:
-* All field names require quotation marks.
-* Values only require quotation marks if they are strings (for skins, only the `filename` fields are strings).
-* If there are multiple fields and values between a pair of `[]` or `{}`, write commas after each value except for the last one.
-* Consider using a text editor meant for programming, such as Visual Studio Code, because they can spot and warn you about JSON format errors.
+JSON 객체파일 작성시 아래의 사항들을 유념합니다.
+* 모든 항목(변수) 이름에는 큰따옴표("")가 있어야 합니다.
+* 항목(변수)의 값은 문자열(string)인 경우에만 큰따옴표("")가 들어갑니다. (스킨을 지정하는 JSON 객체파일에서는 파일명을 나타내는 `filename` 항목만이 문자열입니다.)
+* 대괄호(`[]`) 또는 중괄호(`{}`) 안에 여러 항목이나 값들이 들어가는 경우, 마지막 값을 제외하고는 일일히 콤마(,)를 넣어줘야 합니다.
+* JSON 형식 오류를 바로 감지해낼 수 있는 Visual Studio Code 등의 프로그래밍용 텍스트 편집기를 쓰는 것을 추천합니다.
