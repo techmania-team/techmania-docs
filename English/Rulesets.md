@@ -115,7 +115,7 @@ In both cases, the maximum possible score is 300,000.
 
 Each Rainbow MAX or MAX increases Fever by `(Fever coefficient) / (number of notes)`. A full Fever bar corresponds to 1. The value of Fever coefficient depends on the `constantFeverCoefficient` parameter, which again can be `true` or `false`:
 
-* If `constantFeverCoefficient` is `true`, Fever coefficient is 8. This means a Perfect Play will fill up the Fever bar 8 times, regardless of track length. Please be aware that this may make Fever too easy to accumulate on shorter tracks, and too difficult on longer tracks.
+* If `constantFeverCoefficient` is `true`, Fever coefficient is 8. This means a Perfect Play will fill up the Fever bar 8 times, regardless of track length.
 * If `constantFeverCoefficient` is `false`, Fever coefficient is `(track length in seconds) / 12.5`. This means a Perfect Play will fill up the Fever bar roughly every 12.5 seconds.
 
 A MISS will decrease the current Fever by 25%; a BREAK by 50%.
