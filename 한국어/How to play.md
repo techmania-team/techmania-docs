@@ -1,88 +1,99 @@
-Applies to version: 0.4
+기준 버전 : 0.4
 
-When a scanline passes the center of a note, play it!
+판정 라인이 노트의 한가운데를 지나갈 때 연주하세요!
 
 ![Animation showing a note and a scanline](https://i.imgur.com/OKvXPun.gif)
 
-TECHMANIA supports 3 different control schemes. When selecting a pattern, the icon to the left of its name tells you which control scheme to use.
+TECHMANIA는 3가지 플레이 방식을 지원합니다.
+패턴 선택화면에서 패턴 이름의 좌측에 표시되는 아이콘이 해당 패턴의 플레이 방식을 나타냅니다.
 
 ![An arrow pointing to 3 control scheme icons in the pattern selection screen](https://imgur.com/qchs9iT.png)
 
-Launch the in-game tutorials to view video demonstrations.
+게임 내 튜토리얼을 실행하여 각 플레이 방식별 소개 영상을 볼 수 있습니다.
 
-# ![Touch icon](https://imgur.com/OEKXJvN.png) Touch
+# ![Touch icon](https://imgur.com/OEKXJvN.png) Touch(터치)
 
-The Touch control scheme requires a touchscreen. You can test your touchscreen from the options menu. It is also recommended that you go to system settings and turn off visual feedback for touches, as they may cause the game to lag. On Windows 10, this option can be found in Settings - Ease of Access - Mouse pointer - Change touch feedback.
+터치 플레이 방식은 터치스크린을 필요로 합니다.
+옵션에서 터치스크린의 작동여부를 테스트할 수 있습니다.
+터치지점을 표시해주는 기능이 적용된 경우 게임에 렉을 유발할 수 있으므로 시스템 설정에서 해당 기능을 끄는 것을 추천합니다.
+윈도우10의 경우 `시작 버튼 - 설정 - 접근성 - 마우스 포인터 - 터치 피드백 변경` 항목에서 해당 기능의 유무를 선택할 수 있습니다.
 
-### ![](https://imgur.com/XeUKzrk.png) Basic note
-Touch the note when the scanline passes its center.
+### ![](https://imgur.com/XeUKzrk.png) 노트
+판정 라인이 노트의 한가운데를 지나갈 때 터치하세요.
 
-### ![](https://imgur.com/D9ihf4e.png) Chain note
-Touch and drag along the chain, following the speed of the scanline.
+### ![](https://imgur.com/D9ihf4e.png) 연결형 노트
+판정 라인의 속도에 맞춰 노트의 진행 경로를 따라 드래그하세요.
 
-### ![](https://imgur.com/i3W1PZq.png) Drag note
-Touch and drag along the curve, following the speed of the scanline. You do not need to release your finger on time.
+### ![](https://imgur.com/i3W1PZq.png) 드래그 노트
+판정 라인의 속도에 맞춰 노트의 진행 경로를 따라 드래그하세요.
+꼭 노트의 마지막 지점에서 손을 떼어야 할 필요는 없습니다.
 
-### ![](https://imgur.com/fUgg8DL.png) Hold note
-Touch and hold your finger on the note head, until the scanline reaches the end of the note. You do not need to release your finger on time.
+### ![](https://imgur.com/fUgg8DL.png) 홀딩 노트
+판정 라인이 노트의 마지막 지점에 도달할 때까지 노트 머리 부분의 터치를 유지하세요.
+꼭 노트의 마지막 지점에서 손을 떼어야 할 필요는 없습니다.
 
-### ![](https://imgur.com/EUnxJxG.png) Repeat note
-Touch the note head when the scanline passes its center, as well as any little note after it.
+### ![](https://imgur.com/EUnxJxG.png) 연타 노트
+판정 라인이 노트 머리 부분과 뒤에 따라오는 작은 노트들을 지나갈 때마다 터치하세요.
+연타 홀딩 노트의 경우, 홀딩 노트와 마찬가지로 노트 머리 부분의 터치를 유지하세요.
 
-For long notes, hold your finger on the note head, the same way as with hold notes.
+# ![Keys icon](https://imgur.com/0jWEtsx.png) Keys(키보드)
 
-# ![Keys icon](https://imgur.com/0jWEtsx.png) Keys
-
-The Keys control scheme uses these 4 rows of keys on your keyboard. Each row corresponds to one of four lanes on the screen. To play a note in a certain lane, press any key in the corresponding row.
+키보드 플레이 방식은 키보드에 위치한 네 줄의 버튼들을 사용합니다.
+키보드 버튼의 네 줄은 화면에 표시되는 네 트랙에 대응됩니다.
+특정 트랙의 노트를 연주하려면 해당되는 줄의 키보드 버튼을 아무거나 누르면 됩니다.
 
 ![Tutorial screenshot showing the correspondence between rows and lanes](https://imgur.com/914c0g9.png)
 
-Currently only the QWERTY keyboard layout is supported.
+현재 쿼티 키보드만을 지원하고 있습니다.
 
-### ![](https://imgur.com/XeUKzrk.png) Basic note
-Press a key when the scanline passes the note’s center.
+### ![](https://imgur.com/XeUKzrk.png) 노트
+판정 라인이 노트의 한가운데를 지나갈 때 키보드 버튼을 누르세요.
 
-### ![](https://imgur.com/D9ihf4e.png) Chain note
-Play each node as a separate basic note.
+### ![](https://imgur.com/D9ihf4e.png) 연결형 노트
+각 관절을 노트로 간주하고 연주하세요.
 
-### ![](https://imgur.com/i3W1PZq.png) Drag note
-Press and hold a key until the note head reaches the end of the curve. You do not need to release the key on time.
+### ![](https://imgur.com/i3W1PZq.png) 드래그 노트
+노트 머리 부분이 노트의 마지막 지점에 도달할 때까지 키보드 버튼을 계속 누르고 있으세요.
+꼭 노트의 마지막 지점에서 손을 떼어야 할 필요는 없습니다.
 
-### ![](https://imgur.com/fUgg8DL.png) Hold note
-Press and hold a key until the scanline reaches the end of the note. You do not need to release the key on time.
+### ![](https://imgur.com/fUgg8DL.png) 홀딩 노트
+판정 라인이 노트의 마지막 지점에 도달할 때까지 키보드 버튼을 계속 누르고 있으세요.
+꼭 노트의 마지막 지점에서 손을 떼어야 할 필요는 없습니다.
 
-### ![](https://imgur.com/EUnxJxG.png) Repeat note
-Press a key when the scanline passes the note head’s center, as well as any little note after it.
+### ![](https://imgur.com/EUnxJxG.png) 연타 노트
+판정 라인이 노트 머리 부분과 뒤에 따라오는 작은 노트들을 지나갈 때마다 키보드 버튼을 누르세요.
+연타 홀딩 노트의 경우, 홀딩 노트와 마찬가지로 키보드 버튼을 계속 누르고 있으세요.
 
-For long notes, hold the key, the same way as with drag and hold notes.
+# ![KM icon](https://imgur.com/oiSj3Qc.png) KM(키보드&마우스)
 
-# ![KM icon](https://imgur.com/oiSj3Qc.png) KM
+키보드&마우스 플레이 방식은 키보드와 마우스 모두를 이용합니다.
+노트/연결형 노트/드래그 노트는 마우스를 이용하여 연주하고 홀딩 노트/연타 노트는 키보드를 이용하여 연주합니다.
+키보드 플레이 방식과는 달리 노트의 트랙 위치와 상관없이 키보드의 아무 버튼이나 눌러도 연주됩니다.
 
-KM stands for Keyboard and Mouse. In the KM control scheme, you use the mouse to play some types of notes (basic, chain, drag), and the keyboard to play the other types (hold, repeat). Different from the Keys control scheme, here you can press any key in any row to play the keyboard notes, wherever they are.
+### ![](https://imgur.com/XeUKzrk.png) 노트
+판정 라인이 노트의 한가운데를 지나갈 때 노트를 마우스로 클릭하세요.
 
-### ![](https://imgur.com/XeUKzrk.png) Basic note
-Click the note when the scanline passes its center.
+### ![](https://imgur.com/D9ihf4e.png) 연결형 노트
+판정 라인의 속도에 맞춰 노트의 진행 경로를 따라 마우스를 드래그하세요.
 
-### ![](https://imgur.com/D9ihf4e.png) Chain note
-Click and drag along the chain, following the speed of the scanline.
+### ![](https://imgur.com/i3W1PZq.png) 드래그 노트
+판정 라인의 속도에 맞춰 노트의 진행 경로를 따라 마우스를 드래그하세요.
+꼭 노트의 마지막 지점에서 마우스 클릭을 떼어야 할 필요는 없습니다.
 
-### ![](https://imgur.com/i3W1PZq.png) Drag note
-Click and drag along the curve, following the speed of the scanline. You do not need to release the mouse button on time.
+### ![](https://imgur.com/fUgg8DL.png) 홀딩 노트
+판정 라인이 노트의 마지막 지점에 도달할 때까지 키보드 버튼을 계속 누르고 있으세요.
+꼭 노트의 마지막 지점에서 손을 떼어야 할 필요는 없습니다.
 
-### ![](https://imgur.com/fUgg8DL.png) Hold note
-Press and hold any key until the scanline reaches the end of the note. You do not need to release the key on time.
+### ![](https://imgur.com/EUnxJxG.png) 연타 노트
+판정 라인이 노트 머리 부분과 뒤에 따라오는 작은 노트들을 지나갈 때마다 키보드 버튼을 누르세요.
+연타 홀딩 노트의 경우, 홀딩 노트와 마찬가지로 키보드 버튼을 계속 누르고 있으세요.
 
-### ![](https://imgur.com/EUnxJxG.png) Repeat note
-Press any key when the scanline passes the note head’s center, as well as any little note after it.
+# 피버에 대해
 
-For long notes, hold the key, the same way as with hold notes.
+플레이 방식과 상관없이 다음과 같은 방식으로 피버를 발동할 수 있습니다.
 
-# About Fever
+* 피버 버튼을 터치
+* 키보드의 Space/Backspace/숫자패드 0/숫자패드 Enter 버튼 입력
+* 마우스로 피버 버튼을 클릭
 
-Regardless of control scheme, you can activate Fever in any of the following ways:
-
-* Touching the Fever button
-* Pressing Space/Backspace/Numpad 0/Numpad Enter
-* Clicking the Fever button
-
-While active, Fever will improve the judgement of notes played, and recover HP faster.
+피버 발동 중에는 노트들의 판정이 향상되고 체력 회복량이 늘어납니다.
