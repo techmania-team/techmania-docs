@@ -1,7 +1,7 @@
 기준 버전: 0.4
 
 # 파일과 폴더의 구조
-노래 폴더는 TECHMANIA의 최상위 디렉토리에 `Tracks`라는 이름으로 존재합니다. `Tracks` 폴더의 하위 디렉토리는 여러 개의 폴더로 구성할 수 있으며, 폴더 하나당 한 곡의 리소스를 포함합니다. 각각의 곡 폴더에 들어있는 `track.tech` 파일은 그 곡의 메타데이터와 패턴 정보를 담고 있습니다. 이 파일은 JSON 형식이며, [TrackBase](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs) 스크립트에서 이 파일을 읽습니다.
+음악 폴더는 TECHMANIA의 최상위 디렉토리에 `Tracks`라는 이름으로 존재합니다. `Tracks` 폴더의 하위 디렉토리는 여러 개의 폴더로 구성할 수 있으며, 폴더 하나당 음악 하나의 리소스를 포함합니다. 각각의 곡 폴더에 들어있는 `track.tech` 파일은 그 곡의 메타데이터와 패턴 정보를 담고 있습니다. 이 파일은 JSON 형식이며, [TrackBase](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs) 스크립트에서 이 파일을 읽습니다.
 
 
 곡 폴더 이름의 기본 형식은 `<아티스트> - <제목> - <만든 시간>`입니다. 다만, 실제 게임 내에 표시되는 정보는 `track.tech`에서 불러오므로, 폴더 이름의 형식에는 제약이 없습니다.

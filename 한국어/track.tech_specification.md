@@ -91,13 +91,15 @@ TECHMANIA에서 사용하는 Track.tech 파일의 형식을 소개하는 문서�
 
 ```
 				{
-					"pulse": <pulse>,
-					"bpm": <bpm>
+					"pulse": <위치(단위: 틱)>,
+					"bpm": <템포>
 				}
 ```
 
-* `pulse` is an integer; `bpm` is a floating point number.
-* `pulse` describes the position of this event. A pulse is 1/240 of a beat.
+* 각 필드의 자료형
+ * 정수: `pulse`
+ * 실수: `bpm`
+* `pulse`는 템포 이벤트의 위치를 의미합니다. 단위는 틱이며, 1틱은 240분의 1박자입니다.
 
 # 노트
 
