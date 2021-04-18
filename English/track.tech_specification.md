@@ -1,4 +1,4 @@
-Applies to version: 0.4
+Applies to version: 0.5
 
 This page explains the specification of TECHMANIA's .tech format.
 
@@ -48,6 +48,7 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 				"backImage": <filename of background image>,
 				"bga": <filename of BGA>,
 				"bgaOffset": <BGA offset>,
+				"waitForEndOfBga": <wait for end of BGA>,
 				"firstBeatOffset": <first beat offset>,
 				"initBpm": <initial BPM>,
 				"bps": <Beats Per Scan>
@@ -80,7 +81,8 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 * `controlScheme` is 0 for Touch, 1 for Keys, and 2 for KM.
 * `lanes` is currently unused.
 * `backingTrack`, `backImage`, and `bga` are optional. Write "" if there is none.
-* Check the tooltips in the editor for explanations on BGA offset, first beat offset and Beats Per Scan.
+* `waitForEndOfBga` is `true` or `false`.
+* Check the tooltips in the editor for explanations on BGA offset, wait for end of BGA, first beat offset and Beats Per Scan.
 
 # BPM event
 

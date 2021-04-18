@@ -1,4 +1,4 @@
-Applies to version: 0.4
+Applies to version: 0.5
 
 This page explains how to make skins for TECHMANIA.
 
@@ -68,6 +68,7 @@ The `skin.json` file in a note skin follows the following format:
 ```
 {
   "version": "1",
+  "author": <author>,
   "basic": <basic note>,
   "chainHead": <chain head>,
   "chainNode": <chain node>,
@@ -114,6 +115,7 @@ The `skin.json` file in a VFX skin follows the following format:
 ```
 {
   "version": "1",
+  "author": <author>,
   "feverOverlay": <fever overlay>,
   "basicMax": [<layer 0>, <layer 1>, ..., <layer n>],
   "basicCool": [<layer 0>, <layer 1>, ..., <layer n>],
@@ -156,6 +158,7 @@ The `skin.json` file in a combo skin follows the following format:
 ```
 {
   "version": "1",
+  "author": <author>,
   "distanceToNote": <distance to note>,
   "height": <height>,
   "spaceBetweenJudgementAndCombo": <space between judgement and combo>,

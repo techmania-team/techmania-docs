@@ -1,4 +1,4 @@
-Applies to version: 0.4
+Applies to version: 0.5
 
 A ruleset is a collection of parameters that determine the difficulty of TECHMANIA. The game contains a built-in, default ruleset, but you can override it with a custom ruleset.
 

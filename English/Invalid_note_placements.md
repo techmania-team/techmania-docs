@@ -1,4 +1,4 @@
-Applies to version: 0.4
+Applies to version: 0.5
 
 Due to the variety of note types, it is possible to place notes in a way that is considered invalid. These placements may cause the game to freeze when loading, make some notes unplayable, or make the pattern hard to read. The editor prevents you from making some, but not all, of the invalid placements. For now it is up to the pattern author to fully avoid these placements. The editor will be able to detect more invalid placements in the future.
 
