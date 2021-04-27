@@ -2,6 +2,10 @@
 
 [Additional notes on the editor](Additional_notes_on_the_editor.md)
 
+[Drag Note curves](Drag_note_curves.md)
+
+[Folders and zips](Folders_and_zips.md)
+
 [How to play](How_to_play.md)
 
 [Invalid note placements](Invalid_note_placements.md)

@@ -1,8 +1,8 @@
-Applies to version: 0.5
+Applies to version: 0.6
 
 This page explains the specification of TECHMANIA's .tech format.
 
-If you are working on applications to parse, manipulate or convert .tech files, consider doing it in C# so you can include [Track.cs](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs) and call `TrackBase.Serialize` and `TrackBase.Deserialize`, making it unnecessary to read the following.
+If you are working on applications to parse, manipulate or convert .tech files, consider doing it in C# so you can include [Track.cs](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs) and call `Track.Serialize` and `Track.Deserialize`, making it unnecessary to read the following.
 
 # track.tech
 ```
@@ -49,6 +49,7 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 				"bga": <filename of BGA>,
 				"bgaOffset": <BGA offset>,
 				"waitForEndOfBga": <wait for end of BGA>,
+				"playBgaOnLoop": <play BGA on loop>,
 				"firstBeatOffset": <first beat offset>,
 				"initBpm": <initial BPM>,
 				"bps": <Beats Per Scan>
@@ -57,6 +58,11 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 				<BPM event 1>,
 				<...>,
 				<BPM event n>
+			],
+			"timeStops": [
+				<time stop 1>,
+				<...>,
+				<time stop n>
 			],
 			"packedNotes": [
 				<note 1>,
@@ -81,7 +87,7 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 * `controlScheme` is 0 for Touch, 1 for Keys, and 2 for KM.
 * `lanes` is currently unused.
 * `backingTrack`, `backImage`, and `bga` are optional. Write "" if there is none.
-* `waitForEndOfBga` is `true` or `false`.
+* `waitForEndOfBga` and `playBgaOnLoop` are `true` or `false`.
 * Check the tooltips in the editor for explanations on BGA offset, wait for end of BGA, first beat offset and Beats Per Scan.
 
 # BPM event
@@ -95,6 +101,19 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 
 * `pulse` is an integer; `bpm` is a floating point number.
 * `pulse` describes the position of this event. A pulse is 1/240 of a beat.
+
+# Time stop
+
+```
+				{
+					"pulse": <pulse>,
+					"duration": <duration>
+				},
+```
+
+* `pulse` and `duration` are both in integers.
+* `pulse` describes the starting position of this event.
+* `duration` describes the duration of this time stop, in pulses.
 
 # Note
 
