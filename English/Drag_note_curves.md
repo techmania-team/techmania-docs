@@ -59,7 +59,7 @@ Note that even when `t` takes the extreme values of `0` or `1`, no point on the 
 
 # Behind the equation: Bézier curve
 
-A cubic Bézier curve is simply a linear interpolation of linear interpoloations of linear interpolations. If we define `lerp(A, B, t)` as `(1-t)*A + t*B`, then a cubic Bézier curve is defined as:
+A cubic Bézier curve is simply a linear interpolation of linear interpoloations of linear interpolations of the input points. If we define `lerp(A, B, t)` as `(1-t)*A + t*B`, then a cubic Bézier curve is defined as:
 
 ```
 Q0 = lerp(P0, P1, t)

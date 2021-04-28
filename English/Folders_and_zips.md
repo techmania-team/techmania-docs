@@ -32,7 +32,7 @@ new track.zip
 The following 4 folders are of significance:
 * `Tracks` next to `TECHMANIA.exe`
   * This is the root folder of all tracks, and the "Select Track" screen will never go above this folder.
-  * For any subfolder in `Tracks`, the game will look for a `track.tech` file in it. If found, the game will treat this folder as a track; otherwise the subfolder itself will show up in "Select Tracks", allowing the player to navigate inside, regardless of content.
+  * For any subfolder in `Tracks`, the game will look for a `track.tech` file in it. If found, the game will treat this folder as a track; otherwise the subfolder itself will show up in "Select Track", allowing the player to navigate inside, regardless of content.
   * The content of `track.tech` is an object of type [Track](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs), serialized as JSON.
   * By default, a track folder is named `<Artist> - <Title> - <creation time>`, but the name does not matter. The game reads in artist and title from `track.tech`, not the folder's name.
 * `Skins` next to `TECHMANIA.exe`
@@ -44,10 +44,11 @@ The following 4 folders are of significance:
 
 # Zip archives
 
-When the "Select Track" panel scans the folder shown at the top ("current location"), it will look for and extract all zip archives it sees. There are a few caveats:
+When the "Select Track" panel scans a folder, it will look for and extract all zip archives it sees. Please note the following:
 
-* All zip archives will be extracted to the current location.
+* All zip archives will be extracted to the folder they are in.
 * All files in the archive that's not inside a folder will be ignored. This is intended to prevent clutter, in case the pattern maker forget to include a folder.
 * All empty folders in the archive will be ignored.
 * If any error occurred during extraction, the game will log an error (refer to Folders section) and silently move on to the next archive.
+* Extracted files will overwrite existing files if they have the same name.
 * Successfully extracted archives will be deleted.
