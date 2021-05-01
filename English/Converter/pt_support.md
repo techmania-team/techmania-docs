@@ -27,7 +27,7 @@ Here are all the commands, special notes, attributes and tracks that are support
 
 ## Drag anchors
 If a special note is `p` pulses away from the previous special note or note head (whichever is closer), and its attribute is `attr`, then in the converted drag note anchor, the `lane` value is:
-* `(attr - 60) / p / 10800`, if scroll speed is 1
-* `(attr - 60) / p / 5400`, if scroll speed is 2
+* `(attr - 60) * p / 10800`, if scroll speed is 1
+* `(attr - 60) * p / 5400`, if scroll speed is 2
 
-Because the difference in formulas, it's critical that the converter finds the correct scroll speed for each pattern.
+Because of the difference in formulas, it's critical that the converter finds the correct scroll speed for each pattern.
