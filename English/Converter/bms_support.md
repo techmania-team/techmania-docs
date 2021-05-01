@@ -1,4 +1,4 @@
-Applies to version: 1.2
+Applies to version: 1.3
 
 Here are all the commands, channels and features that are supported. Anything not listed here will be ignored by the converter.
 
@@ -19,6 +19,9 @@ The 1st note (if any) in channel 04 that refers to such a video will become the 
 
 ## BPM changes
 #BPMxx, channel 03, channel 08
+
+## Stops
+#STOPxx, channel 09
 
 ## Note channels
 01, 1x, 2x, 3x, 4x, 5x, 6x

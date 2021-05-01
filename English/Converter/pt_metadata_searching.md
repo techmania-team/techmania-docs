@@ -1,4 +1,4 @@
-Applies to version: 1.2
+Applies to version: 1.3
 
 When converting from .pt, the converter will attempt to search various locations for pieces of metadata. All of the following except for song name are optional.
 
@@ -18,21 +18,21 @@ The converter will attempt to open `pt folder\..\..\Resource\DiscInfo\discstock.
 
 The converter will attempt to open `pt folder\..\..\Resource\DiscInfo\<mode>_stage_<x>.csv`, where `<mode>` is `pop` or `star`, and `<x>` is 1, 2, 3 or `bonus`. If these files exist, the converter will search for a row matching `<song name>`, and extract from it the scroll speed of each pattern.
 
-Scroll speed becomes the converted pattern's BPS. Scroll speed 1 means 8 beats per scan; scroll speed 2 means 4 beats per scan. If scroll speed is not found, the converter will assume 4 beats per scan.
+This is only 1 of 3 possible sources for scroll speed. See [.pt converter options](pt_converter_options.md) for more details.
 
 # Disc image
 
 The converter will look for a disc image in the following order:
-* `pt folder\..\..\Resource\Discimg\<song name>_<x>.png`, where `<x>` is any character
-* `pt folder\<song name>_disc.png`
+* `pt folder\..\..\Resource\Discimg\<song name>_<x>.<extension>`, where `<x>` is `0`, `1`, `2` or `3`, and `<extension>` is `png` or `jpg`
+* `pt folder\<song name>_disc.<extension>`, where `<extension>` is `png` or `jpg`
 
 The first file found (if any) becomes the converted track's eyecatch image.
 
 # Eyecatch
 
 The converter will look for an eyecatch image in the following order:
-* `pt folder\..\..\Resource\Eyecatch\Song\<song name>_<x>.jpg`, where `<x>` is any character
-* `pt folder\<song name>_eyecatch.jpg`
+* `pt folder\..\..\Resource\Eyecatch\Song\<song name>_<x>.<extension>`, where `<x>` is `0`, `1`, `2` or `3`, and `<extension>` is `png` or `jpg`
+* `pt folder\<song name>_eyecatch.<extension>`, where `<extension>` is `png` or `jpg`
 
 The first file found (if any) becomes the converted track's background image.
 
