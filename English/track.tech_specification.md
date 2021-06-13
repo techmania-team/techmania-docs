@@ -1,4 +1,4 @@
-Applies to version: 0.6
+Applies to version: 0.7
 
 This page explains the specification of TECHMANIA's .tech format.
 
@@ -29,7 +29,7 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 ```
 
 * `version` must be "2".
-* `guid` is a unique identifier of each track. In a future version TECHMANIA may use this identifier to save per-track options, such as background brightness. Therefore, once a track is created, its GUID should never change. TECHMANIA generates a GUID when you create a new track, but if you need to generate your own, you can use any GUID Generator, such as [this one](https://www.guidgenerator.com/online-guid-generator.aspx).
+* `guid` is a unique identifier of each track. TECHMANIA uses this identifier to save per-track options, such as background brightness. Therefore, once a track is created, its GUID should never change. TECHMANIA generates a GUID when you create a new track, but if you need to generate your own, you can use any GUID Generator, such as [this one](https://www.guidgenerator.com/online-guid-generator.aspx).
 * `version`, `guid`, `title`, `artist`, `genre`, `additionalCredits`, `eyecatchImage`, `previewTrack` are strings, so you need to write quotation marks around the values. `previewStartTime` and `previewEndTime` are numbers, no quotation marks needed.
 * All filenames in `track.tech` are without folders, but with extensions.
 * Make sure to write a comma at the end of every line, except for the last line between any pair of parentheses.

@@ -1,4 +1,4 @@
-Applies to version: 0.6
+Applies to version: 0.7
 
 # Units of play
 ### Track

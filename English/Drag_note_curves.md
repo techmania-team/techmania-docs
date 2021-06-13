@@ -1,4 +1,4 @@
-Applies to version: 0.6
+Applies to version: 0.7
 
 TECHMANIA supports 2 types of curves for drag notes: Bézier curve and B-spline. In the pattern editor, you can select a drag note and then change its curve type from the "note details" panel.
 

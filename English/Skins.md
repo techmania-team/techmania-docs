@@ -1,4 +1,4 @@
-Applies to version: 0.6
+Applies to version: 0.7
 
 This page explains how to make skins for TECHMANIA.
 
@@ -109,6 +109,8 @@ Most sprite sheets in a note skin contain an additional field called `scale`:
 ![An image demonstrating a hold ongoing trail](https://imgur.com/6Vib3rT.png)
 
 All animations will play at a speed of one cycle per beat, and the 1st sprites in each sprite sheet will be the ones shown at whole beats.
+
+For the sprites in `basic`, `chainHead`, `chainNode`, `dragHead`, `holdHead`, `repeatHead` and `repeat`, TECHMANIA will not flip them regardless of scan direction. Furthermore, for `chainHead`, `chainNode` and `dragHead`, TECHMANIA assumes the sprites point to the right, and from there will rotate them to point in the direction of the next chain node or the curve. The last node in a chain will point to the same direction as the second last node.
 
 # VFX skin
 The `skin.json` file in a VFX skin follows the following format:
