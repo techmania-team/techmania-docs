@@ -1,4 +1,4 @@
-Applies to version: 0.6
+Applies to version: 0.7
 
 A ruleset is a collection of parameters that determine the difficulty of TECHMANIA. The game contains a built-in, default ruleset, but you can override it with a custom ruleset.
 
@@ -69,7 +69,7 @@ If it's `breakThreshold` seconds past a note's correct time and the game still r
 
 ## Hitbox sizes
 
-Hitbox is the area where a note receives touches and clicks. Hitbox sizes are in multiples of a lane's height (which is by default 22.5% of a scan's height); all hitboxes have a height of 1. During gameplay, you can press F5 to show/hide the hitboxes.
+Hitbox is the area where a note receives touches and clicks. Hitbox sizes are in multiples of a lane's height (which is by default 22.5% of a scan's height); all hitboxes have a height of 1. During gameplay in practice mode, you can press F12 to show/hide the hitboxes.
 
 ![An example showing notes at different hitbox widths.](https://imgur.com/04e8IG6.png)
 

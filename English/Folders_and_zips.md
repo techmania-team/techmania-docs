@@ -1,4 +1,4 @@
-Applies to version: 0.6
+Applies to version: 0.7
 
 This page explains the files and folders important to the game, and how the game handles zip archives.
 

@@ -10,6 +10,8 @@
 
 [Invalid note placements](Invalid_note_placements.md)
 
+[Modifiers](Modifiers.md)
+
 [Offset and latency](Offset_and_latency.md)
 
 [Rulesets](Rulesets.md)
