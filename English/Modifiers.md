@@ -48,6 +48,8 @@ Determines the scan direction of top and bottom scans, respectively. The default
 
 **Auto assist tick**: plays assist ticks automatically at each note's correct time.
 
+In either case, the tick sound is considered an SFX in audio options.
+
 # Mode
 
 Selecting any option other than "Normal" will invalidate your score.
