@@ -78,7 +78,7 @@ Practice mode allows you to jump back and forth between scans, pick a section in
 
 The following controls are available:
 
-![An image showing the available controls in practice mode](https://imgur.com/sqHWn5D.png)
+![An image showing the available controls in practice mode](https://imgur.com/DY41TW6.png)
 
 1. Jump to the previous scan
 2. Shows the current scan number
