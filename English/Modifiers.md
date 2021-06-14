@@ -10,7 +10,7 @@ TECHMANIA supports various modifiers that allow you to customize the gameplay ex
 
 **Fade in**: notes remain invisible until the scanline is 1/2 scans away, then they start fading in, and become fully visible when the scanline is 1/4 scans away.
 
-**Fade out**: notes remain invisible until the scanline is 1/4 scans away, then they start fading in, and become fully visible when the scanline is 1/8 scans away.
+**Fade in 2**: notes remain invisible until the scanline is 1/4 scans away, then they start fading in, and become fully visible when the scanline is 1/8 scans away.
 
 # Scanline opacity
 
