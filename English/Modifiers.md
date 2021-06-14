@@ -60,6 +60,8 @@ Selecting any option other than "Normal" will invalidate your score.
 
 **Practice**: more details later.
 
+On the select pattern screen, you can hold Ctrl and click "Play" to set mode to no fail, or hold Shift and click "Play" to set mode to auto play.
+
 # Control override
 
 Selecting any option other than "None" will invalidate your score.
