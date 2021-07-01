@@ -1,19 +1,20 @@
-Applies to version: 0.7
+Applies to version: 0.8
 
 This page explains how to make skins for TECHMANIA.
 
 # Types and locations
 
-There are currently 3 types of skins in TECHMANIA:
+There are currently 4 types of skins in TECHMANIA:
 * Note skin: determines the appearance of notes, located at `<TECHMANIA folder>/Skins/Note/<skin name>`.
 * VFX skin: determines the appearance of VFX, including the explosion effects when notes are played, and the effect overlaid on notes when Fever is active. Located at `<TECHMANIA folder>/Skins/VFX/<skin name>`.
 * Combo skin: determines the appearance of combo text, which is the line of text that appears above played notes to tell you the judgement and current combo. Located at `<TECHMANIA folder>/Skins/Combo/<skin name>`.
+* Game UI skin: determines the appearance of scanlines, scan countdown, touch/click feedback, and approach overlay. Located at `<TECHMANIA folder>/Skins/Game UI/<skin name>`.
 
 Each skin is a folder containing a number of sprite sheets and a `skin.json` file, both of which will be explained later.
 
 # Sprite sheets
 
-All skins are based on sprite sheets so it's important to understand them. The term may have different meanings in other fields, but in the context of TECHMANIA skins, a sprite sheet is a series of sprites, tiled horizontally into one image, where each sprite corresponds to one frame of an animation. The sprites must be identical in size, and tiled tightly, without any margin or padding in-between.
+All skins are based on sprite sheets so it's important to understand them. The term may have different meanings in other fields, but in the context of TECHMANIA skins, a sprite sheet is a series of sprites, tiled horizontally into one image, where each sprite corresponds to one frame of an animation. The sprites must be identical in size, and tiled tightly, with optional paddings inside each tile, but without any space between tiles.
 
 ![An image showing the difference between a sprite and a sprite sheet](https://imgur.com/VoOllqf.png)
 
