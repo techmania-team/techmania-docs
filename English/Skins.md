@@ -16,7 +16,7 @@ Each skin is a folder containing a number of sprite sheets and a `skin.json` fil
 
 All skins are based on sprite sheets so it's important to understand them. The term may have different meanings in other fields, but in the context of TECHMANIA skins, a sprite sheet is a series of sprites, tiled horizontally into one image, where each sprite corresponds to one frame of an animation. The sprites must be identical in size, and tiled tightly, with optional paddings inside each tile, but without any space between tiles.
 
-![An image showing the difference between a sprite and a sprite sheet](https://imgur.com/VoOllqf.png)
+![An image showing a sprite sheet, a tile, a sprite, and padding](https://imgur.com/hiuagYc.png)
 
 (Example sprite sheets in this page are taken from [https://www.gamedesigning.org/animation/sprites/](https://www.gamedesigning.org/animation/sprites/))
 
@@ -32,7 +32,12 @@ For each sprite sheet, you need to write an accompanying JSON object to describe
   "columns": <columns of tiles>,
   "firstIndex": <index of the first tile that contains a sprite>,
   "lastIndex": <index of the last tile that contains a sprite>,
-  "bilinearFilter": <true or false>
+  "padding": <amount of padding in pixels>,
+  "bilinearFilter": <true or false>,
+  
+  "scale": <number, skin-specific>,
+  "speed": <number, skin-specific>,
+  "additiveShader": <true or false, skin-specific>
 }
 ```
 
@@ -48,21 +53,41 @@ Tiles are indexed in row-major order, and start from 0. For example, the JSON ob
 ```
 In this example, the first row contains tiles #0, #1, #2 and #3, the second row contains #4, #5, #6 and #7, and the third row contains #8, #9, #10 and #11. The tiles containing sprites are #1 to #10.
 
-`bilinearFilter` tells the game whether to apply bilinear filter when scaling the sprites to different sizes. This filter makes the scaled image smoother, but may produce artifacts at the edges when sprites are not transparent at all 4 edges, because the filter will read pixels from slightly outside the sprites' borders. In that case, you may want to turn the filter off.
+## Artifacts, bilinear filter and padding
 
-![An image showing the same sprite scaled with bilinear filter on and off](https://imgur.com/8mUvHxi.png)
+By default, TECHMANIA applies bilinear filter when scaling sprites to different sizes. This makes the scaled image smoother, but may produce artifacts at the edges when sprites are not transparent at all 4 edges, because the filter will read pixels from slightly outside the sprites' borders, or in other words, from neighboring sprites. There are 2 ways to remove artifacts:
+
+* Turn bilinear filter off by setting `"bilinearFilter": false` in the sprite sheet. This prevents artifacts by forcing the game to read whole pixels instead of interpolating between neighboring pixels; as a side effect, this also causes scaled sprites to appear pixelated.
+* Add padding to each sprite. The amount of padding must be uniform in all 4 directions. This prevents artifacts by ensuring the neighboring pixels are transparent; as a side effect, this also causes sprites to appear transparent around the edges.
+  * You can use [this Photoshop script](https://gist.github.com/macmillan333/daa66be5ee4bc14f69b2ad95867f1270) to add padding to existing sprite sheets.
+
+It is recommended that you try padding first, and if the result looks weird, fall back to turning off bilinear filter.
 ![An image showing the same sprite sheet scaled with bilinear filter on and off, and producing an artifact when on](https://imgur.com/n6nWt55.png)
+
+## Default values
 
 All fields other than `filename` are optional, and will take the following default values if you omit them:
 * `rows`: 1
 * `columns`: 1
 * `firstIndex`: 0
 * `lastIndex`: 0
+* `padding`: 0
 * `bilinearFilter`: true
+* `scale`: 1
+* `speed`: 1
+* `additiveShader`: false
 
-This means if you write a filename and nothing else, TECHMANIA will load the entire image as one sprite.
+This means if you write a filename and nothing else, TECHMANIA will load the entire file as one sprite.
 
-Each type of skin adds additional fields to the JSON object, which will be explained in their corresponding sections.
+## Skin-specific fields
+
+`scale`, `speed` and `additiveShader` are only supported by specific items in specific skins. In the skins that support them:
+
+* `scale` determines the in-game size of sprites, in multiples of a lane's height. Different skins define this parameter slightly differently, which will be discussed in detail in their corresponding sections.
+* `speed` determines the speed of the animaion, in multiples of 60 frames per second. For example, `"speed": 0.5` means the animation plays at 30 frames per second.
+* `additiveShader` determines whether the sprites are rendered with an additive shader. This will cause the colors of the sprites to be added to the layers below them, instead of replace the layers below them.
+
+![An image demonstrating normal and additive shaders](https://imgur.com/oR6gHqA.png)
 
 # Note skin
 The `skin.json` file in a note skin follows the following format:
@@ -142,8 +167,6 @@ Each sprite sheet in a VFX skin contains 3 additional fields:
 * `scale`, which determines the size of the VFX. All sprites will be scaled so that their heights are equal to `scale * lane height`, while keeping the aspect ratios unchanged. If omitted, default value is 1.
 * `speed`, which determines the speed of the animations, in multiples of 60 frames per second. For example, `"speed": 0.5` means a VFX will play at 30 frames per second. If omitted, default value is 1.
 * `additiveShader`, which tells TECHMANIA whether to draw the sprites with an additive shader. This will cause the colors of a layer to be added to the layers below it, instead of replace the layers below it. If omitted, default value is `false`.
-
-![An image demonstrating normal and additive shaders](https://imgur.com/oR6gHqA.png)
 
 An explanation of what each effect is, and whether the animations loop:
 * `feverOverlay`: a looping effect drawn on certain notes when Fever is active.
