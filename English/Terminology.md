@@ -1,8 +1,8 @@
-Applies to version: 0.7
+Applies to version: 0.8
 
 # Units of play
 ### Track
-A collection of different patterns on the same song. Equivalent to "song" or "beatmap" in other rhythm games.
+A collection of different patterns on the same song. Equivalent to "song" or "beatmap" in other rhythm games. A track includes metadata and any number of patterns.
 
 ### Pattern
 The unit of gameplay. Each pattern has a name, a difficulty level, and is specific to one control scheme.
