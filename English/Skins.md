@@ -53,7 +53,7 @@ Tiles are indexed in row-major order, and start from 0. For example, the JSON ob
 ```
 In this example, the first row contains tiles #0, #1, #2 and #3, the second row contains #4, #5, #6 and #7, and the third row contains #8, #9, #10 and #11. The tiles containing sprites are #1 to #10.
 
-## Artifacts, bilinear filter and padding
+### Artifacts, bilinear filter and padding
 
 By default, TECHMANIA applies bilinear filter when scaling sprites to different sizes. This makes the scaled image smoother, but may produce artifacts at the edges when sprites are not transparent at all 4 edges, because the filter will read pixels from slightly outside the sprites' borders, or in other words, up to 1 pixel into neighboring sprites. There are 2 ways to remove artifacts:
 
@@ -64,7 +64,7 @@ By default, TECHMANIA applies bilinear filter when scaling sprites to different 
 It is recommended that you try padding first, and if the result looks weird, fall back to turning off bilinear filter.
 ![An image showing the same sprite sheet scaled with bilinear filter on, bilinear filter off, and padding](https://imgur.com/3NyLZ5g.png)
 
-## Default values
+### Default values
 
 All fields other than `filename` are optional, and will take the following default values if you omit them:
 * `rows`: 1
@@ -79,12 +79,12 @@ All fields other than `filename` are optional, and will take the following defau
 
 This means if you write a filename and nothing else, TECHMANIA will load the entire file as one sprite.
 
-## Skin-specific fields
+### Skin-specific fields
 
 `scale`, `speed` and `additiveShader` are only supported by specific items in specific skins. In the skins that support them:
 
 * `scale` determines the in-game size of sprites, in multiples of a lane's height. Different skins define this parameter slightly differently, which will be discussed in detail in their corresponding sections.
-* `speed` determines the speed of the animaion, in multiples of 60 frames per second. For example, `"speed": 0.5` means the animation plays at 30 frames per second.
+* `speed` determines the speed of the animation, in multiples of 60 frames per second. For example, `"speed": 0.5` means the animation plays at 30 frames per second.
 * `additiveShader` determines whether the sprites are rendered with an additive shader. This will cause the colors of the sprites to be added to the layers below them, instead of replace the layers below them.
 
 ![An image demonstrating normal and additive shaders](https://imgur.com/oR6gHqA.png)
@@ -109,16 +109,36 @@ The `skin.json` file in a note skin follows the following format:
   "repeat": <repeat>,
   "repeatHoldTrail": <repeat hold trail>,
   "repeatHoldTrailEnd": <repeat hold trail end>,
-  "repeatPath": <repeat path>
+  "repeatPath": <repeat path>,
+  "repeatPathEnd": <repeat path end>
 }
 ```
 Each value is a sprite sheet. Refer to the [Terminology](Terminology.md) page for the meaning of most fields.
 
+The items in a note skin support the following skin-specific fields:
+|Item|Supports `scale`|Supports `speed`|Supports `additiveShader`|
+|--|--|--|--|
+|`basic`|Yes \*square|||
+|`chainHead`|Yes \*square|||
+|`chainNode`|Yes \*square|||
+|`chainPath`|Yes \*1-D|||
+|`dragHead`|Yes \*square|||
+|`dragCurve`|Yes \*curve|||
+|`holdHead`|Yes \*square|||
+|`holdTrail`|Yes \*1-D|||
+|`holdTrailEnd`||||
+|`holdOngoingTrail`|Yes \*1-D|||
+|`repeatHead`|Yes \*square|||
+|`repeat`|Yes \*square|||
+|`repeatHoldTrail`|Yes \*1-D|||
+|`repeatHoldTrailEnd`||||
+|`repeatPath`|Yes \*1-D|||
+|`repeatPathEnd`||||
+
 Most sprite sheets in a note skin contain an additional field called `scale`:
 * For `basic`, `chainHead`, `chainNode`, `dragHead`, `holdHead`, `repeatHead` and `repeat`, the sprites will be scaled to a square, whose side length is equal to `scale * lane height`. This is only visual, and has no effect on hitbox sizes.
 * For `chainPath`, `dragCurve`, `holdTrail`, `holdOngoingTrail`, `repeatHoldTrail` and `repeatPath`, the game will stretch the sprites in one dimension (horizontal, towards other notes, or in the curve's direction) according to the pattern, so the sprite's size in that dimension is unaffected by `scale`. The size in the perpendicular dimension will be scaled to `scale * lane height`.
-* `holdTrailEnd` and `repeatHoldTrailEnd` do not contain a `scale` field.
-* If omitted, `scale` takes the default value of 1.
+* `holdTrailEnd`, `repeatHoldTrailEnd` and `repeatPathEnd` and do not contain a `scale` field.
 
 ![An image demonstrating the scale of repeat head and repeat hold trail](https://imgur.com/m1EO3jo.png)
 
