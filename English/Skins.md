@@ -315,11 +315,11 @@ The sprites are scaled so their heights are equal to the scan height, while keep
 
 ### Touch/click feedback
 
-Touch/click feedback appears on each touch point (in Touch patterns) or the mouse cursor when the mouse button is held (in KM patterns). Its sprites are scaled to a square whose side length is equal to `touchClickFeedbackSize` pixels. As a reference, the game window's height is always 1080 pixels regardless of resolution.
+Touch/click feedback appears on each touch point (in Touch patterns) or the mouse cursor when the mouse button is held (in KM patterns). The sprites are scaled to a square whose side length is equal to `touchClickFeedbackSize` pixels. As a reference, the game window's height is always 1080 pixels regardless of resolution.
 
 ### Approach overlay
 
-Approach overlay appears on each basic, chain head, drag head, hold head and repeat head note, 1/2 scans before its correct time, and lasts for 1/2 scans. Its sprites are scaled to a square whose side length is equal to `scale * lane height`.
+Approach overlay appears on each basic, chain head, drag head, hold head and repeat head note, 1/2 scans before its correct time, and lasts for 1/2 scans. The sprites are scaled to a square whose side length is equal to `scale * lane height`.
 
 # Reloading skins
 
