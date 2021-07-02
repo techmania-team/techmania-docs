@@ -55,14 +55,14 @@ In this example, the first row contains tiles #0, #1, #2 and #3, the second row 
 
 ## Artifacts, bilinear filter and padding
 
-By default, TECHMANIA applies bilinear filter when scaling sprites to different sizes. This makes the scaled image smoother, but may produce artifacts at the edges when sprites are not transparent at all 4 edges, because the filter will read pixels from slightly outside the sprites' borders, or in other words, from neighboring sprites. There are 2 ways to remove artifacts:
+By default, TECHMANIA applies bilinear filter when scaling sprites to different sizes. This makes the scaled image smoother, but may produce artifacts at the edges when sprites are not transparent at all 4 edges, because the filter will read pixels from slightly outside the sprites' borders, or in other words, up to 1 pixel into neighboring sprites. There are 2 ways to remove artifacts:
 
 * Turn bilinear filter off by setting `"bilinearFilter": false` in the sprite sheet. This prevents artifacts by forcing the game to read whole pixels instead of interpolating between neighboring pixels; as a side effect, this also causes scaled sprites to appear pixelated.
 * Add padding to each sprite. The amount of padding must be uniform in all 4 directions. This prevents artifacts by ensuring the neighboring pixels are transparent; as a side effect, this also causes sprites to appear transparent around the edges.
   * You can use [this Photoshop script](https://gist.github.com/macmillan333/daa66be5ee4bc14f69b2ad95867f1270) to add padding to existing sprite sheets.
 
 It is recommended that you try padding first, and if the result looks weird, fall back to turning off bilinear filter.
-![An image showing the same sprite sheet scaled with bilinear filter on and off, and producing an artifact when on](https://imgur.com/n6nWt55.png)
+![An image showing the same sprite sheet scaled with bilinear filter on, bilinear filter off, and padding](https://imgur.com/3NyLZ5g.png)
 
 ## Default values
 
