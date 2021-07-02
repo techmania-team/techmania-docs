@@ -240,17 +240,86 @@ The `skin.json` file in a combo skin follows the following format:
 }
 ```
 
-Each judgement and digit is a sprite sheet. Each sprite sheet in a combo skin contains an additional field called `speed`, which has the same meaning as in VFX skin.
+Each judgement and digit is a sprite sheet.
+
+|Item|Supports `scale`|Supports `speed`|Supports `additiveShader`|
+|--|--|--|--|
+|`feverMaxJudgement`||Yes||
+|`rainbowMaxJudgement`||Yes||
+|`maxJudgement`||Yes||
+|`coolJudgement`||Yes||
+|`goodJudgement`||Yes||
+|`missJudgement`||Yes||
+|`breakJudgement`||Yes||
+|`feverMaxDigits`||Yes||
+|`rainbowMaxDigits`||Yes||
+|`maxDigits`||Yes||
+|`coolDigits`||Yes||
+|`goodDigits`||Yes||
+
+### Combo text composition
 
 The combo text contains 3 parts: the judgement, some horizontal space, and up to 4 digits that show the current combo. If the judgement is MISS or BREAK, the space and digits are not shown; otherwise, the digits are taken from the list that matches the judgement.
 
-The following diagram shows the meaning of `distanceToNote`, `height` and `spaceBetweenJudgementAndCombo`:
+While each judgement and combo digit may play animations of their own, the game also plays a built-in animation on the entire combo text as a whole, including a fade-in, a fade-out and scaling. Currently this animation cannot be customized.
+
+### Scaling
+
+Combo text scales differently from other note and VFX skins in that it's not dependent on lane height. Instead, the combo text's position and size is controlled by `distanceToNote`, `height` and `spaceBetweenJudgementAndCombo`:
 
 ![An image showing the meaning of distanceToNote, height and spaceBetweenJudgementAndCombo](https://imgur.com/J3VP1qF.png)
 
 All 3 numbers are in integer pixels. As a reference, the game window's height is always 1080 pixels regardless of resolution. All sprites in the combo text will be scaled so that their heights are equal to `height`, while keeping their aspect ratios unchanged.
 
-While each judgement and combo digit may play animations of their own, the game also plays a built-in animation on the entire combo text as a whole, including a fade-in, a fade-out and scaling. Currently this animation cannot be customized.
+# Game UI skin
+
+The `skin.json` file in a game UI skin follows the following format:
+```
+{
+  "version": "1",
+  "author": <author>,
+  "scanline": <scanline>,
+  "autoPlayScanline": <scanline in auto play mode>,
+  "scanCountdownBackground": <scan countdown background>,
+  "scanCountdownNumbers": <scan countdown numbers>,
+  "touchClickFeedback": <touch/click feedback>,
+  "touchClickFeedbackSize": <touch/click feedback size in pixels>,
+  "approachOverlay": <approach overlay>
+}
+```
+
+Each value, except for `touchClickFeedbackSize`, is a sprite sheet.
+
+|Item|Looping|Supports `scale`|Supports `speed`|Supports `additiveShader`|
+|--|--|--|--|--|
+|`scanline`|Yes||||
+|`autoPlayScanline`|Yes||||
+|`scanCountdownBackground`||||Yes|
+|`scanCountdownNumbers`||||Yes|
+|`touchClickFeedback`|Yes||Yes|Yes|
+|`approachOverlay`||Yes|||
+
+### Scanline
+
+Scanline sprites are scaled so their heights are equal to the scan height, while keeping their aspect ratios unchanged. If they include animations, they play once per scan.
+
+TECHMANIA assumes the scanline sprites are moving to the right, and will horizontally flip the sprites if a scan is to the left.
+
+### Scan countdown
+
+Scan countdown sprite sheets appear on the starting side of each scan 3 beats before it starts, and lasts 3 beats. Exceptions on low BPS patterns:
+* If BPS is 2, the countdown instead lasts 3/2 beats.
+* If BPS is 1, the countdown instead lasts 3/4 beats.
+
+The sprites are scaled so their heights are equal to the scan height, while keeping their aspect ratios unchanged. TECHMANIA assumes the `scanCountdownBackground` sprites appear on the left side of a scan (for scans that flow to the right), and will horizontally flip the sprites if a scan is to the left. `scanCountdownNumbers` is considered adirectional, and will not be flipped.
+
+### Touch/click feedback
+
+Touch/click feedback appears on each touch point (in Touch patterns) or the mouse cursor when the mouse button is held (in KM patterns). Its sprites are scaled to a square whose side length is equal to `touchClickFeedbackSize` pixels. As a reference, the game window's height is always 1080 pixels regardless of resolution.
+
+### Approach overlay
+
+Approach overlay appears on each basic, chain head, drag head, hold head and repeat head note, 1/2 scans before its correct time, and lasts for 1/2 scans. Its sprites are scaled to a square whose side length is equal to `scale * lane height`.
 
 # Reloading skins
 
