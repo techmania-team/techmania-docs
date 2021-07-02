@@ -124,7 +124,6 @@ The `skin.json` file in a note skin follows the following format:
 ```
 Each value is a sprite sheet. Refer to the [Terminology](Terminology.md) page for the meaning of most fields.
 
-The items in a note skin support the following skin-specific fields:
 |Item|Supports `scale`|Supports `speed`|Supports `additiveShader`|
 |--|--|--|--|
 |`basic`|Yes \*square|||
@@ -196,21 +195,26 @@ The `skin.json` file in a VFX skin follows the following format:
 
 In a VFX skin, each effect (except for Fever overlay) is drawn in multiple layers, each layer being one sprite sheet. The layers will be drawn in the order of their definition, so the last layer in the list will show up at the top. You cannot omit the `[]` even when there is only 0 or 1 layers in an effect.
 
-Each sprite sheet in a VFX skin contains 3 additional fields:
-* `scale`, which determines the size of the VFX. All sprites will be scaled so that their heights are equal to `scale * lane height`, while keeping the aspect ratios unchanged. If omitted, default value is 1.
-* `speed`, which determines the speed of the animations, in multiples of 60 frames per second. For example, `"speed": 0.5` means a VFX will play at 30 frames per second. If omitted, default value is 1.
-* `additiveShader`, which tells TECHMANIA whether to draw the sprites with an additive shader. This will cause the colors of a layer to be added to the layers below it, instead of replace the layers below it. If omitted, default value is `false`.
+|Item|Explanation|Looping|Supports `scale`|Supports `speed`|Supports `additiveShader`|
+|--|--|--|--|--|--|
+|`feverOverlay`|Overlay when Fever is active|Yes|Yes|Yes||
+|`basicMax`|Max on basic/chain notes||Yes|Yes|Yes|
+|`basicCool`|Cool on basic/chain notes||Yes|Yes|Yes|
+|`basicGood`|Good on basic/chain notes||Yes|Yes|Yes|
+|`dragOngoing`|VFX on drag heads|Yes|Yes|Yes|Yes|
+|`dragComplete`|VFX after drags are complete||Yes|Yes|Yes|
+|`holdOngoingHead`|VFX on hold heads|Yes|Yes|Yes|Yes|
+|`holdOngoingTrail`|VFX on hold trails, following scanline|Yes|Yes|Yes|Yes|
+|`holdComplete`|VFX after holds are complete||Yes|Yes|Yes|
+|`repeatHead`|VFX on repeat heads||Yes|Yes|Yes|
+|`repeatNote`|VFX on repeat notes||Yes|Yes|Yes|
+|`repeatHoldOngoingHead`|VFX on heads when playing repeat holds|Yes|Yes|Yes|Yes|
+|`repeatHoldOngoingTrail`|VFX on trails when playing repeat holds|Yes|Yes|Yes|Yes|
+|`repeatHoldComplete`|VFX after repeat holds are complete||Yes|Yes|Yes|
 
-An explanation of what each effect is, and whether the animations loop:
-* `feverOverlay`: a looping effect drawn on certain notes when Fever is active.
-* `basicMax` / `basicCool` / `basicGood`: one-shot effects drawn when basic notes or chain notes are played with MAX / COOL / GOOD judgements.
-* `dragOngoing`: a looping effect drawn at the note head while a drag note is being played.
-* `dragComplete`: a one-shot effect drawn at the end of the curve when a drag note is completed.
-* `holdOngoingHead` / `holdOngoingTrail`: looping effects drawn at the note head / scanline while a hold note is being played.
-* `holdComplete`: a one-shot effect drawn at the end of the trail when a hold note is completed.
-* `repeatHead` / `repeatNote`: one-shot effects drawn at the repeat head / repeat note when a repeat note is played.
-* `repeatHoldOngoingHead` / `repeatHoldOngoingTrail`: looping effects drawn at the note head / scanline while a repeat hold note is being played.
-* `repeatHoldComplete`: a one-shot effect drawn at the end of the trail when a repeat hold note is completed.
+### Scaling
+
+All sprites will be scaled so that their heights are equal to `scale * lane height`, while keeping the aspect ratios unchanged.
 
 # Combo skin
 The `skin.json` file in a combo skin follows the following format:
