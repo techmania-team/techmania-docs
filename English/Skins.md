@@ -2,6 +2,15 @@ Applies to version: 0.8
 
 This page explains how to make skins for TECHMANIA.
 
+* [Types and locations](#types-and-locations)
+* [Sprite sheets](#sprite-sheets)
+* [Note skin](#note-skin)
+* [VFX skin](#vfx-skin)
+* [Combo skin](#combo-skin)
+* [Game UI skin](#game-ui-skin)
+* [Reloading skins](#reloading-skins)
+* [JSON tips](#json-tips)
+
 # Types and locations
 
 There are currently 4 types of skins in TECHMANIA:
@@ -123,7 +132,7 @@ The items in a note skin support the following skin-specific fields:
 |`chainNode`|Yes \*square|||
 |`chainPath`|Yes \*1-D|||
 |`dragHead`|Yes \*square|||
-|`dragCurve`|Yes \*curve|||
+|`dragCurve`|Yes \*1-D|||
 |`holdHead`|Yes \*square|||
 |`holdTrail`|Yes \*1-D|||
 |`holdTrailEnd`||||
@@ -135,10 +144,10 @@ The items in a note skin support the following skin-specific fields:
 |`repeatPath`|Yes \*1-D|||
 |`repeatPathEnd`||||
 
-Most sprite sheets in a note skin contain an additional field called `scale`:
-* For `basic`, `chainHead`, `chainNode`, `dragHead`, `holdHead`, `repeatHead` and `repeat`, the sprites will be scaled to a square, whose side length is equal to `scale * lane height`. This is only visual, and has no effect on hitbox sizes.
-* For `chainPath`, `dragCurve`, `holdTrail`, `holdOngoingTrail`, `repeatHoldTrail` and `repeatPath`, the game will stretch the sprites in one dimension (horizontal, towards other notes, or in the curve's direction) according to the pattern, so the sprite's size in that dimension is unaffected by `scale`. The size in the perpendicular dimension will be scaled to `scale * lane height`.
-* `holdTrailEnd`, `repeatHoldTrailEnd` and `repeatPathEnd` and do not contain a `scale` field.
+### Scaling
+
+* For items marked "yes \*square", the sprites will be scaled to a square, whose side length is equal to `scale * lane height`. This is only visual, and has no effect on hitbox sizes.
+* For items marked "yes \*1-D", the game will stretch the sprites in one dimension (horizontal, towards other notes, or in the curve's direction) according to the pattern, so the sprite's size in that dimension is unaffected by `scale`. The size in the perpendicular dimension will be scaled to `scale * lane height`.
 
 ![An image demonstrating the scale of repeat head and repeat hold trail](https://imgur.com/m1EO3jo.png)
 
@@ -146,7 +155,7 @@ Most sprite sheets in a note skin contain an additional field called `scale`:
 
 ![An image demonstrating a drag curve being stretched in the left half](https://imgur.com/1wZbgA6.png)
 
-`holdTrailEnd` and `repeatHoldTrailEnd` are images attached to the end of their respective hold trails, typically used for shadows and glows. They will be automatically scaled so that their height match the hold trail, while keeping the aspect ratio of the sprites unchanged.
+`holdTrailEnd`, `repeatHoldTrailEnd` and `repeatPathEnd` are images attached to the end of their respective trails/paths, typically used for shadows and glows. They will be automatically scaled so that their height match the trail/path, while keeping the aspect ratio of the sprites unchanged.
 
 ![An image demonstrating a repeat hold trail and its end](https://imgur.com/lNSPcJk.png)
 
@@ -154,7 +163,11 @@ Most sprite sheets in a note skin contain an additional field called `scale`:
 
 ![An image demonstrating a hold ongoing trail](https://imgur.com/6Vib3rT.png)
 
+### Animation
+
 All animations will play at a speed of one cycle per beat, and the 1st sprites in each sprite sheet will be the ones shown at whole beats.
+
+### Rotation and flipping
 
 For the sprites in `basic`, `chainHead`, `chainNode`, `dragHead`, `holdHead`, `repeatHead` and `repeat`, TECHMANIA will not flip them regardless of scan direction. Furthermore, for `chainHead`, `chainNode` and `dragHead`, TECHMANIA assumes the sprites point to the right, and from there will rotate them to point in the direction of the next chain node or the curve. The last node in a chain will point to the same direction as the second last node.
 
