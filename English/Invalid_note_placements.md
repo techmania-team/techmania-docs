@@ -16,6 +16,7 @@ Please refer to the [Terminology](Terminology.md) page when necessary.
 * Each chain head must be connected to at least 1 chain node.
 * Each chain node must be connected to a chain head.
 * No 2 chain heads or chain nodes can be placed at the same pulse. This includes hidden notes.
+* No 2 adjacent chain heads or chain nodes can be placed in the same lane. This does not include hidden notes.
 * Chain paths can not cross scans.
 * Chain paths can not cover other notes.
 
