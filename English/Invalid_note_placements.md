@@ -32,8 +32,7 @@ Please refer to the [Terminology](Terminology.md) page when necessary.
 # Repeat notes
 * Each repeat head must be connected to at least 1 repeat note.
 * Each repeat note (including repeat hold note) must be connected to a repeat head.
-* Repeat notes can not be more than 2 scans away from the repeat head it's connected to. Note that crossing scans is allowed, but discouraged.
-* The end points of repeat hold notes can not be more than 2 scans away from the repeat head it's connected to.
+* Repeat notes, or the end of repeat hold notes, can not be more than 2 scans away from the repeat head it's connected to. Note that crossing scans is allowed, but discouraged.
 * Repeat paths can not cover other notes.
 
 # Interaction between different types
