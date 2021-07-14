@@ -23,7 +23,6 @@ Please refer to the [Terminology](Terminology.md) page when necessary.
 # Drag notes
 * Drag curves can not cross scans.
 * If a drag curve starts within the playable lanes, it can not ever go above or below the playable lanes.
-* On an anchor, the left control point must be to the left of the anchor, and the right control point must be to the right.
 * The anchors and control points can not be set in a way that makes the curve flow to the left at any point.
 * A drag note must contain at least 2 anchors.
 
