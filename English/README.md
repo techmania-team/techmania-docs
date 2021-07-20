@@ -8,11 +8,13 @@
 
 [How to play](How_to_play.md)
 
-[Invalid note placements](Invalid_note_placements.md)
-
 [Modifiers](Modifiers.md)
 
 [Offset and latency](Offset_and_latency.md)
+
+[Pattern rules](Pattern_rules.md)
+
+[Radar](Radar.md)
 
 [Rulesets](Rulesets.md)
 
