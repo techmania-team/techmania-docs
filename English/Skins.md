@@ -1,4 +1,4 @@
-Applies to version: 0.8
+Applies to version: 0.9
 
 This page explains how to make skins for TECHMANIA.
 
@@ -282,13 +282,14 @@ The `skin.json` file in a game UI skin follows the following format:
   "autoPlayScanline": <scanline in auto play mode>,
   "scanCountdownBackground": <scan countdown background>,
   "scanCountdownNumbers": <scan countdown numbers>,
+  "scanCountdownCoversFiveEighthScans": <true or false>,
   "touchClickFeedback": <touch/click feedback>,
   "touchClickFeedbackSize": <touch/click feedback size in pixels>,
   "approachOverlay": <approach overlay>
 }
 ```
 
-Each value, except for `touchClickFeedbackSize`, is a sprite sheet.
+Each value, except for `scanCountdownCoversFiveEighthScans` and `touchClickFeedbackSize`, is a sprite sheet.
 
 |Item|Looping|Supports `scale`|Supports `speed`|Supports `additiveShader`|
 |--|--|--|--|--|
@@ -307,9 +308,13 @@ TECHMANIA assumes the scanline sprites are moving to the right, and will horizon
 
 ### Scan countdown
 
-Scan countdown sprite sheets appear on the starting side of each scan 3 beats before it starts, and lasts 3 beats. Exceptions on low BPS patterns:
-* If BPS is 2, the countdown instead lasts 3/2 beats.
-* If BPS is 1, the countdown instead lasts 3/4 beats.
+Scan countdown sprite sheets appear on the starting side of each scan, a set amount of time before it starts.
+
+If `scanCountdownCoversFiveEighthScans` is `true`, the countdown starts 5/8 scans before the scan starts.
+
+If `scanCountdownCoversFiveEighthScans` is `false`, the countdown starts 3 beats before the scan starts, with exceptions on low-BPS patterns:
+* If BPS is 2, the countdown starts 3/2 beats before the scan starts.
+* If BPS is 1, the countdown starts 3/4 beats before the scan starts.
 
 The sprites are scaled so their heights are equal to the scan height, while keeping their aspect ratios unchanged. TECHMANIA assumes the `scanCountdownBackground` sprites appear on the left side of a scan (for scans that flow to the right), and will horizontally flip the sprites if a scan is to the left. `scanCountdownNumbers` is considered adirectional, and will not be flipped.
 

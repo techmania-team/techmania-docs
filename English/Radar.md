@@ -14,9 +14,9 @@ The formulae are calibrated against 4-lane Touch patterns between the levels of 
 
 **Pattern length**: the time duration from the beginning of the first non-empty scan to the end of the last non-empty scan. This calculation does not take end-of-scan into account.
 
-**Raw value**: the value produced by each formula, before applying normalization. These values are not visible from the select pattern screen.
+**Raw value**: the value produced by each formula, before applying normalization. These values are only visible in the pattern editor.
 
-**Normalized value**: to better display the radar, TECHMANIA applies a different linear transformation to each raw value so that they fall into the same 0-100 scale. These values are visible from the select pattern screen.
+**Normalized value**: to better display the radar, TECHMANIA applies a different linear transformation to each raw value so that they fall into the same 0-100 scale. These values are the ones shown on the select pattern screen.
 
 # Density
 
@@ -26,7 +26,7 @@ Raw value: `number of notes / pattern length`, in notes per second.
 
 Normalization range: `[0.5, 8]`
 
-This means after normalization, `0.5 notes per second` becomes 0, `8 notes per second` becomes 100, and values in-between are scaled linearly.
+This means after normalization, `0.5 notes per second` or less becomes 0, `8 notes per second` or more becomes 100, and values in-between are scaled linearly.
 
 # Voltage
 
@@ -66,7 +66,7 @@ Normalization range: `[0, 40]`
 
 # Shift
 
-Describes how often the pattern changes tempo. This value is not displayed in the select pattern screen, and is not normalized.
+Describes how often the pattern changes tempo. This value is not displayed in the select pattern screen, as it's 0 for most patterns, but it does affect the suggested level.
 
 Raw value: `number of unique time events`.
 
@@ -85,7 +85,7 @@ Suggested level = Round(
     0.23)
 ```
 
-This formula is calculated using linear reggresion on 100 patterns. If we apply it to the same patterns and compare the suggested levels with the original levels:
+This formula is calculated using linear regression on 100 patterns. If we apply it to the same patterns and compare the suggested levels with the original levels:
 * 42% of suggested levels match the original level
 * 91% of suggested levels are within 1 level from the original level
 * 98% of suggested levels are within 2 levels from the original level

@@ -1,4 +1,4 @@
-Applies to version: 0.8
+Applies to version: 0.9
 
 TECHMANIA provides 2 ways to adjust the timing of notes and judgements: note offset and input latency. Calibrate and adjust them from the options menu.
 

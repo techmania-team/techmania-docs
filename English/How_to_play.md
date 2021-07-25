@@ -1,4 +1,4 @@
-Applies to version: 0.8
+Applies to version: 0.9
 
 When a scanline passes the center of a note, play it!
 
