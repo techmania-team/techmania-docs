@@ -8,7 +8,7 @@ The radar is meant to help the player form an expectation of the pattern before 
 
 All values here, including the suggested level, are calculated with hard-coded formulae, and cannot take human creativity into account.
 
-The formulae are calibrated against 4-lane Touch patterns between the levels of 1 and 12. They may be less accurate when applied to other patterns.
+The formulae are calibrated against 4-lane Touch patterns between the levels of 1 and 12, at around 2 minutes in length. They may be less accurate when applied to other patterns.
 
 # Definitions
 
@@ -34,7 +34,7 @@ Describes the peak difficulty of the pattern.
 
 Raw value: `number of notes / scan length` for the densest scan, in notes per second.
 
-Normalization range: `[1, 25]`
+Normalization range: `[1, 18]`
 
 # Speed
 
@@ -42,7 +42,7 @@ Describes the amount of horizontal movement over the pattern.
 
 Raw value: `number of scans / pattern length`, in scans per minute.
 
-Normalization range: `[12, 80]`
+Normalization range: `[12, 55]`
 
 # Chaos
 
@@ -64,28 +64,26 @@ Raw value: `number of async notes / number of notes`, in percentage.
 
 Normalization range: `[0, 40]`
 
-# Shift
-
-Describes how often the pattern changes tempo. This value is not displayed in the select pattern screen, as it's 0 for most patterns, but it does affect the suggested level.
-
-Raw value: `number of unique time events`.
-
 # Suggested level
 
 All values used are raw values. `Round` means round to the nearest integer.
 
 ```
 Suggested level = Round(
-    density * 0.87 +
-    voltage * 0.1 +
-    speed * 0.4 +
+    density * 0.85 +
+    voltage * 0.12 +
+    speed * 0.02 +
     chaos * 0 +
-    async * 0.06 +
-    shift * 0.06 +
-    0.23)
+    async * 0.03
+    1.12)
 ```
 
-This formula is calculated using linear regression on 100 patterns. If we apply it to the same patterns and compare the suggested levels with the original levels:
-* 42% of suggested levels match the original level
-* 91% of suggested levels are within 1 level from the original level
-* 98% of suggested levels are within 2 levels from the original level
+This formula is calculated using linear regression on 448 patterns. If we apply it to the same patterns and compare the suggested levels with the original levels:
+* 45.54% of suggested levels match the original level
+* 93.75% of suggested levels are within 1 level from the original level
+* 99.33% of suggested levels are within 2 levels from the original level
+
+Therefore, the recommended way to use this feature is:
+1. Come up with a level using your own judgement.
+2. View the suggested level.
+3. If the two levels differ by 2 or more, consider adjusting your level towards the suggested one.
