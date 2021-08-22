@@ -1,4 +1,4 @@
-Applies to version: 0.9
+Applies to version: 1.0
 
 This page explains how TECHMANIA defines and calculates each value in the radar, seen at the select pattern screen as well as the pattern editor.
 
@@ -83,7 +83,4 @@ This formula is calculated using linear regression on 448 patterns. If we apply 
 * 93.75% of suggested levels are within 1 level from the original level
 * 99.33% of suggested levels are within 2 levels from the original level
 
-Therefore, the recommended way to use this feature is:
-1. Come up with a level using your own judgement.
-2. View the suggested level.
-3. If the two levels differ by 2 or more, consider adjusting your level towards the suggested one.
+Due to the relatively low accuracy, the editor will show the suggested level as a range from `Suggested level - 1` to `Suggested level + 1`. If the level you chose is outside of this range, consider adjusting it towards the range.

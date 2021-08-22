@@ -1,4 +1,4 @@
-Applies to version: 0.9
+Applies to version: 1.0
 
 This page explains the files and folders important to the game, and how the game handles zip archives.
 
@@ -39,13 +39,24 @@ The following 4 folders are of significance:
 * `Skins` next to `TECHMANIA.exe`
   * Contains subfolders corresponding to types of skins. Refer to [Skins](Skins.md) for details.
 * `TECHMANIA` in documents folder
-  * Stores game options, custom ruleset, and (in the future) records. Refer to [Rulesets](Rulesets.md) for details.
-* `C:\Users\<username>\AppData\LocalLow\DJ Hitori\TECHMANIA`
+  * Stores game options (in `options.json`), custom ruleset (in `ruleset.json`), and records (in `records.json`). Refer to [Rulesets](Rulesets.md) for details on the custom ruleset.
+* `C:\Users\<username>\AppData\LocalLow\TECHMANIA Team\TECHMANIA`
   * The game writes logs to `Player.log` here, which may be useful for troubleshooting.
+  * On 0.9 and before, the logs were at `C:\Users\<username>\AppData\LocalLow\DJ Hitori\TECHMANIA`.
+
+# Streaming assets on mobile
+
+Players on PC can ignore this section.
+
+To simplify the installation process of mobile builds, we include the official tracks and skins in a `StreamingAssets` folder, which is a special folder inside the project. These are automatically copied to an OS-specific location during installation.
+
+The game contains special logic to combine the regular `Tracks` folder and tracks in the streaming assets, so the select track screen shows content from both. The same goes for skins.
+
+Refer to Unity documentation on [Streaming Assets](https://docs.unity3d.com/Manual/StreamingAssets.html).
 
 # Zip archives
 
-When the "Select Track" panel scans a folder, it will look for and extract all zip archives it sees. Please note the following:
+When the select track screen scans a folder, it will look for and extract all zip archives it encounters. Please note the following:
 
 * All zip archives will be extracted to the folder they are in.
 * All files in the archive that's not inside a folder will be ignored. This is intended to prevent clutter, in case the pattern maker forget to include a folder.

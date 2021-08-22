@@ -1,12 +1,12 @@
-Applies to version: 0.9
+Applies to version: 1.0
 
 When a scanline passes the center of a note, play it!
 
 ![Animation showing a note and a scanline](https://i.imgur.com/OKvXPun.gif)
 
-TECHMANIA supports 3 different control schemes. When selecting a pattern, the icon to the left of its name tells you which control scheme to use.
+TECHMANIA supports 3 different control schemes (Touch/Keys/KM), and 3 different numbers of lanes (2/3/4). When selecting a pattern, the icons to the left of its name tell you how many lanes are there, and which control scheme to use.
 
-![An arrow pointing to 3 control scheme icons in the pattern selection screen](https://imgur.com/qchs9iT.png)
+![An arrow pointing to lane icons and control scheme icons in the select pattern screen](https://imgur.com/gonfqIU.png)
 
 Launch the in-game tutorials to view video demonstrations.
 
@@ -33,11 +33,15 @@ For long notes, hold your finger on the note head, the same way as with hold not
 
 # ![Keys icon](https://imgur.com/0jWEtsx.png) Keys
 
-The Keys control scheme uses these 4 rows of keys on your keyboard. Each row corresponds to one of four lanes on the screen. To play a note in a certain lane, press any key in the corresponding row.
+The Keys control scheme uses some or all of these 4 rows of keys on your keyboard. Each row corresponds to one lane on the screen. To play a note in a certain lane, press any key in the corresponding row.
 
 ![Tutorial screenshot showing the correspondence between rows and lanes](https://imgur.com/914c0g9.png)
 
 Currently only the QWERTY keyboard layout is supported.
+
+* For 4-lane patterns, use all 4 rows of keys.
+* For 3-lane patterns, use all 3 letter rows.
+* For 2-lane patterns, use the bottom 2 letter rows.
 
 ### ![](https://imgur.com/XeUKzrk.png) Basic note
 Press a key when the scanline passes the note’s center.

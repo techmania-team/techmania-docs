@@ -6,6 +6,8 @@
 
 [Folders and zips](Folders_and_zips.md)
 
+[Format version history](Format_version_history.md)
+
 [How to play](How_to_play.md)
 
 [Modifiers](Modifiers.md)

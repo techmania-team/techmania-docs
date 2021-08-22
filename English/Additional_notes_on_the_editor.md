@@ -1,4 +1,4 @@
-Applies to version: 0.9
+Applies to version: 1.0
 
 # Supported media formats
 * Audio: .wav, .ogg
