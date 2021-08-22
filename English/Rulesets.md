@@ -1,37 +1,49 @@
-Applies to version: 0.9
+Applies to version: 1.0
 
-A ruleset is a collection of parameters that determine the difficulty of TECHMANIA. The game contains a built-in, default ruleset, but you can override it with a custom ruleset.
+A ruleset is a collection of parameters that determine the difficulty of TECHMANIA. The game contains the following rulesets:
+- Standard: the default, intended ruleset
+- Legacy: a stricter ruleset inspired by a relic from the past
+- Custom: a fully customizable ruleset
+
+You can switch ruleset from the options menu. Please note that records are tied to rulesets, so a record set using the standard ruleset will not appear when using the legacy ruleset, and vice versa. No record will be set when using the custom ruleset.
 
 # How to define custom ruleset
 
 1. Make sure you have launched TECHMANIA and visited the options menu at least once.
 2. In File Explorer, look for a folder called `TECHMANIA` in your documents folder. It's usually located at `C:\Users\<username>\OneDrive\Documents\TECHMANIA` or `C:\Users\<username>\Documents\TECHMANIA`. You should see a file called `options.json` here.
 3. Next to `options.json`, create a new file called `ruleset.json`.
-4. Open `ruleset.json` with any text editor, paste in the following content (including the braces), and save:
+4. Open `ruleset.json` with any text editor, paste in one of the two following rulesets as a starting point, and save:
+
+Standard ruleset:
 
 ```
 {
-    "version": "1",
+    "version": "2",
 
-    "rainbowMaxWindow": 0.04,
-    "maxWindow": 0.07,
-    "coolWindow": 0.1,
-    "goodWindow": 0.15,
-    "breakThreshold": 0.3,
+    "timeWindows": [0.04, 0.07, 0.1, 0.15, 0.2],
+    "timeWindowsInPulses": false,
     "longNoteGracePeriod": 0.15,
+    "longNoteGracePeriodInPulses": false,
 
     "scanMargin": 0.05,
     "hitboxWidth": 1.5,
+    "hitboxHeight": 1,
     "chainHeadHitboxWidth": 1.5,
     "chainNodeHitboxWidth": 3,
     "ongoingDragHitboxWidth": 2,
     "ongoingDragHitboxHeight": 2,
 
     "maxHp": 1000,
-    "hpLoss": 50,
-    "hpRecovery": 3,
-    "hpLossDuringFever": 50,
-    "hpRecoveryDuringFever": 5,
+    "hpDeltaBasic": [3, 3, 3, 3, -50, -50],
+    "hpDeltaChain": [3, 3, 3, 3, -50, -50],
+    "hpDeltaHold": [3, 3, 3, 3, -50, -50],
+    "hpDeltaDrag": [3, 3, 3, 3, -50, -50],
+    "hpDeltaRepeat": [3, 3, 3, 3, -50, -50],
+    "hpDeltaBasicDuringFever": [5, 5, 5, 5, -50, -50],
+    "hpDeltaChainDuringFever": [5, 5, 5, 5, -50, -50],
+    "hpDeltaHoldDuringFever": [5, 5, 5, 5, -50, -50],
+    "hpDeltaDragDuringFever": [5, 5, 5, 5, -50, -50],
+    "hpDeltaRepeatDuringFever": [5, 5, 5, 5, -50, -50],
 
     "comboBonus": false,
 
@@ -42,12 +54,49 @@ A ruleset is a collection of parameters that determine the difficulty of TECHMAN
 }
 ```
 
-Note that these values are from the default ruleset as of 0.4.
+Legacy ruleset:
 
-5. If done correctly, the next time you launch TECHMANIA, you should see "Custom ruleset active" on the bottom-right corner.
-6. Read about the parameters below and adjust them in `ruleset.json` to your liking. Make sure you write a comma after every line except the last parameter.
+```
+{
+    "version": "2",
+
+    "timeWindows": [12.5, 37.5, 51.25, 65, 83.75],
+    "timeWindowsInPulses": true,
+    "longNoteGracePeriod": 0.15,
+    "longNoteGracePeriodInPulses": false,
+
+    "scanMargin": 0.05,
+    "hitboxWidth": 1.25,
+    "hitboxHeight": 1.1,
+    "chainHeadHitboxWidth": 100,
+    "chainNodeHitboxWidth": 100,
+    "ongoingDragHitboxWidth": 2,
+    "ongoingDragHitboxHeight": 2,
+
+    "maxHp": 10000,
+    "hpDeltaBasic": [30, 30, 15, 0, -300, -600],
+    "hpDeltaChain": [30, 30, 15, 0, -350, -500],
+    "hpDeltaHold": [30, 30, 15, 0, -350, -500],
+    "hpDeltaDrag": [30, 30, 15, 0, -350, -500],
+    "hpDeltaRepeat": [30, 30, 15, 0, -350, -500],
+    "hpDeltaBasicDuringFever": [30, 30, 30, 0, -300, -600],
+    "hpDeltaChainDuringFever": [30, 30, 30, 0, -350, -500],
+    "hpDeltaHoldDuringFever": [30, 30, 30, 0, -350, -500],
+    "hpDeltaDragDuringFever": [30, 30, 30, 0, -350, -500],
+    "hpDeltaRepeatDuringFever": [30, 30, 30, 0, -350, -500],
+
+    "comboBonus": true,
+
+    "constantFeverCoefficient": true,
+    "feverBonusOnMax": 1,
+    "feverBonusOnCool": 1,
+    "feverBonusOnGood": 0
+}
+```
+
+5. In TECHMANIA, go to the options menu and set "ruleset" to "custom". If the game does not report an error, it means you have done the previous steps correctly.
+6. Read about the parameters below and adjust them in `ruleset.json` to your liking. Make sure you write a comma after every line except the last parameter. If any parameter is missing, it will take the value from the standard ruleset.
 7. Save `ruleset.json` and it will apply the next time you start a pattern, either from the main menu or from restarting/retrying. You do not need to restart TECHMANIA.
-8. If you need to revert to the default ruleset, you can rename `ruleset.json` to something else, such as `ruleset.json.renamed`. When you need the custom ruleset again, rename the file back to `ruleset.json`. You can also remove a parameter's line from `ruleset.json` to use the default value on that parameter.
 
 # Parameters
 
@@ -55,21 +104,23 @@ Below are descriptions of each parameter in the ruleset.
 
 ## Version
 
-The ruleset format version. Must be "1".
+The ruleset format version. Must be "2".
 
 ## Timing windows
 
-When you play a note, the game will compare the current time and the note's correct time, and reach a judgement as below. All time windows are in seconds.
+`timeWindows` is an array of 5 numbers (referred to as `timeWindows[0]` through `timeWindows[4]`), corresponding to the time window of Rainbow MAX, MAX, COOL, GOOD and MISS, respectively. All time windows are in seconds by default, but if `timeWindowsInPulses` is `true`, then they are in pulses. A pulse is 1/240 of a beat.
 
-![A diagram illustrating how the game makes judgements.](https://imgur.com/8Skl6pB.png)
+When you play a note, the game will compare the current time and the note's correct time, and reach a judgement as below.
 
-If it's `breakThreshold` seconds past a note's correct time and the game still received no input on that note, it becomes a BREAK.
+![A diagram illustrating how the game makes judgements.](https://imgur.com/ghdWb0l.png)
 
-`longNoteGracePeriod` is a special window applied to long notes (hold, drag and repeat hold). For the last `longNoteGracePeriod` seconds during a long note, missing input will not cause a MISS.
+If it's `timeWindows[4]` or more before a note's correct time, the game will ignore all input on the note. If it's `timeWindows[4]` past a note's correct time and the game still received no input on that note, it becomes a BREAK.
+
+`longNoteGracePeriod` is a special window applied to long notes (hold, drag and repeat hold). It can also be in seconds or pulses, depending on `longNoteGracePeriodInPulses`. For the last `longNoteGracePeriod` seconds or pulses during a long note, missing input will not cause a MISS.
 
 ## Hitbox sizes
 
-Hitbox is the area where a note receives touches and clicks. Hitbox sizes are in multiples of a lane's height (which is by default 22.5% of a scan's height); all hitboxes have a height of 1. During gameplay in practice mode, you can press F12 to show/hide the hitboxes.
+Hitbox is the area where a note receives touches and clicks. Hitbox sizes are in multiples of a lane's height (which is by default 22.5% of a scan's height). During gameplay in practice mode, you can press F12 to show/hide the hitboxes.
 
 ![An example showing notes at different hitbox widths.](https://imgur.com/04e8IG6.png)
 
@@ -81,9 +132,9 @@ The game leaves a margin at the top and bottom of each scan in order to distingu
 
 **Watch out!** HP-related parameters must be integers.
 
-The player starts with `maxHp` points of HP, each MISS or BREAK decreases HP by `hpLoss` points, and other judgements increase HP by `hpRecovery` points.
+HP deltas are defined as 10 arrays (`hpDeltaBasic` etc.); each array contains 6 numbers, corresponding to Rainbow MAX, MAX, COOL, GOOD, MISS and BREAK, respectively.
 
-When Fever is active, each MISS or BREAK decreases HP by `hpLossDuringFever` points, and other judgements increase HP by `hpRecoveryDuringFever` points.
+The player starts with `maxHp` points of HP. On each judgement, the game looks up the HP delta value from the array matching the note type, Fever status and judgement, then adds the delta to the current HP. A positive delta will increase HP; A negative delta will decrease HP.
 
 ## Score and combo bonus
 

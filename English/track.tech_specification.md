@@ -1,4 +1,4 @@
-Applies to version: 0.9
+Applies to version: 1.0
 
 This page explains the specification of TECHMANIA's .tech format.
 
@@ -7,7 +7,7 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 # track.tech
 ```
 {
-	"version": "2",
+	"version": "3",
 	"trackMetadata": {
 		"guid": <guid>,
 		"title": <title>,
@@ -17,7 +17,8 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 		"eyecatchImage": <filename of eyecatch image>,
 		"previewTrack": <filename of preview track>,
 		"previewStartTime": <preview start time>,
-		"previewEndTime": <preview end time>
+		"previewEndTime": <preview end time>,
+		"autoOrderPatterns": <true or false>
 	},
 	"patterns": [
 		<pattern 1>,
@@ -54,6 +55,19 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 				"initBpm": <initial BPM>,
 				"bps": <Beats Per Scan>
 			},
+			"legacyRulesetOverride": {
+				"timeWindows": <time windows>,
+				"hpDeltaBasic": <HP delta>,
+				"hpDeltaChain": <HP delta>,
+				"hpDeltaHold": <HP delta>,
+				"hpDeltaDrag": <HP delta>,
+				"hpDeltaRepeat": <HP delta>,
+				"hpDeltaBasicDuringFever": <HP delta>,
+				"hpDeltaChainDuringFever": <HP delta>,
+				"hpDeltaHoldDuringFever": <HP delta>,
+				"hpDeltaDragDuringFever": <HP delta>,
+				"hpDeltaRepeatDuringFever": <HP delta>
+			},
 			"bpmEvents": [
 				<BPM event 1>,
 				<...>,
@@ -89,6 +103,8 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 * `backingTrack`, `backImage`, and `bga` are optional. Write "" if there is none.
 * `waitForEndOfBga` and `playBgaOnLoop` are `true` or `false`.
 * Check the tooltips in the editor for explanations on BGA offset, wait for end of BGA, first beat offset and Beats Per Scan.
+* When using the legacy ruleset, the time windows and HP deltas (if existing and not empty) in `legacyRulesetOverride` will override the corresponding values in the legacy ruleset. Refer to the [Ruleset](Rulesets.md) page for an explanation of these parameters.
+	* There is no in-game UI for this feature.
 
 # BPM event
 
@@ -122,27 +138,25 @@ The `packedNotes` section covers all note types without a duration: Basic, Chain
 * `E|<type>|<pulse>|<lane>|<volume>|<pan>|<end-of-scan>|<keysound>`
 
 Which format to use depends on whether the note has default values on volume, pan and end-of-scan:
-* Volume ranges from 0 to 1, default is 1
-* Pan ranges from -1 to 1, default is 0
+* Volume ranges from 0 to 100, default is 100
+* Pan ranges from -100 to 100, default is 0
 * End-of-scan can be 0 (no) or 1 (yes), default is 0
 
 If any of these values are different from default, that note will use the 2nd format. "E" stands for "Extended".
 
 Other notes:
 * `type` is one of `Basic`, `ChainHead`, `ChainNode`, `RepeatHead` and `Repeat`.
-* `pulse`, `lane` and `end-of-scan` are integers; `volume` and `pan` are floating point numbers.
+* `pulse`, `lane`, `volume`, `pan` and `end-of-scan` are integers.
 * Lanes are numbered 0 to 63 from top to bottom.
 * `keysound` is optional. Leave this part empty if a note has no keysound, but the `|` before it cannot be omitted.
 
 # Hold note
 
 The `packedHoldNotes` section covers notes of type Hold, Repeat Head Hold and Repeat Hold. Each note is represented as a string in one of the following two formats:
-* `<type>|<lane>|<pulse>|<duration>|<keysound>`
-* `E|<type>|<lane>|<pulse>|<duration>|<volume>|<pan>|<end-of-scan>|<keysound>`
+* `<type>|<pulse>|<lane>|<duration>|<keysound>`
+* `E|<type>|<pulse>|<lane>|<duration>|<volume>|<pan>|<end-of-scan>|<keysound>`
 
 Similar to the previous section, a note will use the 2nd format if its volume, pan or end-of-scan value is different from default.
-
-Notice that `pulse` and `lane` are reversed in this section. This is a bug from 0.1, and unfortunately there is no way to fix it without breaking every single pattern ever created.
 
 Other notes:
 * `duration` is in integer pulses.
