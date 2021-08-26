@@ -29,7 +29,7 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 }
 ```
 
-* `version` must be "2".
+* `version` must be "3".
 * `guid` is a unique identifier of each track. TECHMANIA uses this identifier to save per-track options, such as background brightness. Therefore, once a track is created, its GUID should never change. TECHMANIA generates a GUID when you create a new track, but if you need to generate your own, you can use any GUID Generator, such as [this one](https://www.guidgenerator.com/online-guid-generator.aspx).
 * `version`, `guid`, `title`, `artist`, `genre`, `additionalCredits`, `eyecatchImage`, `previewTrack` are strings, so you need to write quotation marks around the values. `previewStartTime` and `previewEndTime` are numbers, no quotation marks needed.
 * All filenames in `track.tech` are without folders, but with extensions.
@@ -43,7 +43,7 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 				"patternName": <pattern name>,
 				"level": <level>,
 				"controlScheme": <control scheme>,
-				"lanes": <lanes>,
+				"lanes": <playable lanes>,
 				"author": <pattern author>,
 				"backingTrack": <filename of backing track>,
 				"backImage": <filename of background image>,
@@ -99,7 +99,6 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 * `guid` is, again, a unique identifier for this pattern.
 * `guid`, `patternName`, `author`, `backingTrack`, `backImage`, `bga` are strings; `level`, `controlScheme`, `lanes`, `bps` are integers; `bgaOffset`, `firstBeatOffset`, `initBpm` are floating point numbers (non-integers allowed).
 * `controlScheme` is 0 for Touch, 1 for Keys, and 2 for KM.
-* `lanes` is currently unused.
 * `backingTrack`, `backImage`, and `bga` are optional. Write "" if there is none.
 * `waitForEndOfBga` and `playBgaOnLoop` are `true` or `false`.
 * Check the tooltips in the editor for explanations on BGA offset, wait for end of BGA, first beat offset and Beats Per Scan.
