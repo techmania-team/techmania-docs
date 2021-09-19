@@ -14,7 +14,7 @@ TECHMANIA saves/loads many types of data to/from files on the disk. Each type of
 # More notes on format versions
 
 - Many TECHMANIA updates introduce new fields to the above files, but adding fields is backwards compatible, so there's usually no need to increment the format version. Such changes will not be recorded in this page either.
-- When loading these files, if TECHMANIA sees an outdated format version, it will convert the file in-memory to the current version before using it. This make take some time, which is why TECHMANIA 1.0 suggests the user to upgrade all tracks to version "3". When saving these files, TECHMANIA will always use the current version.
+- When loading these files, if TECHMANIA sees an outdated format version, it will convert the file in-memory to the current version before using it. This may take some time, which is why TECHMANIA 1.0 suggests the user to upgrade all tracks to version "3". When saving these files, TECHMANIA will always use the current version.
 
 # track.tech
 
@@ -42,6 +42,7 @@ Format version "1":
 
 Format version "2":
 - Time windows and HP deltas are now stored in arrays (one element for each judgement), instead of one field for each judgement.
+- Broke `scanMargin` into `scanMarginTopBottom` and `scanMarginMiddle`, each being an array of 3 elements, corresponding to 2-lane, 3-lane and 4-lane, respectively.
 
 Format version "1":
 - Initial version.

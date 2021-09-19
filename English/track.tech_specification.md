@@ -177,9 +177,11 @@ This section covers all drag notes. Each drag note is represented as the followi
 
 The `packedNote` part is a string in one of the two following formats:
 * `Drag|<pulse>|<lane>|<keysound>`
-* `E|Drag|<pulse>|<lane>|<volume>|<pan>|<end-of-scan>|<keysound>`
+* `E|Drag|<pulse>|<lane>|<volume>|<pan>|<curve type>|<keysound>`
 
-Similar to the previous section, a note will use the 2nd format if its volume, pan or end-of-scan value is different from default. Drag notes should never be marked as end-of-scan, though.
+`curve type` is `0` for Bézier, `1` for B-spline, and the default is `0`.
+
+Similar to the previous section, a note will use the 2nd format if its volume, pan or curve type value is different from default.
 
 Each drag note must contain at least 2 nodes. Each drag node consists of 1 anchor and 2 control points, and is represented as a string in the following format:
 

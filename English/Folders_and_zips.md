@@ -36,13 +36,17 @@ The following 4 folders are of significance:
   * The content of `track.tech` is an object of type [Track](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs), serialized as JSON.
   * By default, a track folder is named `<Artist> - <Title> - <creation time>`, but the name does not matter. The game reads in artist and title from `track.tech`, not the folder's name.
   * If the game finds an image file named `eyecatch.jpg` or `eyecatch.png` in a subfolder, that image will show up as the subfolder's eyecatch, instead of the default folder icon.
+  * There is an option to use a custom folder as the tracks folder.
 * `Skins` next to `TECHMANIA.exe`
   * Contains subfolders corresponding to types of skins. Refer to [Skins](Skins.md) for details.
+  * There is an option to use a custom folder as the tracks folder.
 * `TECHMANIA` in documents folder
   * Stores game options (in `options.json`), custom ruleset (in `ruleset.json`), and records (in `records.json`). Refer to [Rulesets](Rulesets.md) for details on the custom ruleset.
 * `C:\Users\<username>\AppData\LocalLow\TECHMANIA Team\TECHMANIA`
   * The game writes logs to `Player.log` here, which may be useful for troubleshooting.
   * On 0.9 and before, the logs were at `C:\Users\<username>\AppData\LocalLow\DJ Hitori\TECHMANIA`.
+
+For the location of the aforementioned files and folders on mobile builds, refer to the release notes of these builds.
 
 # Streaming assets on mobile
 

@@ -12,7 +12,7 @@ Launch the in-game tutorials to view video demonstrations.
 
 # ![Touch icon](https://imgur.com/OEKXJvN.png) Touch
 
-The Touch control scheme requires a touchscreen. You can test your touchscreen from the options menu. It is also recommended that you go to system settings and turn off visual feedback for touches, as they may cause the game to lag. On Windows 10, this option can be found in Settings - Ease of Access - Mouse pointer - Change touch feedback.
+The Touch control scheme requires a touchscreen. It is recommended that you go to system settings and turn off visual feedback for touches, as they may cause the game to lag. On Windows 10, this option can be found in Settings - Ease of Access - Mouse pointer - Change touch feedback.
 
 ### ![](https://imgur.com/XeUKzrk.png) Basic note
 Touch the note when the scanline passes its center.
@@ -33,7 +33,7 @@ For long notes, hold your finger on the note head, the same way as with hold not
 
 # ![Keys icon](https://imgur.com/0jWEtsx.png) Keys
 
-The Keys control scheme uses some or all of these 4 rows of keys on your keyboard. Each row corresponds to one lane on the screen. To play a note in a certain lane, press any key in the corresponding row.
+The Keys control scheme uses some or all of these 4 rows of keys on your keyboard. Each row corresponds to a lane on the screen. To play a note in a certain lane, press any key in the corresponding row.
 
 ![Tutorial screenshot showing the correspondence between rows and lanes](https://imgur.com/914c0g9.png)
 
@@ -62,7 +62,7 @@ For long notes, hold the key, the same way as with drag and hold notes.
 
 # ![KM icon](https://imgur.com/oiSj3Qc.png) KM
 
-KM stands for Keyboard and Mouse. In the KM control scheme, you use the mouse to play some types of notes (basic, chain, drag), and the keyboard to play the other types (hold, repeat). Different from the Keys control scheme, here you can press any key in any row to play the keyboard notes, wherever they are.
+KM stands for Keyboard and Mouse. In KM, you use the mouse for some types of notes (basic, chain, drag), and the keyboard for the other types (hold, repeat). Different from the Keys control scheme, here you can press any key in any row to play the keyboard notes, wherever they are.
 
 ### ![](https://imgur.com/XeUKzrk.png) Basic note
 Click the note when the scanline passes its center.

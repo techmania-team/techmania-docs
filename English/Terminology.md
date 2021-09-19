@@ -14,7 +14,7 @@ In a pattern, each scan spans the same number of beats. This number (Beats per s
 
 # Note position
 ### Lane
-The vertical position of a note. Lanes are numbered 0 to 63, from top to bottom. Lanes 0-3 are playable lanes; lanes 4-63 are hidden lanes. Notes in hidden lanes are hidden notes; these notes are hidden from gameplay, play their keysounds automatically, and do not affect scoring.
+The vertical position of a note. Lanes are numbered 0 to 63, from top to bottom. The top few lanes are playable lanes; the remaining lanes are hidden lanes. Notes in hidden lanes are hidden notes; these notes are hidden from gameplay, play their keysounds automatically, and do not affect scoring.
 
 ### Pulse
 The horizontal and temporal position of a note. A pulse is 1/240 of a beat.

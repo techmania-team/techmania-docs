@@ -25,11 +25,14 @@ Standard ruleset:
     "longNoteGracePeriod": 0.15,
     "longNoteGracePeriodInPulses": false,
 
-    "scanMargin": 0.05,
+    "scanMarginTopBottom": [0.05, 0.05, 0.05],
+    "scanMarginMiddle": [0.05, 0.05, 0.05],
     "hitboxWidth": 1.5,
     "hitboxHeight": 1,
     "chainHeadHitboxWidth": 1.5,
     "chainNodeHitboxWidth": 3,
+    "dragHitboxWidth": 1.5,
+    "dragHitboxHeight": 1,
     "ongoingDragHitboxWidth": 2,
     "ongoingDragHitboxHeight": 2,
 
@@ -62,16 +65,19 @@ Legacy ruleset:
 
     "timeWindows": [12.5, 37.5, 51.25, 65, 83.75],
     "timeWindowsInPulses": true,
-    "longNoteGracePeriod": 0.15,
+    "longNoteGracePeriod": 0.1,
     "longNoteGracePeriodInPulses": false,
 
-    "scanMargin": 0.05,
+    "scanMarginTopBottom": [0.05, 0.05, 0.05],
+    "scanMarginMiddle": [0.05, 0.05, 0.05],
     "hitboxWidth": 1.25,
-    "hitboxHeight": 1.1,
+    "hitboxHeight": 1.15,
     "chainHeadHitboxWidth": 100,
     "chainNodeHitboxWidth": 100,
-    "ongoingDragHitboxWidth": 2,
-    "ongoingDragHitboxHeight": 2,
+    "dragHitboxWidth": 3,
+    "dragHitboxHeight": 1.15,
+    "ongoingDragHitboxWidth": 3,
+    "ongoingDragHitboxHeight": 1.15,
 
     "maxHp": 10000,
     "hpDeltaBasic": [30, 30, 15, 0, -300, -600],
@@ -120,13 +126,21 @@ If it's `timeWindows[4]` or more before a note's correct time, the game will ign
 
 ## Hitbox sizes
 
-Hitbox is the area where a note receives touches and clicks. Hitbox sizes are in multiples of a lane's height (which is by default 22.5% of a scan's height). During gameplay in practice mode, you can press F12 to show/hide the hitboxes.
+Hitbox is the area where a note receives touches and clicks. Hitbox sizes are in multiples of a lane's height. During gameplay in practice mode, you can press F12 to show/hide the hitboxes.
 
 ![An example showing notes at different hitbox widths.](https://imgur.com/04e8IG6.png)
 
-Notes that involve dragging (chain, drag) are harder to hit correctly than other notes, so they receive special rules. `chainHeadHitboxWidth` and `chainNodeHitboxWidth` define the hitbox width of chain heads and chain nodes, respectively. Drag notes have normal hitboxes at rest, but once the player starts dragging, the hitbox size changes to `ongoingDragHitboxWidth` and `ongoingDragHitboxHeight`.
+Notes that involve dragging (chain, drag) are harder to hit correctly than other notes, so they receive special rules. `chainHeadHitboxWidth` and `chainNodeHitboxWidth` define the hitbox width of chain heads and chain nodes, respectively. Drag notes' hitbox sizes are `dragHitboxWidth` by `dragHitboxHeight` at rest, but once the player starts dragging, the hitbox sizes change to `ongoingDragHitboxWidth` by `ongoingDragHitboxHeight`.
 
-The game leaves a margin at the top and bottom of each scan in order to distinguish notes in the top and bottom scans more clearly. The height of this margin is `scanMargin` of a scan's height on each side. By default, the margin is 5% on each side, meaning the 4 lanes take up a total of 90% of a scan's height.
+## Scan margin
+
+The game leaves a margin at the top and bottom of each scan to ensure notes don't touch the play area's border. The height of this margin is `scanMarginTopBottom` at the top of the top scan and the bottom of the bottom scan; `scanMarginMiddle` at the bottom of the top scan and the top of the bottom scan.
+
+![A diagram showing the meaning of scanMarginTopBottom and scanMarginMiddle](https://imgur.com/llpBJ4X.png)
+
+Furthermore, each parameter is an array of 3 elements, corresponding to 2-lane, 3-lane and 4-lane patterns, respectively.
+
+All values are in multiples of a scan's height. By default, all margins are 5% of a scan's height, meaning the playable lanes take up a total of 90% of a scan's height.
 
 ## HP
 
