@@ -122,7 +122,7 @@ When you play a note, the game will compare the current time and the note's corr
 
 If it's `timeWindows[4]` or more before a note's correct time, the game will ignore all input on the note. If it's `timeWindows[4]` past a note's correct time and the game still received no input on that note, it becomes a BREAK.
 
-`longNoteGracePeriod` is a special window applied to long notes (hold, drag and repeat hold). It can also be in seconds or pulses, depending on `longNoteGracePeriodInPulses`. For the last `longNoteGracePeriod` seconds or pulses during a long note, missing input will not cause a MISS.
+`longNoteGracePeriod` is a special window applied to long notes (hold, drag and repeat hold). It can also be in seconds or pulses, depending on `longNoteGracePeriodInPulses`. After a long note loses input, it will not cause a MISS until `longNoteGracePeriod` seconds or pulses has passed.
 
 ## Hitbox sizes
 
