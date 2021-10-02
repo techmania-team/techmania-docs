@@ -1,4 +1,4 @@
-Applies to version: 1.3
+Applies to version: 1.4
 
 # On volume and pan
 

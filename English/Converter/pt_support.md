@@ -1,4 +1,4 @@
-Applies to version: 1.3
+Applies to version: 1.4
 
 Here are all the commands, special notes, attributes and tracks that are supported.
 
@@ -26,8 +26,8 @@ Here are all the commands, special notes, attributes and tracks that are support
 * Other special notes will cause a warning.
 
 ## Drag anchors
-If a special note is `p` pulses away from the previous special note or note head (whichever is closer), and its attribute is `attr`, then in the converted drag note anchor, the `lane` value is:
-* `(attr - 60) * p / 10800`, if scroll speed is 1
-* `(attr - 60) * p / 5400`, if scroll speed is 2
+If a special note is `p` pulses away from the previous special note or note head (whichever is closer), its attribute is `attr`, and the pattern is in `l` lanes, then in the converted drag note anchor, the `lane` value is:
+* `(attr - 60) * p * l / 43200`, if scroll speed is 1
+* `(attr - 60) * p * l / 21600`, if scroll speed is 2
 
 Because of the difference in formulas, it's critical that the converter finds the correct scroll speed for each pattern.

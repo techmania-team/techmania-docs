@@ -1,4 +1,4 @@
-Applies to version: 1.3
+Applies to version: 1.4
 
 Here are all the commands, channels and features that are supported. Anything not listed here will be ignored by the converter.
 
