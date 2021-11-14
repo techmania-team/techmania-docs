@@ -1,4 +1,4 @@
-Applies to version: 1.0
+Applies to version: 1.0.1
 
 A ruleset is a collection of parameters that determine the difficulty of TECHMANIA. The game contains the following rulesets:
 - Standard: the default, intended ruleset
@@ -27,6 +27,8 @@ Standard ruleset:
 
     "scanMarginTopBottom": [0.05, 0.05, 0.05],
     "scanMarginMiddle": [0.05, 0.05, 0.05],
+    "scanMarginBeforeFirstBeat": 0.15,
+    "scanMarginAfterLastBeat": 0.1,
     "hitboxWidth": 1.5,
     "hitboxHeight": 1,
     "chainHeadHitboxWidth": 1.5,
@@ -70,6 +72,8 @@ Legacy ruleset:
 
     "scanMarginTopBottom": [0.05, 0.05, 0.05],
     "scanMarginMiddle": [0.05, 0.05, 0.05],
+    "scanMarginBeforeFirstBeat": 0.157,
+    "scanMarginAfterLastBeat": 0.093,
     "hitboxWidth": 1.25,
     "hitboxHeight": 1.15,
     "chainHeadHitboxWidth": 100,
@@ -132,7 +136,7 @@ Hitbox is the area where a note receives touches and clicks. Hitbox sizes are in
 
 Notes that involve dragging (chain, drag) are harder to hit correctly than other notes, so they receive special rules. `chainHeadHitboxWidth` and `chainNodeHitboxWidth` define the hitbox width of chain heads and chain nodes, respectively. Drag notes' hitbox sizes are `dragHitboxWidth` by `dragHitboxHeight` at rest, but once the player starts dragging, the hitbox sizes change to `ongoingDragHitboxWidth` by `ongoingDragHitboxHeight`.
 
-## Scan margin
+## Vertical scan margin
 
 The game leaves a margin at the top and bottom of each scan to ensure notes don't touch the play area's border. The height of this margin is `scanMarginTopBottom` at the top of the top scan and the bottom of the bottom scan; `scanMarginMiddle` at the bottom of the top scan and the top of the bottom scan.
 
@@ -141,6 +145,14 @@ The game leaves a margin at the top and bottom of each scan to ensure notes don'
 Furthermore, each parameter is an array of 3 elements, corresponding to 2-lane, 3-lane and 4-lane patterns, respectively.
 
 All values are in multiples of a scan's height. By default, all margins are 5% of a scan's height, meaning the playable lanes take up a total of 90% of a scan's height.
+
+## Horizontal scan margin
+
+Likewise, the game leaves a margin before the first beat and after the last beat of each scan, to ensure notes don't touch the screen's border. The width of this margin is `scanMarginBeforeFirstBeat` before the first beat, and `scanMarginAfterLastBeat` after the last beat.
+
+![A diagram showing the meaning of scanMarginBeforeFirstBeat and scanMarginAfterLastBeat](https://imgur.com/PiHpGiJ.png)
+
+All values are in multiples of the screen's width. In the standard ruleset, the two margins are 15% and 10% of the screen's width respectively; in the legacy ruleset, they are 15.7% and 9.3%.
 
 ## HP
 
