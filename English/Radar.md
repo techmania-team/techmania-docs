@@ -28,7 +28,7 @@ Normalization range: `[0.5, 8]`
 
 This means after normalization, `0.5 notes per second` or less becomes 0, `8 notes per second` or more becomes 100, and values in-between are scaled linearly.
 
-# Voltage
+# Peak
 
 Describes the peak difficulty of the pattern.
 
@@ -71,7 +71,7 @@ All values used are raw values. `Round` means round to the nearest integer.
 ```
 Suggested level = Round(
     density * 0.85 +
-    voltage * 0.12 +
+    peak * 0.12 +
     speed * 0.02 +
     chaos * 0 +
     async * 0.03

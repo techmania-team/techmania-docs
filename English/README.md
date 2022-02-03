@@ -18,6 +18,8 @@
 
 [Radar](Radar.md)
 
+[Records](Records.md)
+
 [Rulesets](Rulesets.md)
 
 [Skins](Skins.md)
