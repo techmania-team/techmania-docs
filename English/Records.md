@@ -1,4 +1,4 @@
-Applies to version: 1.0.2
+Applies to version: 1.1
 
 Records are saved to and loaded from `records.json` in the [`TECHMANIA` folder](Folders_and_zips.md). This page explains the specification of this file.
 

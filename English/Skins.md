@@ -1,4 +1,4 @@
-Applies to version: 1.0
+Applies to version: 1.1
 
 This page explains how to make skins for TECHMANIA.
 
