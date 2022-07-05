@@ -43,7 +43,7 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 				"patternName": <pattern name>,
 				"level": <level>,
 				"controlScheme": <control scheme>,
-				"lanes": <playable lanes>,
+				"playableLanes": <playable lanes>,
 				"author": <pattern author>,
 				"backingTrack": <filename of backing track>,
 				"backImage": <filename of background image>,
@@ -97,7 +97,7 @@ If you are working on applications to parse, manipulate or convert .tech files, 
 ```
 
 * `guid` is, again, a unique identifier for this pattern.
-* `guid`, `patternName`, `author`, `backingTrack`, `backImage`, `bga` are strings; `level`, `controlScheme`, `lanes`, `bps` are integers; `bgaOffset`, `firstBeatOffset`, `initBpm` are floating point numbers (non-integers allowed).
+* `guid`, `patternName`, `author`, `backingTrack`, `backImage`, `bga` are strings; `level`, `controlScheme`, `playableLanes`, `bps` are integers; `bgaOffset`, `firstBeatOffset`, `initBpm` are floating point numbers (non-integers allowed).
 * `controlScheme` is 0 for Touch, 1 for Keys, and 2 for KM.
 * `backingTrack`, `backImage`, and `bga` are optional. Write "" if there is none.
 * `waitForEndOfBga` and `playBgaOnLoop` are `true` or `false`.
