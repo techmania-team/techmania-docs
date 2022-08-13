@@ -1,0 +1,95 @@
+应用于游戏版本: 1.1
+
+当判定线（Scanline）到达音符（Note）中间时，按下即可！
+
+![Animation showing a note and a scanline](https://i.imgur.com/OKvXPun.gif)
+
+TECHMANIA支持三种操作模式（触控/键盘/键鼠），以及有2/3/4线三种模式。在谱面选择页面，左边的图标会标注操作以及模式。
+
+![An arrow pointing to lane icons and control scheme icons in the select pattern screen](https://imgur.com/gonfqIU.png)
+
+游戏内将会有详细教程演示。
+
+# ![Touch icon](https://imgur.com/OEKXJvN.png) 触控
+
+触控模式需要支持的触屏设备。为了更好的游戏体验，在游玩前，建议您关闭触摸视觉反馈从而避免游戏卡顿。例如在Windows 10上，可以找到，设置-轻松访问-鼠标指针-更改触摸反馈中打开或关闭该选项。
+
+### ![](https://imgur.com/XeUKzrk.png) 基本音符
+当判定线经过其中心时，按下音符。
+
+### ![](https://imgur.com/D9ihf4e.png) 链条音符
+按照判定线的速度沿着链条的方向移动。
+
+### ![](https://imgur.com/i3W1PZq.png) 拖拽音符
+当判定线到达圆点时，按住圆点并跟着判定线的速度拖拽音符直到末端，此音符没有尾判。
+
+### ![](https://imgur.com/fUgg8DL.png) 长按音符
+持续按住此音符的头部，直到判定线到达音符末端，此音符没有尾判。
+
+### ![](https://imgur.com/EUnxJxG.png) 重复音符
+当判定线到达第一个音符时，按下音符，当判定线到达线段的每一节时，按下第一个音符。
+
+长按重复音符：与重复音符一致，当判定线到达每一节时，需要持续按着第一个音符。
+
+
+# ![Keys icon](https://imgur.com/0jWEtsx.png) 键盘
+
+键盘模式需要使用键盘上这 4 行按键中的部分或全部。每行对应于屏幕上的一条轨道。要在特定轨道中演奏音符，请按相应行中的任意键。
+
+![Tutorial screenshot showing the correspondence between rows and lanes](https://imgur.com/914c0g9.png)
+
+目前只支持QWERTY键盘游玩此模式。
+
+* 4线模式，使用4排按键。
+* 3线模式，使用带有字母的三行按键。
+* 2线模式，使用下面带字幕的按键。
+
+
+### ![](https://imgur.com/XeUKzrk.png) 基本音符
+当判定线经过其中心时，按下对应一排的任意键。
+
+### ![](https://imgur.com/D9ihf4e.png) 链条音符
+将每个节点作为单独的基本音符游玩。
+
+### ![](https://imgur.com/i3W1PZq.png) 拖拽音符
+持续按住对应键，直到音符达到曲线的末端，此音符没有尾判。
+
+### ![](https://imgur.com/fUgg8DL.png) 长按音符
+持续按住对应键，直到判定线到达音符末端，此音符没有尾判。
+
+### ![](https://imgur.com/EUnxJxG.png) 重复音符
+当判定线到达第一个音符时，按下对应键，当判定线到达线段的每一节时，重复按下对应键。
+
+长按重复音符：与重复音符一致，当判定线到达每一节时，需要持续按住对应键。
+
+
+# ![KM icon](https://imgur.com/oiSj3Qc.png) 键鼠
+
+键鼠代表键盘和鼠标。在键鼠模式下，您将鼠标用于某些类型的音符（基本、链条、拖拽音符），而键盘用于其他类型（长按、重复音符）。与纯键盘控制方案不同的是，您可以在此处按任意行中的任意键来弹奏键盘音符，无需对应每一条轨道。
+
+### ![](https://imgur.com/XeUKzrk.png) 基本音符
+当判定线经过其中心时，用鼠标点按音符。
+
+### ![](https://imgur.com/D9ihf4e.png) 链条音符
+按照判定线的速度使用鼠标，按下沿着链条的方向移动。
+
+### ![](https://imgur.com/i3W1PZq.png) 拖拽音符
+用鼠标持续按住对应键，按住圆点并跟着判定线的速度拖拽音符直到末端，此音符没有尾判。
+
+### ![](https://imgur.com/fUgg8DL.png) 长按音符
+持续按住键盘任意键，直到判定线到达音符末端，此音符没有尾判。
+
+### ![](https://imgur.com/EUnxJxG.png) 重复音符
+当判定线到达第一个音符时，按下键盘任意键，当判定线到达线段的每一节时，重复按下键盘任意键。
+
+长按重复音符：与重复音符一致，当判定线到达每一节时，需要持续按住键盘任意键。
+
+# 关于触发狂热状态（Fever）
+
+根据不同的游玩模式，您可以通过以下任何方式激活Fever：
+
+* 触碰Fever按钮
+* 按空格键/退格键/小键盘 0/小键盘 Enter。
+* 鼠标点击Fever按钮
+
+激活Fever后，判定将会增强一段时间，同时血量值加快回复。
