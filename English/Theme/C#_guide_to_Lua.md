@@ -25,7 +25,7 @@ There are a total of 8 types in Lua:
 - **Thread**: not used in TECHMANIA themes.
 - **Table**: like a Dictionary, except each key and each value doesn't have to be the same type within a table.
 
-Table is the most powerful and versatile type in Lua. If keys are natural numbers, a table can be used like an array. If keys are strings, and values are booleans, number, strings and functions, a table can be used like an object.
+Table is the most powerful and versatile type in Lua. If keys are positive integers, a table can be used like an array. If keys are strings, and values are booleans, number, strings and functions, a table can be used like an object.
 
 ### Variables
 
@@ -95,7 +95,7 @@ for variable, ..., variable in explist do
 end
 ```
 
-"explist" should return a so-called "iteration function", but in most cases you simply use the library functions `pairs` and `ipairs` in the place of "explist" in order to traverse tables. Find more examples in the [Common tables operation](#common-table-operations) section.
+"explist" should return a so-called "iteration function", but in most cases you simply use the library functions `pairs` and `ipairs` in the place of "explist" in order to traverse tables. Find more examples in the [Common table operations](#common-table-operations) section.
 
 Also note that there is `break`, but no `continue`, in loops.
 

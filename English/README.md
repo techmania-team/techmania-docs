@@ -28,6 +28,10 @@
 
 [track.tech specification](track.tech_specification.md)
 
+# TECHMANIA Theme API Documentation
+
+[A C# programmer's quick guide to Lua](Theme/C%23_guide_to_Lua.md)
+
 # TECHMANIA Converter Documentation
 
 [.bms support](Converter/bms_support.md)
