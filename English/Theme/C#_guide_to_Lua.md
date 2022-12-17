@@ -2,7 +2,7 @@
 
 This article aims to cover the minimal amount of Lua knowledge required to develop TECHMANIA themes. If you are already familiar with Lua, you don't need to read this article. It will also not contain anything specific to TECHMANIA's Theme API.
 
-### General
+## General
 
 Lua is a light-weight, interpreted language, meaning you don't need to compile your code.
 
@@ -12,7 +12,7 @@ You don't need to write semicolons at the end of statements.
 
 Lua comments begin with `--` instead of `//`. Wrap multi-line comments between `--[[` and `]]`.
 
-### Types
+## Types
 
 There are a total of 8 types in Lua:
 
@@ -27,7 +27,7 @@ There are a total of 8 types in Lua:
 
 Table is the most powerful and versatile type in Lua. If keys are positive integers, a table can be used like an array. If keys are strings, and values are booleans, number, strings and functions, a table can be used like an object.
 
-### Variables
+## Variables
 
 By default, all variables are in the global scope – even those declared in a block or function. The only exception is that function parameters and loop variables are local to the function and loop. In other cases, make a habit to declare variables with the `local` modifier to limit their scope.
 
@@ -38,7 +38,7 @@ globalVariable = "foo"
 local localVariable = 42
 ```
 
-### Operators
+## Operators
 
 - Logical operators are `and`, `or` and `not`, instead of `&&`, `||` and `!`.
 - Inequality is `~=` instead of `!=`. [[1]](#footnotes)
@@ -46,7 +46,7 @@ local localVariable = 42
 - There is no `++` or `--`.
 - There is no `+=`, `-=` and the like.
 
-### Control statements and functions
+## Control statements and functions
 
 ```
 variable, ..., variable = expression, ..., expression
@@ -107,7 +107,7 @@ end
 
 Note that functions can return multiple values.
 
-### Tables vs objects
+## Tables vs objects
 
 As mentioned earlier, if a Lua table's keys are strings, and its values are booleans, numbers, strings and functions, it can be used like an object:
 
@@ -151,7 +151,7 @@ table:methodName()
 
 For more information on how to write object-oriented code in Lua, including classes and inheritance, refer to: https://www.lua.org/pil/16.html
 
-### Common table operations
+## Common table operations
 
 These operations allow you to use a table like a dictionary:
 
@@ -195,6 +195,6 @@ for index, value in ipairs(demoArray) do
 end
 ```
 
-### Footnotes
+## Footnotes
 
 [1] Lua manual says `~=` but somehow `!=` works just fine in TECHMANIA themes. I don't know why.

@@ -30,6 +30,8 @@
 
 # TECHMANIA Theme API Documentation
 
+[Introduction to TECHMANIA themes](Theme/Introduction.md)
+
 [A C# programmer's quick guide to Lua](Theme/C%23_guide_to_Lua.md)
 
 # TECHMANIA Converter Documentation
