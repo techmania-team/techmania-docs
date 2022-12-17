@@ -61,7 +61,7 @@ Asset bundles are platform-specific. To build asset bundles for other platforms,
 
 ## Lua environment and debugging
 
-TECHMANIA uses [MoonSharp](https://www.moonsharp.org/) as its Lua interpreter. The environment that your scripts will run in is set up as a "soft sandbox", meaning most libraries are available, but you will not have access to the underlying OS.
+TECHMANIA uses [MoonSharp](https://www.moonsharp.org/) as its Lua interpreter. The environment that your scripts will run in is set up as a "soft sandbox", meaning most Lua standard libraries (such as `table`, `string` and `math`) are available, but you will not have access to the underlying OS.
 
 The enrivonment also wires the `print` function to Unity's `Debug.Log`, so when your script calls `print`, you can find the result in Unity's console. This is, unfortunately, the only debugging tool available at the moment.
 
@@ -71,7 +71,7 @@ TECHMANIA provides a broad set of APIs for your script to interact with, allowin
 
 These APIs are organized as Lua tables, and you can retrieve them by calling `getApi(version)` with the API version number you wish to use. Consult TECHMANIA's release notes to see which releases support which API versions. At the time of writing, TECHMANIA 2.0 supports API version 1.
 
-Once an API version is released it will never change. Whenever a new TECHMANIA release modifies the API, it will increment the version number. We strive to make API changes as backwards-compatible as possible, allowing newer TECHMANIA releases to support older API versions, but we cannot make guarantees. The `getApi(version)` function is the only thing we guarantee to never change.
+Once an API version is released it will never change. Whenever a new TECHMANIA release modifies the API, it will increment the version number. We strive to make API changes as backwards-compatible as possible, allowing newer TECHMANIA releases to support older API versions, but we cannot make guarantees. The `getApi(version)` function is the only thing we guarantee to never change across API versions.
 
 As of API version 1, `getApi` returns a table with the following contents:
 
@@ -98,7 +98,7 @@ The rest of documentation assumes you have done this and will refer to tables `t
 
 ## Class, object and userdata
 
-When the Theme API exposes a C# class or object to Lua, it becomes a value of type userdata, but it can still be used in an object-oriented manner, as you can use the fields, properties and/or methods in it. Therefore, the Theme API documentation will continue to use the object-oriented terms, disregarding their absence in Lua.
+When the Theme API exposes a C# class or object to Lua, it becomes a value of type userdata, but for all practical purposes you can use it as an object. As in, you can use the fields, properties and/or methods on the userdata value, and they will be wired to the underlying class or object. Therefore, the Theme API documentation will disregard the lack of object-oriented terms in Lua and introduce classes, objects, fields, properties and methods as themselves; it's up to you to translate them to Lua syntax.
 
 ## Next steps
 
