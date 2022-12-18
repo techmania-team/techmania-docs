@@ -26,8 +26,8 @@ Familiarity with web development is not required but it can be helpful, as many 
 From a technical perspective, a theme is a **Unity asset bundle** that:
 
 - Contains a UXML document named `Assets/UI/MainTree.uxml`
-- Contains a text document named `Assets/UI/MainScript.txt`
-- Contains any other resource referenced by them inside `Assets/UI`, such as text files, images, audio clips, videos, fonts, UXML documents and USS files.
+- Contains a Lua script named `Assets/UI/MainScript.txt`
+- Contains any other resource referenced by them inside `Assets/UI`, such as text files, images, audio clips, videos, fonts, UXML documents, USS files and Lua scripts.
 
 Note that your Lua scripts must be in a file format that Unity recognizes as a ["Text Asset"](https://docs.unity3d.com/2022.2/Documentation/Manual/class-TextAsset.html) in order to be included in asset bundles. Therefore, you should write Lua scripts in `.txt` files, instead of `.lua`.
 
@@ -37,7 +37,7 @@ At runtime, after TECHMANIA finishes its boot sequence and loads the theme, it w
   - This document will be accessible from your script as `tm.root`
 - Execute the Lua script in `Assets/UI/MainScript.txt`
   - This is the only time that TECHMANIA proactively executes scripts in a theme; all other script execution will be based on events. Your script should set up all necessary event handlers on this initial execution.
-  - You can spread your scripts across multiple files and call `tm.ExecuteScript` from `MainScript.txt`.
+  - You can spread your script across multiple files and call `tm.ExecuteScript` from `MainScript.txt`.
 
 ## Getting started
 
@@ -53,7 +53,7 @@ At runtime, after TECHMANIA finishes its boot sequence and loads the theme, it w
 
 If you wish to test your theme, simply enter play mode in the Unity editor. You'll need to revert TECHMANIA to use the default theme if it's currently using another one.
 
-Under the hood, there is an editor script that builds an asset bundle from the contents of `Assets/UI` whenever you enter play mode. TECHMANIA itself is also set up to load the default theme from that asset bundle if running in the Unity editor. This asset bundle can be found at `Assets/AssetBundles/default` (no extension). There is also a script that will copy it to `<build folder>/Themes/Default.tmtheme` when you build the project, so you can continue testing your theme in a standalone player.
+Under the hood, there is an editor script that builds an asset bundle from the contents of `Assets/UI` whenever you enter play mode. This asset bundle can be found at `Assets/AssetBundles/default` (no extension). TECHMANIA itself is set up to load the default theme from that asset bundle if running in the Unity editor. There is also a script that will copy it to `<build folder>/Themes/Default.tmtheme` when you build the project, so you can continue testing your theme in a standalone player.
 
 When you have finished developing your theme, copy `Assets/AssetBundles/default` and rename it to `<your theme name>.tmtheme`, then you can release it! Make sure to tell your users which TECHMANIA version and platform it's built for.
 
@@ -63,7 +63,7 @@ Asset bundles are platform-specific. To build asset bundles for other platforms,
 
 TECHMANIA uses [MoonSharp](https://www.moonsharp.org/) as its Lua interpreter. The environment that your scripts will run in is set up as a "soft sandbox", meaning most Lua standard libraries (such as `table`, `string` and `math`) are available, but you will not have access to the underlying OS.
 
-The enrivonment also wires the `print` function to Unity's `Debug.Log`, so when your script calls `print`, you can find the result in Unity's console. This is, unfortunately, the only debugging tool available at the moment.
+The enrivonment also wires the `print` function to Unity's `Debug.Log`, so when your script calls `print`, you can find the result in Unity's console. This is, unfortunately, the only script debugging tool available at the moment.
 
 ## `getApi`, API version and top-level tables
 
