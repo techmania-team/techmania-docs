@@ -25,7 +25,7 @@ There are a total of 8 types in Lua:
 - **Thread**: not used in TECHMANIA themes.
 - **Table**: like a Dictionary, except each key and each value doesn't have to be the same type within a table.
 
-Table is the most powerful and versatile type in Lua. If keys are positive integers, a table can be used like an array. If keys are strings, and values are booleans, number, strings and functions, a table can be used like an object.
+Table is the most powerful and versatile type in Lua. If keys are positive integers, a table can be used like an array. If keys are strings, and values are booleans, number, strings, functions and other tables, a table can be used like an object.
 
 ## Variables
 
@@ -109,7 +109,7 @@ Note that functions can return multiple values.
 
 ## Tables vs objects
 
-As mentioned earlier, if a Lua table's keys are strings, and its values are booleans, numbers, strings and functions, it can be used like an object:
+As mentioned earlier, if a Lua table's keys are strings, and its values are booleans, numbers, strings, functions and other tables, it can be used like an object:
 
 ```
 table = {}
