@@ -4,23 +4,21 @@ Applies to API version: 1
 
 # `getApi`
 
-`getApi` is the entry point to TECHMANIA Theme API. It is also the only thing that the Theme API adds to the global scale. It returns a table with the following values:
+`getApi` is the entry point to TECHMANIA Theme API. It is also the only thing that the Theme API adds to the global scope. It returns a table with the following values:
 
 |Key|Value|
 |--|--|
 |`tm`|An object of type `Techmania`|
 |`net`|A Lua table exposing some .Net types|
 |`unity`|A Lua table exposing some Unity types|
-|`util`|A Lua table exposing some utility types|
 
-The rest of this document assumes you have promoted these values to the global scale:
+The rest of this document assumes you have promoted these values to the global scope:
 
 ```
 api = getApi(1)
 tm = api.tm
 net = api.net
 unity = api.unity
-util = api.util
 ```
 
 ## Exposing types
@@ -56,7 +54,7 @@ if (ruleset == tm.enum.ruleset.Legacy) then ... end
 
 ## `tm` object
 
-Refer to class Techmania for reference on members of this object, except `enum`.
+The `tm` object gives you access to the core data and control of TECHMANIA's various mechanisms. Refer to class Techmania for reference on members of this object, except `enum`.
 
 ## `tm.enum` table
 
@@ -171,14 +169,6 @@ The `unity.enum` table exposes the following Unity enums.
 |Enums related to events|
 |`propagationPhase`|`UnityEngine.UIElements.PropagationPhase`|
 |`keyCode`|`UnityEngine.KeyCode`|
-
-## `util` table
-
-The `util` table exposes the following TECHMANIA types that are not specific to TECHMANIA. Refer to corresponding sections in [TECHMANIA classes](#techmania-classes) for reference.
-
-|Key|Value|
-|--|--|
-|`io`|`ThemeApi.IO`|
 
 # TECHMANIA classes
 
