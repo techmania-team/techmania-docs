@@ -19,13 +19,13 @@ There are a total of 8 types in Lua:
 - **Nil**: similar with C#'s null. The value `nil` is of this type.
 - **Boolean**: `true` or `false`.
 - **Number**: similar with C#'s double. There is no integer type in Lua.
-- **String**
+- **String**: you can call the built-in function `tostring(value)` to convert values of other types to strings.
 - **Function**: similar with C#'s Action and Func – values of this type can be assigned to variables.
 - **Userdata**: since Lua is often embedded into another language (the host language), when the host language exposes an object to Lua, it will be of type userdata from Lua's perspective. It can be used like a table.
 - **Thread**: not used in TECHMANIA themes.
 - **Table**: like a Dictionary, except each key and each value doesn't have to be the same type within a table.
 
-Table is the most powerful and versatile type in Lua. If keys are positive integers, a table can be used like an array. If keys are strings, and values are booleans, number, strings, functions and other tables, a table can be used like an object.
+Table is the most powerful and versatile type in Lua. If keys are positive integers, a table can be used like a 1-indexed array. If keys are strings, and values are booleans, number, strings, functions and other tables, a table can be used like an object.
 
 ## Variables
 
@@ -90,14 +90,18 @@ end
 ```
 
 ```
-for variable, ..., variable in explist do
+for index, value in ipairs(table) do
 ...
 end
 ```
 
-"explist" should return a so-called "iteration function", but in most cases you simply use the library functions `pairs` and `ipairs` in the place of "explist" in order to traverse tables. Find more examples in the [Common table operations](#common-table-operations) section.
+```
+for key, value in pairs(table) do
+...
+end
+```
 
-Also note that there is `break`, but no `continue`, in loops.
+Note that there is `break`, but no `continue`, in loops. Refer to the [Common table operations](#common-table-operations) section for examples on traversing tables.
 
 ```
 function name(parameter, ..., parameter)
@@ -105,7 +109,7 @@ function name(parameter, ..., parameter)
 end
 ```
 
-Note that functions can return multiple values.
+Note that functions can return multiple values. If you call a function with fewer arguments than it has parameters, the unassigned parameters will get the value `nil`.
 
 ## Tables vs objects
 
@@ -164,6 +168,8 @@ print(demoTable["foo"])
 -- To set value at a specific key
 demoTable["foo"] = 123
 demoTable.bar = 456
+-- To test the existence of a key
+if (demoTable["baz"] ~= nil) then ... end
 
 -- To iterate over all pairs, regardless of key type
 -- Output:

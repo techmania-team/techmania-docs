@@ -34,7 +34,7 @@ Note that your Lua scripts must be in a file format that Unity recognizes as a [
 At runtime, after TECHMANIA finishes its boot sequence and loads the theme, it will:
 
 - Display the UXML document in `Assets/UI/MainTree.uxml`
-  - This document will be accessible from your script as `tm.root`
+  - The root VisualElement will be accessible from your script as `tm.root`
 - Execute the Lua script in `Assets/UI/MainScript.txt`
   - This is the only time that TECHMANIA proactively executes scripts in a theme; all other script execution will be based on events. Your script should set up all necessary event handlers on this initial execution.
   - You can spread your script across multiple files and call `tm.ExecuteScript` from `MainScript.txt`.
@@ -57,6 +57,8 @@ Under the hood, there is an editor script that builds an asset bundle from the c
 
 When you have finished developing your theme, copy `Assets/AssetBundles/default` and rename it to `<your theme name>.tmtheme`, then you can release it! Make sure to tell your users which TECHMANIA version and platform it's built for.
 
+There is no trivial way to unpack an asset bundle into files, so you may want to release the source code alongside the theme if you wish to allow others to contribute, or base their themes on yours.
+
 Asset bundles are platform-specific. To build asset bundles for other platforms, click the Window menu in Unity, then TECHMANIA - Build AssetBundles (custom platform)...
 
 ## Lua environment and debugging
@@ -67,9 +69,9 @@ The enrivonment also wires the `print` function to Unity's `Debug.Log`, so when 
 
 ## `getApi`, API version and top-level tables
 
-TECHMANIA provides a broad set of APIs for your script to interact with, allowing your theme to manipulate the UXML document, read tracks and patterns, read or write records, control the game, and more.
+TECHMANIA provides a broad set of APIs for your script to interact with, allowing your theme to manipulate the visual tree, read tracks and patterns, read or write records, control the game, and more.
 
-These APIs are organized as Lua tables, and you can retrieve them by calling `getApi(version)` with the API version number you wish to use. Consult TECHMANIA's release notes to see which releases support which API versions. At the time of writing, TECHMANIA 2.0 supports API version 1.
+These APIs are organized as Lua tables, and you can retrieve them by calling `getApi(version)` with the API version number (as a number, not string) you wish to use. Consult TECHMANIA's release notes to see which releases support which API versions. At the time of writing, TECHMANIA 2.0 supports API version 1.
 
 Once an API version is released it will never change. Whenever a new TECHMANIA release modifies the API, it will increment the version number. We strive to make API changes as backwards-compatible as possible, allowing newer TECHMANIA releases to support older API versions, but we cannot make guarantees. The `getApi(version)` function is the only thing we guarantee to never change across API versions.
 
