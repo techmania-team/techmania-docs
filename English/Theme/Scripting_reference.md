@@ -23,7 +23,7 @@ unity = api.unity
 
 ## Exposing types
 
-When some value in the API "exposes a type", you are able to access the constructor and static members on the type via that value. For example, `unity.time` exposes Unity's `UnityEngine.Time` class, which has a static field called `deltaTime`, telling you the time elapsed since the last frame. To access it from Lua:
+When some value in the API "exposes a type", you are able to access the constructor (if available) and static members on the type via that value. For example, `unity.time` exposes Unity's `UnityEngine.Time` class, which has a static field called `deltaTime`, telling you the time elapsed since the last frame. To access it from Lua:
 
 ```
 local deltaTime = unity.time.deltaTime
@@ -54,7 +54,7 @@ if (ruleset == tm.enum.ruleset.Legacy) then ... end
 
 ## `tm` object
 
-The `tm` object gives you access to the core data and control of TECHMANIA's various mechanisms. Refer to class Techmania for reference on members of this object, except `enum`.
+The `tm` object gives you access to various TECHMANIA types. Refer to class Techmania for reference on members of this object, except `enum`.
 
 ## `tm.enum` table
 
@@ -172,6 +172,122 @@ The `unity.enum` table exposes the following Unity enums.
 
 # TECHMANIA classes
 
-Classes within this document are sorted alphabetically, but properties and methods within each class are grouped by usage. To quickly find references for a class, press Ctrl+F and search for "class \<classname\>".
+Classes within this section are sorted alphabetically, but properties and methods within each class are grouped by usage. To quickly find references for a class, press Ctrl+F and search for "class \<classname\>".
+
+## Class `BpmEvent`
+
+## Class `ComboSkin`
+
+## Class `DragNode`
+
+## Class `DragNote`
+
+## Class `FloatPoint`
+
+## Class `GameUISkin`
+
+## Class `GlobalResource`
+
+## Class `HoldNote`
+
+## Class `LegacyRulesetOverride`
+
+## Class `Modifiers`
+
+## Class `Note`
+
+## Class `NoteSkin`
+
+## Class `Options`
+
+## Class `Paths`
+
+## Class `Pattern`
+
+## Class `PatternMetadata`
+
+## Class `PerTrackOptions`
+
+## Class `Record`
+
+## Class `Records`
+
+## Class `Ruleset`
+
+## Class `SpriteSheet`
+
+## Class `Status`
+
+## Class `ThemeApi.CalibrationPreview`
+
+## Class `ThemeApi.EditorInterface`
+
+## Class `ThemeApi.GameSetup`
+
+## Class `ThemeApi.GameState`
+
+## Class `ThemeApi.IO`
+
+## Class `ThemeApi.SkinPreview`
+
+## Class `ThemeApi.StringWrap`
+
+## Class `ThemeApi.Techmania`
+
+## Class `ThemeApi.ThemeL10n`
+
+## Class `ThemeApi.UQueryStateWrap`
+
+## Class `ThemeApi.VideoElement`
+
+## Class `ThemeApi.VisualElementWrap`
+
+## Class `TimeStop`
+
+## Class `Track`
+
+## Class `TrackMetadata`
+
+## Class `VfxSkin`
 
 # TECHMANIA enums
+
+## Enum `ControlScheme`
+
+## Enum `CurveType`
+
+## Enum `GameState.State`
+
+## Enum `Judgement`
+
+## Enum `Modifiers.AssistTick`
+
+## Enum `Modifiers.ControlOverride`
+
+## Enum `Modifiers.Fever`
+
+## Enum `Modifiers.Keysound`
+
+## Enum `Modifiers.Mode`
+
+## Enum `Modifiers.NoteOpacity`
+
+## Enum `Modifiers.NotePosition`
+
+## Enum `Modifiers.ScanDirection`
+
+## Enum `Modifiers.ScanlineOpacity`
+
+## Enum `Modifiers.ScanPosition`
+
+## Enum `Modifiers.ScrollSpeed`
+
+## Enum `NoteType`
+
+## Enum `Options.Ruleset`
+
+## Enum `PerformanceMedal`
+
+## Enum `ScoreKeeper.FeverState`
+
+## Enum `VisualElementWrap.EventType`
