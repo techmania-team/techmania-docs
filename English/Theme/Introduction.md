@@ -75,28 +75,7 @@ These APIs are organized as Lua tables, and you can retrieve them by calling `ge
 
 Once an API version is released it will never change. Whenever a new TECHMANIA release modifies the API, it will increment the version number. We strive to make API changes as backwards-compatible as possible, allowing newer TECHMANIA releases to support older API versions, but we cannot make guarantees. The `getApi(version)` function is the only thing we guarantee to never change across API versions.
 
-As of API version 1, `getApi` returns a table with the following contents:
-
-|Key|Value|
-|--|--|
-|`"tm"`|An object of type `Techmania`|
-|`"net"`|A Lua table exposing some .Net types|
-|`"unity"`|A Lua table exposing some Unity types|
-|`"util"`|A Lua table exposing some utility types|
-
-Refer to the scripting reference for further explanations.
-
-To keep the global scope clean, `getApi` is the only thing TECHMANIA Theme API adds to the global scope. You can, however, promote the tables within `getApi`'s return value to the global scope:
-
-```
-api = getApi(1)
-tm = api.tm
-net = api.net
-unity = api.unity
-util = api.util
-```
-
-The rest of documentation assumes you have done this and will refer to tables `tm`, `net`, `unity` and `util` as if they are in the global scope.
+To keep the global scope clean, `getApi` is the only thing TECHMANIA Theme API adds to the global scope. Refer to the [scripting reference](Scripting_reference.md) for an explanation on its return value.
 
 ## Class, object and userdata
 
@@ -105,4 +84,4 @@ When the Theme API exposes a C# class or object to Lua, it becomes a value of ty
 ## Next steps
 
 - Writing a minimal theme
-- Scripting reference
+- [Scripting reference](Scripting_reference.md)

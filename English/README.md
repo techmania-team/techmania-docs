@@ -34,6 +34,8 @@
 
 [A C# programmer's quick guide to Lua](Theme/C%23_guide_to_Lua.md)
 
+[Scripting reference](Theme/Scripting_reference.md)
+
 # TECHMANIA Converter Documentation
 
 [.bms support](Converter/bms_support.md)
