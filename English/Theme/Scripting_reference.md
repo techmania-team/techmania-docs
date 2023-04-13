@@ -385,13 +385,19 @@ end)
 
 A wrapper around Unity's `UnityEngine.UIElements.VisualElement` class, providing various additional functionalities. Each object corresponds to one element in the visual tree.
 
-Note that it is possible to create different `VisualElementWrap` objects on the same element, therefore when testing for equality, consider comparing by the `inner` field instead of the `VisualElementWrap` themselves.
+Note that it is possible to create different `VisualElementWrap` objects on the same element, therefore when testing for equality, call `Equals` instead of comparing the `VisualElementWrap` objects themselves.
 
 ```
 UnityEngine.UIElements.VisualElement inner
 ```
 
 Provides the internal `VisualElement` object that the `VisualElementWrap` object wraps around.
+
+```
+bool Equals(UnityEngine.UIElements.VisualElement other)
+```
+
+Returns whether this element and `other` correspond to the same element.
 
 ### Properties
 
@@ -616,6 +622,112 @@ UnityEngine.Texture2D backgroundImage
 Allows getting or setting the background image as a `Texture2D`.
 
 ### Visual tree traversal
+
+```
+int childCount
+```
+
+Gives the number of direct children.
+
+```
+ThemeApi.VisualElementWrap parent
+```
+
+Gives the parent element.
+
+```
+IEnumerable<ThemeApi.VisualElementWrap> Children()
+```
+
+Returns a list of all direct children.
+
+```
+ThemeApi.VisualElementWrap InstantiateTemplate(string path)
+```
+
+Instantiates the specified UXML document under the current element. `path` is the path towards the `.uxml` file, starting with `Assets/UI`.
+
+This is the only way to add non-empty elements to the visual tree at runtime.
+
+```
+ThemeApi.VisualElementWrap AddEmptyChild()
+```
+
+Adds and returns an empty child element.
+
+```
+void RemoveFromHierarchy()
+void RemoveAllChildren()
+```
+
+`RemoveFromHierarchy` removes the current element and all its children from the visual tree; `RemoveAllChildren` removes all children, but not the current element. In either case, all event callbacks on the removed elements will be automatically unregistered.
+
+```
+void AddChild(ThemeApi.VisualElementWrap child)
+void InsertChild(int index, ThemeApi.VisualElementWrap child)
+```
+
+Moves the specified element so it becomes a child of the current element. `AddChild` adds the element as the last child, while `InsertChild` inserts at the specified index.
+
+```
+void PlaceBehind(ThemeApi.VisualElementWrap sibling)
+void PlaceInFront(ThemeApi.VisualElementWrap sibling)
+```
+
+Moves the current element so it is just before / after the specified sibling as child elements of their parent.
+
+```
+void BringToFront()
+void SendToBack()
+```
+
+Moves the current element so it is the last / first child element of its parent.
+
+### Custom mesh
+
+```
+void SetMeshGeneratorFunction(function function)
+```
+
+Sets a mesh generator function that will be called when Unity needs to repaint the element. The function takes 2 arguments:
+* The `ThemeApi.VisualElementWrap` object to generate mesh for
+* A `UnityEngine.UIElements.MeshGenerationContext` object that the function can use to draw custom mesh
+
+When drawing custom mesh, (0, 0) is the top left, all coordinates are in pixels. `contentRect` gives the available area for drawing.
+
+```
+void MarkDirtyRepaint()
+```
+
+Forces a repaint of the element.
+
+### Focus
+
+```
+void Focus()
+```
+
+Gives focus to this element. This may be useful for keyboard control, since keyboard events are sent to the element that has focus.
+
+```
+ThemeApi.VisualElementWrap FocusedElement()
+```
+
+Returns the element that currently has focus.
+
+### Transform
+
+```
+UnityEngine.Vector2 ScreenSpaceToLocalSpace(UnityEngine.Vector2 screenSpace)
+```
+
+Converts a point in the screen space to the element's local space. When you query from `UnityEngine.Input` the coordinates of the mouse cursor or a touch, they are in the screen space.
+
+```
+bool ContainsPointInScreenSpace(UnityEngine.Vector2 screenSpace)
+```
+
+Returns whether the element contains the specified point in screen space.
 
 ## Class `TimeStop`
 
