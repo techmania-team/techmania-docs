@@ -2,13 +2,15 @@
 
 Applies to API version: 1
 
+When reading on Github, you can click the menu button to the top left to reveal a table of contents.
+
 # `getApi`
 
 `getApi` is the entry point to TECHMANIA Theme API. It is also the only thing that the Theme API adds to the global scope. It returns a table with the following values:
 
 |Key|Value|
 |--|--|
-|`tm`|An object of type `Techmania`|
+|`tm`|An object of type `ThemeApi.Techmania`|
 |`net`|A Lua table exposing some .Net types|
 |`unity`|A Lua table exposing some Unity types|
 
@@ -54,7 +56,7 @@ if (ruleset == tm.enum.ruleset.Legacy) then ... end
 
 ## `tm` object
 
-The `tm` object gives you access to various TECHMANIA types. Refer to class Techmania for reference on members of this object, except `enum`.
+The `tm` object gives you access to various TECHMANIA types. Refer to class `ThemeApi.Techmania` for reference on members of this object, except `enum`.
 
 ## `tm.enum` table
 
@@ -174,6 +176,8 @@ The `unity.enum` table exposes the following Unity enums.
 
 Classes within this section are sorted alphabetically, but properties and methods within each class are grouped by usage. To quickly find references for a class, press Ctrl+F and search for "class \<classname\>".
 
+## Class `AudioSourceManager`
+
 ## Class `BpmEvent`
 
 ## Class `ComboSkin`
@@ -233,6 +237,127 @@ Classes within this section are sorted alphabetically, but properties and method
 ## Class `ThemeApi.StringWrap`
 
 ## Class `ThemeApi.Techmania`
+
+The entry point to TECHMANIA's data and types. Also contains miscellaneous methods that don't really fit into another type.
+
+### Accessing the visual tree
+
+```
+ThemeApi.VisualElementWrap root
+```
+
+Provides the root element in the visual tree. From here you can query other elements in the tree with the `Q` method, such as `tm.root.Q("element-name")`.
+
+Note that, when TECHMANIA transitions to and away from your theme (such as to the editor), it does so by setting the `display` property of the root element. It is adviced that you never change this property on the root element from your theme, in order to not interfere with this transition.
+
+```
+void SetThemeStyleSheet(string path)
+```
+
+Sets the theme style sheet of the UI document. `path` is the path towards the `.tss` file, starting with `Assets/UI`. The default theme uses this method to customize the style of dropdowns.
+
+### Accessing other TECHMANIA types
+
+```
+Options options
+Ruleset ruleset
+Records records
+ThemeApi.ThemeL10n l10n
+ThemeApi.GameSetup gameSetup
+ThemeApi.GameState game
+ThemeApi.EditorInterface editor
+ThemeApi.SkinPreview skinPreview
+ThemeApi.calibrationPreview calibrationPreview
+AudioSourceManager audio
+```
+
+Provides access to the instances of the respective classes.
+
+```
+Paths paths
+GlobalResource resources
+ThemeApi.IO io
+```
+
+Exposes the respective classes.
+
+### System dialogs
+
+```
+string[] OpenSelectFileDialog(string title,
+    string currentDirectory,
+    bool multiSelect,
+    string[] supportedExtensionsWithoutDot)
+```
+
+Opens the operating system's "open file" dialog and blocks. When the user closes the dialog, returns the full path of the selected files, if any. If the user cancels the dialog, returns an empty array. Only confirmed to work on Windows.
+
+`title` is the title of the dialog. `currentDirectory` is the directory that the dialog starts at; pass in "" to start from the working directory. `multiSelect` specifies whether the user can select multiple files. `supportedExtensionsWithoutDot` is an array of supported file extensions, all without the dot.
+
+```
+string OpenSelectFolderDialog(string title, string currentDirectory)
+```
+
+Opens the operating system's "open folder" dialog and blocks. When the user closes the dialog, returns the full path of the selected folder. If the user cancels the dialog, returns `nil`. Only confirmed to work on Windows.
+
+`title` is the title of the dialog. `currentDirectory` is the directory that the dialog starts at; pass in "" to start from the working directory.
+
+### Script execution
+
+```
+void ExecuteScript(string script)
+```
+
+Executes the input string as Lua script. Using this together with `ThemeApi.IO`, you can split your script across multiple files, and execute them from the main script: `tm.ExecuteScript(tm.io.LoadTextFileFromTheme("Assets/UI/another script file.txt"))`
+
+```
+int StartCoroutine(function function)
+```
+
+Executes the Lua function as a coroutine and returns its coroutine ID, which can be later passed to `StopCoroutine` to stop execution. Within a coroutine, you can call `coroutine.yield()` to pause execution, and TECHMANIA will automatically resume execution on the next frame.
+
+```
+void StopCoroutine(int id)
+```
+
+Stops the specified coroutine if it's current running. If the specified coroutine is not running, the behavior is undefined.
+
+### Miscellaneous
+
+```
+void SetDiscordActivity(string details, string state,
+    bool showElapsedTime = false)
+```
+
+Updates the activity currently displayed in Discord Rich Presence. If the user is not running Discord, or Discord Rich Presence is not supported, or Discord Rich Presence is turned off by the user, this method does nothing.
+
+`details` and `state` are two lines of text displayed in the activity. If both are set, `state` is displayed below `details`.
+
+If you set `showElapsedTime = true`, the activity will display elapsed time that counts up automatically. Making consecutive calls with `showElapsedTime = true` will NOT reset the timer, but making a call with `showElapsedTime = false` will reset the timer.
+
+```
+void OpenURL(string url)
+```
+
+Opens the specified URL with the default browser. If the URL is a file or directory on the user's disk, this will open the File Explorer instead. Only confirmed to work on Windows.
+
+```
+string GetPlatform()
+```
+
+Returns the current platform, one of `"Windows"`, `"Linux"`, `"macOS"`, `"Android"`, `"iOS"` and `"Unknown"`.
+
+```
+void Quit()
+```
+
+Quits TECHMANIA. If running in the Unity editor, this will quit the play mode.
+
+```
+Table enum
+```
+
+A Lua table exposing various TECHMANIA enums. Refer to [`tm.enum` table](#tmenum-table) for reference.
 
 ## Class `ThemeApi.ThemeL10n`
 
