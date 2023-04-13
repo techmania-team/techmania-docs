@@ -64,7 +64,7 @@ The `tm` object gives you access to various TECHMANIA types. Refer to class `The
 
 |Key|Value|
 |--|--|
-|`eventType`|`VisualElementWrap.EventType`|
+|`eventType`|`ThemeApi.VisualElementWrap.EventType`|
 |`ruleset`|`Options.Ruleset`|
 |`gameState`|`GameState.State`|
 |Enums in tracks, patterns and notes|
@@ -363,9 +363,259 @@ A Lua table exposing various TECHMANIA enums. Refer to [`tm.enum` table](#tmenum
 
 ## Class `ThemeApi.UQueryStateWrap`
 
+A `ThemeApi.UQueryStateWrap` object is created when calling `Query` on `ThemeApi.VisualElementWrap`.
+
+```
+void ForEach(function f)
+```
+
+Calls the specified function on each element that matches the query.
+
+Example:
+
+```
+tm.root.Q("container").Query("child").ForEach(function(element)
+    print("found one child: " .. element.name)
+end)
+```
+
 ## Class `ThemeApi.VideoElement`
 
 ## Class `ThemeApi.VisualElementWrap`
+
+A wrapper around Unity's `UnityEngine.UIElements.VisualElement` class, providing various additional functionalities. Each object corresponds to one element in the visual tree.
+
+Note that it is possible to create different `VisualElementWrap` objects on the same element, therefore when testing for equality, consider comparing by the `inner` field instead of the `VisualElementWrap` themselves.
+
+```
+UnityEngine.UIElements.VisualElement inner
+```
+
+Provides the internal `VisualElement` object that the `VisualElementWrap` object wraps around.
+
+### Properties
+
+```
+bool enabledInHierarchy
+bool enabledSelf
+```
+
+Read only. Returns whether the element is enabled in the hierarchy / by itself, respectively. If an element itself is enabled, but one of its ancestors are disabled, the element is considered disabled in the hierarchy.
+
+```
+void SetEnabled(bool enabled)
+```
+
+Enables or disables the element.
+
+```
+string name
+```
+
+Name of the element.
+
+```
+bool pickable
+```
+
+Whether the element receives click events.
+
+```
+UnityEngine.UIElements.IResolvedStyle resolvedStyle
+UnityEngine.UIElements.IStyle style
+```
+
+Read only. `style` gives the style on the element as specified in in-line styles or USS; `resolvedStyle` gives the actual, resolved style on the element at runtime.
+
+While you can't change `style` to point to a different object, you can modify the object that it points to, in order to change the style of the element. Example: `tm.root.Q("test").style.left = unity.styleLength.__new(50)`
+
+```
+UnityEngine.UIElements.ITransform transform
+```
+
+Read only. Provides the element's transform, ie. translation, rotation and scale.
+
+```
+UnityEngine.Rect contentRect
+UnityEngine.Rect localBound
+UnityEngine.Rect worldBound
+```
+
+Read only.
+
+`contentRect` is the rectangle within the element that holds its content, in the element's local space. It ignores all transformation. Border and padding shrink this rectangle.
+
+`worldBound` is the rectangle that the element takes up in the world space, after all transformation and layout. Margin shifts this rectangle, while border and padding do not affect it.
+
+`localBound` is like `worldBound`, but before applying the transformations and layouts of the element's ancestors in the visual tree.
+
+### Type-specific properties
+
+```
+string text
+```
+
+For elements that hold text (`TextElement` and `Button`), this is that text.
+
+```
+float lowValue
+float highValue
+```
+
+For elements that allow setting a numeric value between two ends (`Slider`, `SliderInt`, `Scroller`), these are the minimal value and maximum value.
+
+```
+float value
+```
+
+For elements that allow setting a numeric value (`Slider`, `SliderInt`, `Scroller`, `IntegerField`, `FloatField`), this is the current value. Setting it will trigger a change event.
+
+```
+ThemeApi.VisualElementWrap horizontalScroller
+ThemeApi.VisualElementWrap verticalScroller
+```
+
+For `ScrollView`, these give the horizontal and vertical `Scroller` elements.
+
+```
+List<string> choices
+int index
+```
+
+For `DropdownField`, `choices` is the list of available choices in the dropdown, and `index` is the index of the currently chosen item.
+
+```
+string stringValue
+```
+
+For elements that allow setting a string value (`DropdownField`, `TextField`), this is the current value. Setting it will trigger a change event.
+
+```
+void SetValueWithoutNotify(string newValue)
+void SetValueWithoutNotify(float newValue)
+```
+
+Allows setting numeric or string value without triggering change events.
+
+```
+void ScrollTo(ThemeApi.VisualElementWrap child)
+```
+
+For `ScrollView`, this makes the element scroll to the specified element.
+
+### Event handling
+
+```
+void RegisterCallback(ThemeApi.VisualElementWrap.EventType eventType,
+    function callback,
+    DynValue data)
+```
+
+Registers a callback function for the specified event type. The `data` parameter is optional, and if set, will be passed to the callback when called.
+
+You can register multiple handlers for each event type on each element. This is one of the additional features `VisualElementWrap` provides over `VisualElement`.
+
+The callback will be called with 3 arguments:
+* The `ThemeApi.VisualElementWrap` receiving the event
+* The event object
+* `data`
+
+Example:
+
+```
+tm.root.Q("test").RegisterCallback(tm.enum.eventType.Click, function(element, event, data)
+    print("Click event received by " .. element.name .. " with data " .. data)
+end, "data")
+```
+
+```
+void UnregisterCallback(ThemeApi.VisualElementWrap.EventType eventType,
+    function callback)
+```
+
+Unregisters a callback function for the specified event type. If the callback has not been registered, this method will do nothing.
+
+```
+void UnregisterAllCallbackOfType(ThemeApi.VisualElementWrap.EventType eventType)
+```
+
+Unregisters all callback functions for the specified event type.
+
+```
+void UnregisterAllCallback()
+```
+
+Unregisters all callback functions for all event types.
+
+### Querying
+
+```
+ThemeApi.VisualElementWrap Q(string name, string className = null)
+```
+
+Queries and returns the first element within the current element's children that matches the specified name (and optionally USS class name). If no child matches the criterias, returns `nil`.
+
+```
+ThemeApi.UQueryStateWrap Query(string name, string className = null)
+```
+
+Queries and returns a `UQueryStateWrap` object that allows traversing all child elements that match the specified name (and optionally USS class name). Refer to `UQueryStateWrap` for an example.
+
+### USS classes
+
+```
+IEnumerable<string> GetClasses()
+```
+
+Returns a list of USS classes that this element has.
+
+```
+bool ClassListContains(string className)
+```
+
+Returns whether the element has the specified class.
+
+```
+void AddToClassList(string className)
+void RemoveFromClassList(string className)
+```
+
+Adds / removes the specified class to / from the element.
+
+```
+void ClearClassList()
+```
+
+Removes all classes.
+
+```
+void EnableInClassList(string className, bool enable)
+```
+
+Adds or removes the specified class to or from the element, controlled by `enable`.
+
+```
+void ToggleInClassList(string className)
+```
+
+Toggles the specified class between on and off.
+
+### Style shortcuts
+
+```
+bool display
+bool visible
+```
+
+Whether the element is displayed / visible. Setting either to `false` will hide the element, but setting `display = false` will remove the element from layout consideration, while setting `visible = false` will still have the element take up its space in the layout.
+
+```
+UnityEngine.Texture2D backgroundImage
+```
+
+Allows getting or setting the background image as a `Texture2D`.
+
+### Visual tree traversal
 
 ## Class `TimeStop`
 
