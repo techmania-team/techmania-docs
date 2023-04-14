@@ -10,7 +10,7 @@ When reading on Github, you can click the menu button to the top left to reveal 
 
 |Key|Value|
 |--|--|
-|`tm`|An object of type `ThemeApi.Techmania`|
+|`tm`|An object of type [`ThemeApi.Techmania`](#class-themeapitechmania)|
 |`net`|A Lua table exposing some .Net types|
 |`unity`|A Lua table exposing some Unity types|
 
@@ -56,7 +56,7 @@ if (ruleset == tm.enum.ruleset.Legacy) then ... end
 
 ## `tm` object
 
-The `tm` object gives you access to various TECHMANIA types. Refer to class `ThemeApi.Techmania` for reference on members of this object, except `enum`.
+The `tm` object gives you access to various TECHMANIA types. Refer to class [`ThemeApi.Techmania`](#class-themeapitechmania) for reference on members of this object, except `enum`.
 
 ## `tm.enum` table
 
@@ -178,17 +178,126 @@ Classes within this section are sorted alphabetically, but properties and method
 
 ## Class `AudioSourceManager`
 
+Allows the playback of audio clips. You can access an `AudioSourceManager` object via `tm.audio`.
+
+### Playing audio
+
+```
+UnityEngine.AudioSource PlayMusic(UnityEngine.AudioClip clip,
+    float startTime = 0f,
+    int volumePercent = 100,
+    int panPercent = 0)
+UnityEngine.AudioSource PlayKeysound(UnityEngine.AudioClip clip,
+    float startTime = 0f,
+    int volumePercent = 100,
+    int panPercent = 0)
+UnityEngine.AudioSource PlaySfx(UnityEngine.AudioClip clip,
+    float startTime = 0f,
+    int volumePercent = 100,
+    int panPercent = 0)
+```
+
+Plays the specified audio clip on the music / keysound / SFX channel, and returns the `AudioSource` playing the clip. Please note that TECHMANIA only allows playing one music clip at a time. You can load an audio clip from the theme with `tm.io.LoadAudioFromTheme`, or from the disk with `tm.io.LoadAudioFromFile`.
+
+The clip will start playing from `startTime` seconds. `volumePercent` is between 0 and 100. `panPercent` is between -100 (left) and 100 (right).
+
+### Controlling all audio sources
+
+```
+void PauseAll()
+void UnpauseAll()
+void StopAll()
+```
+
+Pauses, unpauses or stops all `AudioSource`s.
+
+```
+void SetSpeed(float speed)
+```
+
+Sets the playing speed of all `AudioSource`s. The normal speed is 1.
+
+```
+bool IsAnySourcePlaying()
+```
+
+Returns if there is currently any `AudioSource` playing audio.
+
+### Miscellaneous
+
+```
+void ApplyVolume()
+```
+
+Retrieves the volume values from TECHMANIA options and applies them to the `AudioSource`s. You need to call this after changing the volume values in options for them to take effect.
+
 ## Class `BpmEvent`
+
+Objects of this class denote BPM changes in a pattern.
+
+```
+int pulse
+double bpm
+```
+
+At `pulse`, change BPM to `bpm`.
 
 ## Class `ComboSkin`
 
+One of the 4 types of skins.
+
+```
+string author
+
+float distanceToNote
+float height
+float spaceBetweenJudgementAndCombo
+
+SpriteSheet feverMaxJudgement
+SpriteSheet rainbowMaxJudgement
+SpriteSheet maxJudgement
+SpriteSheet coolJudgement
+SpriteSheet goodJudgement
+SpriteSheet missJudgement
+SpriteSheet breakJudgement
+
+List<SpriteSheet> feverMaxDigits
+List<SpriteSheet> rainbowMaxDigits
+List<SpriteSheet> maxDigits
+List<SpriteSheet> coolDigits
+List<SpriteSheet> goodDigits
+```
+
+Refer to [Skins](../Skins.md#combo-skin) for an explanation of these fields.
+
 ## Class `DragNode`
+
+One node of a drag note, consisting of one anchor, and optionally left and right control points, if the drag note uses a Bezier curve.
+
+```
+FloatPoint anchor
+FloatPoint controlLeft
+FloatPoint controlRight
+```
+
+Anchor's position is relative to the note head, and control points' positions are relative to the anchor.
 
 ## Class `DragNote`
 
 ## Class `FloatPoint`
 
+A named tuple of lane and pulse. Anchors and control points in drag nodes are all `FloatPoint` objects.
+
+```
+float lane
+float pulse
+```
+
 ## Class `GameUISkin`
+
+One of the 4 types of skins.
+
+Refer to [Skins](../Skins.md#game-ui-skin) for an explanation of these fields.
 
 ## Class `GlobalResource`
 
@@ -201,6 +310,10 @@ Classes within this section are sorted alphabetically, but properties and method
 ## Class `Note`
 
 ## Class `NoteSkin`
+
+One of the 4 types of skins.
+
+Refer to [Skins](../Skins.md#note-skin) for an explanation of these fields.
 
 ## Class `Options`
 
@@ -363,7 +476,7 @@ A Lua table exposing various TECHMANIA enums. Refer to [`tm.enum` table](#tmenum
 
 ## Class `ThemeApi.UQueryStateWrap`
 
-A `ThemeApi.UQueryStateWrap` object is created when calling `Query` on `ThemeApi.VisualElementWrap`.
+A `ThemeApi.UQueryStateWrap` object is created when calling `Query` on [`ThemeApi.VisualElementWrap`](#class-themeapivisualelementwrap).
 
 ```
 void ForEach(function f)
@@ -517,7 +630,7 @@ void RegisterCallback(ThemeApi.VisualElementWrap.EventType eventType,
     DynValue data)
 ```
 
-Registers a callback function for the specified event type. The `data` parameter is optional, and if set, will be passed to the callback when called.
+Registers a callback function for the specified event type. The `data` parameter is optional, and can be of any Lua type. If `data` is set, it will be passed back to the callback when called.
 
 You can register multiple handlers for each event type on each element. This is one of the additional features `VisualElementWrap` provides over `VisualElement`.
 
@@ -736,6 +849,10 @@ Returns whether the element contains the specified point in screen space.
 ## Class `TrackMetadata`
 
 ## Class `VfxSkin`
+
+One of the 4 types of skins.
+
+Refer to [Skins](../Skins.md#vfx-skin) for an explanation of these fields.
 
 # TECHMANIA enums
 
