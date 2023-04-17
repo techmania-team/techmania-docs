@@ -44,8 +44,8 @@ At runtime, after TECHMANIA finishes its boot sequence and loads the theme, it w
 1. Go to the TECHMANIA release page, find the TECHMANIA version you wish to develop for, and download the source code from its release.
   - If you use git to clone the TECHMANIA repo, make sure you clone at the exact commit that release is created on, as newer commits may contain work-in-progress API changes.
 2. Follow instructions in the "Making your own build" section in [TECHMANIA's readme](https://github.com/techmania-team/techmania#making-your-own-builds) to set up skins, so that your build is playable.
-3. In the source code, open `ProjectSettings/ProjectVersion.txt` to find the Unity version that the project uses.
-4. Install the same Unity version and use it to open the project. Then, open the scene `Assets/Scenes/Main.unity` if not already open.
+3. Install [Unity Hub](https://unity.com/download) and use it to open the project. Unity Hub will detect the Unity version of this project; you must install the same Unity version in order to open the project.
+4. In Unity, open the scene `Assets/Scenes/Main.unity` if not already open.
 5. Find the `Assets/UI` folder, which currently holds the official default theme.
 6. If you wish to start from scratch, delete everything in `Assets/UI`, then create `Assets/UI/MainTree.uxml` and `Assets/UI/MainScript.txt`. Or you can keep the default theme and start by modifying it. Either way, make sure every resource that the theme references is inside `Assets/UI`. Do not modify anything else in the project.
 
