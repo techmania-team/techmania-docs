@@ -364,10 +364,16 @@ Provides the root element in the visual tree. From here you can query other elem
 Note that, when TECHMANIA transitions to and away from your theme (such as to the editor), it does so by setting the `display` property of the root element. It is adviced that you never change this property on the root element from your theme, in order to not interfere with this transition.
 
 ```
-void SetThemeStyleSheet(string path)
+UnityEngine.UIElements.PanelSettings panelSettings
 ```
 
-Sets the theme style sheet of the UI document. `path` is the path towards the `.tss` file, starting with `Assets/UI`. The default theme uses this method to customize the style of dropdowns.
+Read only. Provides access to the panel settings of the UI Document.
+
+```
+void SetPanelSettings(path)
+```
+
+Sets the panel settings of the UI document. `path` is the path towards the `.asset` file, starting with `Assets/UI`. The default theme uses this method to customize the style of dropdowns.
 
 ### Accessing other TECHMANIA types
 
