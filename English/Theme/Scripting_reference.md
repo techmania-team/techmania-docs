@@ -616,11 +616,18 @@ string stringValue
 For elements that allow setting a string value (`DropdownField`, `TextField`), this is the current value. Setting it will trigger a change event.
 
 ```
-void SetValueWithoutNotify(string newValue)
-void SetValueWithoutNotify(float newValue)
+string boolValue
 ```
 
-Allows setting numeric or string value without triggering change events.
+For elements that allow setting a boolean value (`Toggle`), this is the current value. Setting it will trigger a change event.
+
+```
+void SetValueWithoutNotify(string newValue)
+void SetValueWithoutNotify(float newValue)
+void SetValueWithoutNotify(bool newValue)
+```
+
+Allows setting numeric, string or boolean value without triggering change events.
 
 ```
 void ScrollTo(ThemeApi.VisualElementWrap child)
