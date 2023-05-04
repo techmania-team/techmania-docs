@@ -478,6 +478,12 @@ string GetPlatform()
 Returns the current platform, one of `"Windows"`, `"Linux"`, `"macOS"`, `"Android"`, `"iOS"` and `"Unknown"`.
 
 ```
+string Version()
+```
+
+Returns TECHMANIA's version.
+
+```
 void Quit()
 ```
 
