@@ -98,7 +98,6 @@ The `net` table exposes the following .NET types. You can find documentation on 
 |`int`|`System.Int32` (aka. `int`)|
 |`float`|`System.Single` (aka. `float`)|
 |`string`|`ThemeApi.StringWrap`*|
-|`stringDict`|`System.Collections.Generic.Dictionary<System.String, System.String>`|
 
 \* Moonsharp converts .NET strings to Lua strings, so we are unable to call instance methods in `System.String` on strings. To work around this, we provide the `ThemeApi.StringWrap` class, making available most `System.String` instance methods as static methods. Refer to the reference on class `ThemeApi.StringWrap` for details and examples.
 
