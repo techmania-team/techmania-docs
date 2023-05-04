@@ -187,6 +187,7 @@ UnityEngine.AudioSource PlayMusic(UnityEngine.AudioClip clip,
     int volumePercent = 100,
     int panPercent = 0)
 UnityEngine.AudioSource PlayKeysound(UnityEngine.AudioClip clip,
+    bool hiddenLane,
     float startTime = 0f,
     int volumePercent = 100,
     int panPercent = 0)
@@ -196,9 +197,20 @@ UnityEngine.AudioSource PlaySfx(UnityEngine.AudioClip clip,
     int panPercent = 0)
 ```
 
-Plays the specified audio clip on the music / keysound / SFX channel, and returns the `AudioSource` playing the clip. Please note that TECHMANIA only allows playing one music clip at a time. You can load an audio clip from the theme with `tm.io.LoadAudioFromTheme`, or from the disk with `tm.io.LoadAudioFromFile`.
+Plays the specified audio clip on the music / keysound / SFX channel, and returns the `AudioSource` playing the clip. You can load an audio clip from the theme with `tm.io.LoadAudioFromTheme`, or from the disk with `tm.io.LoadAudioFromFile`.
 
 The clip will start playing from `startTime` seconds. `volumePercent` is between 0 and 100. `panPercent` is between -100 (left) and 100 (right).
+
+For keysounds, in addition to the clip you also need to specify whether the note is in a playable lane or hidden lane. Keysounds in hidden lanes will be played with the music volume.
+
+Please note that there are software and hardware limits on how many sounds per channel can play simultaneously. The software limits are:
+
+* 1 music clip
+* 32 keysounds in playable lanes
+* 64 keysounds in hidden lanes
+* 8 SFX clips
+
+If the limits are reached and either TECHMANIA or your theme plays another clip, it will cause one currently playing clip to stop.
 
 ### Controlling all audio sources
 
