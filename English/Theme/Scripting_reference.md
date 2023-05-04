@@ -201,7 +201,7 @@ Plays the specified audio clip on the music / keysound / SFX channel, and return
 
 The clip will start playing from `startTime` seconds. `volumePercent` is between 0 and 100. `panPercent` is between -100 (left) and 100 (right).
 
-For keysounds, in addition to the clip you also need to specify whether the note is in a playable lane or hidden lane. Keysounds in hidden lanes will be played with the music volume.
+For keysounds, in addition to the clip you also need to specify whether the note is in a playable lane or hidden lane. Keysounds in hidden lanes will be played through the music channel.
 
 Please note that there are software and hardware limits on how many sounds per channel can play simultaneously. The software limits are:
 
