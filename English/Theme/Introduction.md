@@ -47,7 +47,7 @@ At runtime, after TECHMANIA finishes its boot sequence and loads the theme, it w
 3. Install [Unity Hub](https://unity.com/download) and use it to open the project. Unity Hub will detect the Unity version of this project; you must install the same Unity version in order to open the project.
 4. In Unity, open the scene `Assets/Scenes/Main.unity` if not already open.
 5. Find the `Assets/UI` folder, which currently holds the official default theme.
-6. If you wish to start from scratch, delete everything in `Assets/UI`, then create `Assets/UI/MainTree.uxml` and `Assets/UI/MainScript.txt`. Or you can keep the default theme and start by modifying it. Either way, make sure every resource that the theme references is inside `Assets/UI`. Do not modify anything else in the project.
+6. If you wish to start from scratch, delete everything in `Assets/UI` except `Assets/UI/.vscode`, then create `Assets/UI/MainTree.uxml` and `Assets/UI/MainScript.txt`. Or you can keep the default theme and start by modifying it. Either way, make sure every resource that the theme references is inside `Assets/UI`. Do not modify anything else in the project.
 
 ## Testing and releasing
 
@@ -61,11 +61,28 @@ There is no trivial way to unpack an asset bundle into files, so you may want to
 
 Asset bundles are platform-specific. To build asset bundles for other platforms, click the Window menu in Unity, then TECHMANIA - Build AssetBundles (custom platform)...
 
+## Visual Studio Code
+
+You are strongly encouraged to use [Visual Studio Code](https://code.visualstudio.com/) as the IDE when writing scripts for your theme. The `Assets/UI` folder contains a pre-made Code workspace setup in `Assets/UI/.vscode`, providing the following features:
+
+* The workspace is set up to associate `.txt` files with Lua
+* The workspace will recommend you to install the MoonSharp Debug extension, if not already installed
+* The workspace contains a launch configuration that attaches the MoonSharp debugger to Unity, allowing you to debug your scripts
+
 ## Lua environment and debugging
 
 TECHMANIA uses [MoonSharp](https://www.moonsharp.org/) as its Lua interpreter. The environment that your scripts will run in is set up as a "soft sandbox", meaning most Lua standard libraries (such as `table`, `string` and `math`) are available, but you will not have access to the underlying OS.
 
-The enrivonment also wires the `print` function to Unity's `Debug.Log`, so when your script calls `print`, you can find the result in Unity's console. This is, unfortunately, the only script debugging tool available at the moment.
+If you use Visual Studio Code, a fully featured debugger is available, allowing you to set break points, step through lines, inspect local variables and more. To use it:
+
+* Enter play mode in Unity
+* As TECHMANIA finishes loading the theme, watch the console for a message saying "Started MoonSharp debug server at port \<port number\>." The port is usually 41912.
+* If the port is not 41912, open `UI/.vscode/launch.json` in Code, and change `"debugServer"`'s value to the port from the previous step.
+* Launch the "MoonSharp Attach" configuration. The debugger should now be attached to the running theme.
+
+If your script is split between multiple files, make sure to execute other files with `tm.ExecuteScriptFromTheme` instead of `tm.ExecuteScript`. The former passes the script files' paths to MoonSharp, allowing the debugger to find these source files.
+
+Regardless of your choice of IDE, another debugging tool is available: the Lua enrivonment wires the `print` function to Unity's `Debug.Log`, so when your script calls `print`, you can find the result in Unity's console.
 
 ## `getApi`, API version and top-level tables
 
