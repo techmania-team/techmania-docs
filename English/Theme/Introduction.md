@@ -37,7 +37,7 @@ At runtime, after TECHMANIA finishes its boot sequence and loads the theme, it w
   - The root VisualElement will be accessible from your script as `tm.root`
 - Execute the Lua script in `Assets/UI/MainScript.txt`
   - This is the only time that TECHMANIA proactively executes scripts in a theme; all other script execution will be based on events. Your script should set up all necessary event handlers on this initial execution.
-  - You can spread your script across multiple files and call `tm.ExecuteScript` from `MainScript.txt`.
+  - You can spread your script across multiple files and call `tm.ExecuteScriptFromTheme` from `MainScript.txt`.
 
 ## Getting started
 
@@ -75,7 +75,7 @@ TECHMANIA uses [MoonSharp](https://www.moonsharp.org/) as its Lua interpreter. T
 
 If you use Visual Studio Code, a fully featured debugger is available, allowing you to set break points, step through lines, inspect local variables and more. To use it:
 
-* Enter play mode in Unity
+* Enter play mode in Unity.
 * As TECHMANIA finishes loading the theme, watch the console for a message saying "Started MoonSharp debug server at port \<port number\>." The port is usually 41912.
 * If the port is not 41912, open `UI/.vscode/launch.json` in Code, and change `"debugServer"`'s value to the port from the previous step.
 * Launch the "MoonSharp Attach" configuration. The debugger should now be attached to the running theme.

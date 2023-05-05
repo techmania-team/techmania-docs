@@ -435,10 +435,16 @@ Opens the operating system's "open folder" dialog and blocks. When the user clos
 ### Script execution
 
 ```
+void ExecuteScriptFromTheme(string path)
+```
+
+Executes the Lua script in the specified file. `path` is the path towards the `.txt` file, starting with `Assets/UI`. This is the recommended way to split your script across multiple files, and execute them from the main script.
+
+```
 void ExecuteScript(string script)
 ```
 
-Executes the input string as Lua script. Using this together with `ThemeApi.IO`, you can split your script across multiple files, and execute them from the main script: `tm.ExecuteScript(tm.io.LoadTextFileFromTheme("Assets/UI/another script file.txt"))`
+Executes the input string as Lua script. While functionally the same as `ExecuteScriptFromTheme`, there is less debugger support for scripts executed this way, because MoonSharp does not know where the source file is.
 
 ```
 int StartCoroutine(function function)
