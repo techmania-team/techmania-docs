@@ -2,7 +2,7 @@
 
 Applies to API version: 1
 
-When reading on Github, you can click the menu button to the top left to reveal a table of contents.
+When reading on Github, you can click the menu button to the top right to reveal a table of contents.
 
 # `getApi`
 
@@ -788,7 +788,7 @@ Gives the parent element.
 IEnumerable<ThemeApi.VisualElementWrap> Children()
 ```
 
-Returns a list of all direct children.
+Returns a list of all direct children. Note that the returned array will be 1-indexed.
 
 ```
 ThemeApi.VisualElementWrap InstantiateTemplate(string path)
