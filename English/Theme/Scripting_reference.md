@@ -456,7 +456,7 @@ Executes the Lua function as a coroutine and returns its coroutine ID, which can
 void StopCoroutine(int id)
 ```
 
-Stops the specified coroutine if it's current running. If the specified coroutine is not running, the behavior is undefined.
+Stops the specified coroutine if it's current running. If the specified coroutine is not running, this method does nothing.
 
 ### Miscellaneous
 
