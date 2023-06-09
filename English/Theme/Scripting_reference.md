@@ -867,10 +867,16 @@ Returns the element that currently has focus.
 ### Transform
 
 ```
+UnityEngine.Vector2 LocalSpaceToScreenSpace(UnityEngine.Vector2 localSpace)
+```
+
+Converts a point in the element's local space to screen space. When you query from `UnityEngine.Input` the coordinates of the mouse cursor or a touch, they are in the screen space.
+
+```
 UnityEngine.Vector2 ScreenSpaceToLocalSpace(UnityEngine.Vector2 screenSpace)
 ```
 
-Converts a point in the screen space to the element's local space. When you query from `UnityEngine.Input` the coordinates of the mouse cursor or a touch, they are in the screen space.
+Converts a point in the screen space to the element's local space.
 
 ```
 bool ContainsPointInScreenSpace(UnityEngine.Vector2 screenSpace)
