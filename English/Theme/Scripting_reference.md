@@ -139,6 +139,8 @@ The `unity` table exposes the following Unity types. You can find documentation 
 |`angle`|`UnityEngine.UIElements.Angle`|
 |`styleScale`|`UnityEngine.UIElements.StyleScale`|
 |`scale`|`UnityEngine.UIElements.Scale`|
+|`styleTransformOrigin`|`UnityEngine.UIElements.StyleTransformOrigin`|
+|`transformOrigin`|`UnityEngine.UIElements.TransformOrigin`|
 |Types related to `Painter2D`|
 |`painter2D`|`UnityEngine.UIElements.Painter2D`|
 |`vectorImage`|`UnityEngine.UIElements.VectorImage`|
