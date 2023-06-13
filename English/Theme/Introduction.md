@@ -86,7 +86,7 @@ Regardless of your choice of IDE, another debugging tool is available: the Lua e
 
 ## UI debugging
 
-To debug UI, use UI Toolkit's debugger, available at Window - UI Toolkit Debugger. Once TECHMANIA loads and displays the theme, choose "Panel Settings" from the top-left dropdown to display the visual tree of your theme.
+To debug UI, use UI Toolkit's debugger, available at Window - UI Toolkit - Debugger. Once TECHMANIA loads and displays the theme, choose "Panel Settings" from the top-left dropdown to display the visual tree of your theme.
 
 ## `getApi`, API version and top-level tables
 
