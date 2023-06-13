@@ -69,7 +69,7 @@ You are strongly encouraged to use [Visual Studio Code](https://code.visualstudi
 * The workspace will recommend you to install the MoonSharp Debug extension, if not already installed
 * The workspace contains a launch configuration that attaches the MoonSharp debugger to Unity, allowing you to debug your scripts
 
-## Lua environment and debugging
+## Lua environment and script debugging
 
 TECHMANIA uses [MoonSharp](https://www.moonsharp.org/) as its Lua interpreter. The environment that your scripts will run in is set up as a "soft sandbox", meaning most Lua standard libraries (such as `table`, `string` and `math`) are available, but you will not have access to the underlying OS.
 
@@ -83,6 +83,10 @@ If you use Visual Studio Code, a fully featured debugger is available, allowing 
 If your script is split between multiple files, make sure to execute other files with `tm.ExecuteScriptFromTheme` instead of `tm.ExecuteScript`. The former passes the script files' paths to MoonSharp, allowing the debugger to find these source files.
 
 Regardless of your choice of IDE, another debugging tool is available: the Lua enrivonment wires the `print` function to Unity's `Debug.Log`, so when your script calls `print`, you can find the result in Unity's console.
+
+## UI debugging
+
+To debug UI, use UI Toolkit's debugger, available at Window - UI Toolkit Debugger. Once TECHMANIA loads and displays the theme, choose "Panel Settings" from the top-left dropdown to display the visual tree of your theme.
 
 ## `getApi`, API version and top-level tables
 
