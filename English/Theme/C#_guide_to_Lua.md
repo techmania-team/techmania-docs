@@ -111,6 +111,16 @@ end
 
 Note that functions can return multiple values. If you call a function with fewer arguments than it has parameters, the unassigned parameters will get the value `nil`.
 
+To define a function as a value in a table:
+
+```
+tableName.key = function() ... end
+-- or --
+tableName = {
+  key = function() ... end
+}
+```
+
 ## Tables vs objects
 
 As mentioned earlier, if a Lua table's keys are strings, and its values are booleans, numbers, strings, functions and other tables, it can be used like an object:

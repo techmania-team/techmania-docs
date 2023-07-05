@@ -1,4 +1,4 @@
-Applies to version: 1.1
+Applies to version: 2.0
 
 TECHMANIA supports various modifiers that allow you to customize the gameplay experience. When selecting a pattern, click the "Modifiers" button to view and select modifiers. This page explains the available modifiers.
 
@@ -50,6 +50,10 @@ Determines the scan direction of top and bottom scans, respectively. The default
 
 In either case, the tick sound is considered an SFX in audio options.
 
+# Sudden death
+
+**Sudden death**: instant fail on MISS or BREAK.
+
 # Mode
 
 Selecting any option other than "Normal" will invalidate your score.
@@ -73,6 +77,8 @@ Selecting any option other than "None" will invalidate your score.
 Selecting "Half speed" will invalidate your score.
 
 **Half speed**: doubles the selected pattern's BPS, effectively decreasing the scroll speed by half.
+
+**Shifted half speed**: doubles the selected pattern's BPS, then shifts the entire pattern by half a scan. In some cases this produces a more musically "correct" grouping of scans.
 
 # Practice mode
 
