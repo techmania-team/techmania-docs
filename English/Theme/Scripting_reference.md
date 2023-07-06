@@ -67,6 +67,7 @@ The `tm` object gives you access to various TECHMANIA types. Refer to class [`Th
 |`eventType`|`ThemeApi.VisualElementWrap.EventType`|
 |`ruleset`|`Options.Ruleset`|
 |`gameState`|`GameState.State`|
+|`skinType`|`SkinType`|
 |Enums in tracks, patterns and notes|
 |`controlScheme`|`ControlScheme`|
 |`noteType`|`NoteType`|
@@ -80,6 +81,7 @@ The `tm` object gives you access to various TECHMANIA types. Refer to class [`Th
 |`fever`|`Modifiers.Fever`|
 |`keysound`|`Modifiers.Keysound`|
 |`assistTick`|`Modifiers.AssistTick`|
+|`suddenDeath`|`Modifiers.SuddenDeath`|
 |`mode`|`Modifiers.Mode`|
 |`controlOverride`|`Modifiers.ControlOverride`|
 |`scrollSpeed`|`Modifiers.ScrollSpeed`|
@@ -98,6 +100,7 @@ The `net` table exposes the following .NET types. You can find documentation on 
 |`int`|`System.Int32` (aka. `int`)|
 |`float`|`System.Single` (aka. `float`)|
 |`string`|`ThemeApi.StringWrap`*|
+|`dateTime`|`System.DateTime`|
 
 \* Moonsharp converts .NET strings to Lua strings, so we are unable to call instance methods in `System.String` on strings. To work around this, we provide the `ThemeApi.StringWrap` class, making available most `System.String` instance methods as static methods. Refer to the reference on class `ThemeApi.StringWrap` for details and examples.
 
@@ -454,6 +457,14 @@ int StartCoroutine(function function)
 
 Executes the Lua function as a coroutine and returns its coroutine ID, which can be later passed to `StopCoroutine` to stop execution. Within a coroutine, you can call `coroutine.yield()` to pause execution, and TECHMANIA will automatically resume execution on the next frame.
 
+TECHMANIA never reuses coroutine IDs, so you can assume each `StartCoroutine` call will return a unique ID.
+
+```
+bool IsCoroutineRunning(int id)
+```
+
+Queries whether the specified coroutine is currently running.
+
 ```
 void StopCoroutine(int id)
 ```
@@ -461,6 +472,13 @@ void StopCoroutine(int id)
 Stops the specified coroutine if it's current running. If the specified coroutine is not running, this method does nothing.
 
 ### Miscellaneous
+
+```
+void HideVfxAndComboText()
+void RestoreVfxAndComboText()
+```
+
+Hides / restores all VFX and combo text. Useful if you don't want these to obscure visual elements in your theme.
 
 ```
 void SetDiscordActivity(string details, string state,
@@ -552,6 +570,8 @@ bool enabledSelf
 
 Read only. Returns whether the element is enabled in the hierarchy / by itself, respectively. If an element itself is enabled, but one of its ancestors are disabled, the element is considered disabled in the hierarchy.
 
+When an element is disabled in hierarchy, the `:disabled` USS pseudo-class is applied, and the element does not respond to clicks.
+
 ```
 void SetEnabled(bool enabled)
 ```
@@ -621,6 +641,18 @@ float value
 For elements that allow setting a numeric value (`Slider`, `SliderInt`, `Scroller`, `IntegerField`, `FloatField`), this is the current value. Setting it will trigger a change event.
 
 ```
+string stringValue
+```
+
+For elements that allow setting a string value (`DropdownField`, `TextField`), this is the current value. Setting it will trigger a change event.
+
+```
+string boolValue
+```
+
+For elements that allow setting a boolean value (`Toggle`), this is the current value. Setting it will trigger a change event.
+
+```
 ThemeApi.VisualElementWrap horizontalScroller
 ThemeApi.VisualElementWrap verticalScroller
 ```
@@ -635,18 +667,6 @@ int index
 For `DropdownField`, `choices` is the list of available choices in the dropdown, and `index` is the index of the currently chosen item.
 
 ```
-string stringValue
-```
-
-For elements that allow setting a string value (`DropdownField`, `TextField`), this is the current value. Setting it will trigger a change event.
-
-```
-string boolValue
-```
-
-For elements that allow setting a boolean value (`Toggle`), this is the current value. Setting it will trigger a change event.
-
-```
 void SetValueWithoutNotify(string newValue)
 void SetValueWithoutNotify(float newValue)
 void SetValueWithoutNotify(bool newValue)
@@ -658,14 +678,14 @@ Allows setting numeric, string or boolean value without triggering change events
 void ScrollTo(ThemeApi.VisualElementWrap child)
 ```
 
-For `ScrollView`, this makes the element scroll to the specified element.
+For `ScrollView`, this makes the element scroll to the specified element. Note that this will not work if called on the same frame after any change to the `ScrollView` itself or elements within it; you will need to wait one frame for layout to update before calling.
 
 ### Event handling
 
 ```
 void RegisterCallback(ThemeApi.VisualElementWrap.EventType eventType,
     function callback,
-    DynValue data)
+    any data)
 ```
 
 Registers a callback function for the specified event type. The `data` parameter is optional, and can be of any Lua type. If `data` is set, it will be passed back to the callback when called.
@@ -766,6 +786,8 @@ bool visible
 
 Whether the element is displayed / visible. Setting either to `false` will hide the element, but setting `display = false` will remove the element from layout consideration, while setting `visible = false` will still have the element take up its space in the layout.
 
+Note that, if a `visible = false` element has a child with `visible = true`, the child will override its parent's `visible` and be visible. This does not apply to `display`.
+
 ```
 UnityEngine.Texture2D backgroundImage
 ```
@@ -790,7 +812,7 @@ Gives the parent element.
 IEnumerable<ThemeApi.VisualElementWrap> Children()
 ```
 
-Returns a list of all direct children. Note that the returned array will be 1-indexed.
+Returns a list of all direct children. Note that the returned array will be 1-indexed in Lua.
 
 ```
 ThemeApi.VisualElementWrap InstantiateTemplate(string path)
@@ -868,11 +890,15 @@ Returns the element that currently has focus.
 
 ### Transform
 
+Some terminology:
+* Local space: the space defined by an element's `contentRect`. (0, 0) is top left; Y positive is downwards. You can place a child at a specific coordinate in an element's local space by setting `left` and `top` in the child's style.
+* Screen space: the space defined by the screen resolution. (0, 0) is bottom left; Y positive is upwards. When you query from `UnityEngine.Input` the coordinates of the mouse cursor or a touch, they are in the screen space.
+
 ```
 UnityEngine.Vector2 LocalSpaceToScreenSpace(UnityEngine.Vector2 localSpace)
 ```
 
-Converts a point in the element's local space to screen space. When you query from `UnityEngine.Input` the coordinates of the mouse cursor or a touch, they are in the screen space.
+Converts a point in the element's local space to screen space. 
 
 ```
 UnityEngine.Vector2 ScreenSpaceToLocalSpace(UnityEngine.Vector2 screenSpace)

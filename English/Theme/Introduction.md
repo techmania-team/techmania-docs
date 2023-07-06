@@ -102,6 +102,11 @@ To keep the global scope clean, `getApi` is the only thing TECHMANIA Theme API a
 
 When the Theme API exposes a C# class or object to Lua, it becomes a value of type userdata, but for all practical purposes you can use it as an object. As in, you can use the fields, properties and/or methods on the userdata value, and they will be wired to the underlying class or object. Therefore, the Theme API documentation will disregard the lack of object-oriented terms in Lua and introduce classes, objects, fields, properties and methods as themselves; it's up to you to translate them to Lua syntax.
 
+## UI Toolkit limitations
+
+* UI Toolkit does not currently support custom shaders or blend modes.
+* UI Toolkit does not currently support non-rectangular masks. One workaround is to draw texture on a custom mesh, using related functions in `VisualElementWrap`.
+
 ## Next steps
 
 - Writing a minimal theme
