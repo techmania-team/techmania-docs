@@ -329,6 +329,8 @@ List<DragNode> nodes
 
 The nodes in this drag note. These determine the curve's shape. See [`DragNode`](#class-dragnode). There must be at least 2 nodes in each drag note, and the first node's anchor must be at (0, 0).
 
+## Class `EditorOptions`
+
 ## Class `FloatPoint`
 
 A named tuple of lane and pulse. Anchors and control points in drag nodes are all `FloatPoint` objects.
@@ -346,11 +348,112 @@ Refer to [Skins](../Skins.md#game-ui-skin) for an explanation of these fields.
 
 ## Class `GlobalResource`
 
+Holds resources that are always available from the moment your theme loads, hence "global". Access this type via `tm.resources`.
+
+### Resources on skins
+
+```
+NoteSkin noteSkin
+VfxSkin vfxSkin
+ComboSkin comboSkin
+GameUISkin gameUiSkin
+```
+
+The currently loaded skins.
+
+```
+List<string> GetSkinList(SkinType type)
+```
+
+Returns the names of all available skins of the specified type.
+
+### Resources on tracks
+
+```
+List<TrackSubfolder> GetSubfolders(string parent)
+List<TrackInFolder> GetTracksInFolder(string parent)
+List<TrackWithError> GetTracksWithError(string parent)
+```
+
+Returns all [`TrackSubfolder`](#class-globalresourcetracksubfolder), [`TrackInFolder`](#class-globalresourcetrackinfolder) or [`TrackWithError`](#class-globalresourcetrackwitherror) objects in the specified parent folder, corresponding to, respectively, subfolders in it, tracks in it (but not in a subfolder), and tracks with errors (due to I/O errors, deserialization errors, etc.) in it.
+
+`parent` should be the track root folder, available at `tm.paths.GetTrackRootFolder()`, or a subfolder of it.
+
+```
+void ClearTrackList()
+```
+
+Clears the in-memory track list to release memory. After calling this, `GetSubfolders`, `GetTracksInFolder` and `GetTracksWithError` will stop working.
+
+```
+bool anyOutdatedTrack
+```
+
+Whether there is any track in an outdated format on disk. Currently there is no way to query which specific track is outdated.
+
+### Resource on themes
+
+```
+List<string> GetThemeList()
+```
+
+Returns the names of all available themes.
+
 ## Class `GlobalResource.TrackSubfolder`
+
+Describes a subfolder in some parent folder given to `GlobalResource.GetSubfolders`.
+
+```
+string name
+string fullPath
+DateTime modifiedTime
+```
+
+The name, full path, and last modified time of this subfolder.
+
+```
+string eyecatchFullPath
+```
+
+The full path to the eyecatch image inside this subfolder, if any. If a subfolder does not have an eyecatch, the value is nil.
 
 ## Class `GlobalResource.TrackInFolder`
 
+Describes a track in some parent folder given to `GlobalResource.GetTracksInFolder`.
+
+```
+string folder
+```
+
+The full path to the folder that holds the `track.tech` file. File names in the track, such as BGAs and keysounds, should be concatenated to this folder to get the full path.
+
+```
+DateTime modifiedTime
+```
+
+The last modified time of `folder`.
+
+```
+Track minimizedTrack
+```
+
+The minimized track loaded from `track.tech`. To save memory, TECHMANIA discards all notes, BPM events and time stops from tracks when building the track list. If you need the full track, call `tm.io.LoadFullTrack`.
+
 ## Class `GlobalResource.TrackWithError`
+
+Describes a track with error in some parent folder given to `GlobalResource.GetTracksWithError`.
+
+```
+string type
+```
+
+The type of the error with this track. Possible values are "Load" (an error when loading the track) and "Upgrade" (an error when upgrading the track's format).
+
+```
+Status status
+```
+
+A [`Status`](#class-status) object holding the detailed error.
 
 ## Class `HoldNote`
 
@@ -514,6 +617,32 @@ See [track.tech specification](../track.tech_specification.md).
 ## Class `SpriteSheet`
 
 ## Class `Status`
+
+Contains either OK or an error message. Many I/O operations that may succedd or fail report the result with a `Status` object.
+
+```
+string code
+```
+
+The status code, one of the following:
+* "OK": no error, operation successfully finished.
+* "NotFound": some file is not found.
+* "IOError": an I/O error when reading or writing a file.
+* "FormatError": the format of some file is invalid.
+* "OtherError": an error that does not fit any other category.
+
+```
+bool Ok()
+```
+
+A shortcut to check whether the code is "OK".
+
+```
+string errorMessage
+string filePath
+```
+
+If the code is not "OK", these fields may contain a more detailed error message and/or the path of the file that caused the error.
 
 ## Class `ThemeApi.CalibrationPreview`
 
