@@ -300,6 +300,35 @@ Anchor's position is relative to the note head, and control points' positions ar
 
 ## Class `DragNote`
 
+A derived class of [`Note`](#class-note), this class uniquely covers the note type of drag.
+
+Inherited members:
+
+```
+NoteType type
+int pulse
+int lane
+string sound
+int volumePercent
+int panPercent
+bool endOfScan
+int GetScanNumber(int bps)
+```
+
+See [`Note`](#class-note).
+
+```
+CurveType curveType
+```
+
+The curve type. If using B-spline, control points in drag nodes are ignored.
+
+```
+List<DragNode> nodes
+```
+
+The nodes in this drag note. These determine the curve's shape. See [`DragNode`](#class-dragnode). There must be at least 2 nodes in each drag note, and the first node's anchor must be at (0, 0).
+
 ## Class `FloatPoint`
 
 A named tuple of lane and pulse. Anchors and control points in drag nodes are all `FloatPoint` objects.
@@ -317,13 +346,88 @@ Refer to [Skins](../Skins.md#game-ui-skin) for an explanation of these fields.
 
 ## Class `GlobalResource`
 
+## Class `GlobalResource.TrackSubfolder`
+
+## Class `GlobalResource.TrackInFolder`
+
+## Class `GlobalResource.TrackWithError`
+
 ## Class `HoldNote`
 
+A derived class of [`Note`](#class-note), this class covers the note types that require holding: hold, repeat head hold, repeat hold.
+
+Inherited members:
+
+```
+NoteType type
+int pulse
+int lane
+string sound
+int volumePercent
+int panPercent
+bool endOfScan
+int GetScanNumber(int bps)
+```
+
+See [`Note`](#class-note).
+
+```
+int duration
+```
+
+The duration of the hold, in pulses.
+
 ## Class `LegacyRulesetOverride`
+
+Contains override values for the legacy ruleset, specific to the pattern that contains it.
+
+```
+List<float> timeWindows
+List<int> hpDeltaBasic
+List<int> hpDeltaChain
+List<int> hpDeltaHold
+List<int> hpDeltaDrag
+List<int> hpDeltaRepeat
+List<int> hpDeltaBasicDuringFever
+List<int> hpDeltaChainDuringFever
+List<int> hpDeltaHoldDuringFever
+List<int> hpDeltaDragDuringFever
+List<int> hpDeltaRepeatDuringFever
+```
+
+See [track.tech specification](../track.tech_specification.md). Empty lists mean no override.
+
+```
+bool HasAny()
+```
+
+A helper method to determine whether there is any override at all in this object.
 
 ## Class `Modifiers`
 
 ## Class `Note`
+
+The interactable elements in patterns. This base class covers the note types without a duration: basic, chain head, chain node, repeat head, repeat. The other types are represented by derived classes [`HoldNote`](#class-holdnote) and [`DragNote`](#class-dragnote).
+
+```
+NoteType type
+int pulse
+int lane
+string sound
+int volumePercent
+int panPercent
+bool endOfScan
+```
+
+The basic attributes of a note. A note is considered a hidden note if its lane (in 0-index) is smaller than the pattern's playable lanes.
+
+`volumePercent` is in \[0, 100\]; `panPercent` is in \[-100, 100\].
+
+```
+int GetScanNumber(int bps)
+```
+
+A helper method to calculate the scan number (0-index) this note is in. This takes end-of-scan into consideration.
 
 ## Class `NoteSkin`
 
@@ -337,7 +441,67 @@ Refer to [Skins](../Skins.md#note-skin) for an explanation of these fields.
 
 ## Class `Pattern`
 
+The unit of gameplay. A track contains any number of patterns.
+
+```
+PatternMetadata patternMetadata
+LegacyRulesetOverride legacyRulesetOverride
+```
+
+See [`PatternMetadata`](#class-patternmetadata) and [`LegacyRulesetOverride`](#class-legacyrulesetoverride).
+
+```
+List<BpmEvent> bpmEvents
+List<TimeStop> timeStops
+```
+
+The list of BPM events and time stops in the pattern. See [`BpmEvent`](#class-bpmevent) and [`TimeStop`](#class-timestop).
+
+```
+List<Note> NotesAsList()
+```
+
+Provides the list of notes in the pattern. This method converts notes from an internal data structure to a list when called, so it can be costly. Do not call this frequently. See [`Note`](#class-note).
+
+```
+const int pulsesPerBeat = 240
+```
+
+Useful for converting between pulses, beats and scans. The number of beats per scan is available in pattern metadata.
+
+```
+bool ShouldPlayInMusicChannel(int lane)
+```
+
+A helper method to determine whether the keysound of a note in the specified lane should be played in the music channel or keysound channel.
+
+```
+bool IsHidden(int lane)
+```
+
+A helper method to determine whether the specified lane is a hidden lane.
+
 ## Class `PatternMetadata`
+
+```
+string guid
+string patternName
+int level
+ControlScheme controlScheme
+int playableLanes
+string author
+string backingTrack
+string backImage
+string bga
+double bgaOffset
+bool waitForEndOfBga
+bool playBgaOnLoop
+double firstBeatOffset
+double initBpm
+int bps
+```
+
+See [track.tech specification](../track.tech_specification.md).
 
 ## Class `PerTrackOptions`
 
@@ -914,9 +1078,54 @@ Returns whether the element contains the specified point in screen space.
 
 ## Class `TimeStop`
 
+Objects of this class denote time stops in a pattern.
+
+```
+int pulse
+int duration
+```
+
+At `pulse`, stop time for `duration` beats.
+
 ## Class `Track`
 
+A container of patterns corresponding to the same musical track. The contents of `track.tech` files are serialized `Track` objects.
+
+```
+string kVersion
+```
+
+The version of the serialization format. The current value is "3". Refer to [format version history](../Format_version_history.md) for more details. For tracks serialized in earlier format versions, TECHMANIA will upgrade them after deserialization, so when you read this field, it should always be "3".
+
+```
+TrackMetadata trackMetadata
+```
+
+See [`TrackMetadata`](#class-trackmetadata).
+
+```
+List<Pattern> patterns
+```
+
+The array of patterns inside the track. See [`Pattern`](#class-pattern).
+
 ## Class `TrackMetadata`
+
+```
+string guid
+string title
+string artist
+string genre
+string additionalCredits
+string eyecatchImage
+string previewTrack
+double previewStartTime
+double previewEndTime
+string previewBga
+bool autoOrderPatterns
+```
+
+See [track.tech specification](../track.tech_specification.md).
 
 ## Class `VfxSkin`
 
