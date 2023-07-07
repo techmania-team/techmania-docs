@@ -331,6 +331,25 @@ The nodes in this drag note. These determine the curve's shape. See [`DragNode`]
 
 ## Class `EditorOptions`
 
+Contains options specific to the editor. The editor has its own options screen for these options, so it's OK for you theme to ignore them.
+
+```
+int beatSnapDivisor
+int visibleLanes
+bool showKeysounds
+bool keepScanlineInView
+bool applyKeysoundToSelection
+bool applyNoteTypeToSelection
+bool lockNotesInTime
+bool lockDragAnchorsInTime
+bool snapDragAnchors
+bool metronome
+bool assistTickOnSilentNotes
+bool returnScanlineAfterPlayback
+```
+
+You can find explanations in the editor options screen.
+
 ## Class `FloatPoint`
 
 A named tuple of lane and pulse. Anchors and control points in drag nodes are all `FloatPoint` objects.
@@ -508,6 +527,31 @@ A helper method to determine whether there is any override at all in this object
 
 ## Class `Modifiers`
 
+Contains the currently selected modifiers. Access the `Modifiers` object via `tm.options.modifiers`.
+
+```
+NoteOpacity noteOpacity
+ScanlineOpacity scanlineOpacity
+ScanDirection scanDirection
+NotePosition notePosition
+ScanPosition scanPosition
+Fever fever
+Keysound keysound
+AssistTick assistTick
+SuddenDeath suddenDeath
+Mode mode
+ControlOverride controlOverride
+ScrollSpeed scrollSpeed
+```
+
+The current modifiers, which are all enums.
+
+```
+bool HasAnySpecialModifier()
+```
+
+A helper to determine whether any special modifier is selected.
+
 ## Class `Note`
 
 The interactable elements in patterns. This base class covers the note types without a duration: basic, chain head, chain node, repeat head, repeat. The other types are represented by derived classes [`HoldNote`](#class-holdnote) and [`DragNote`](#class-dragnote).
@@ -539,6 +583,203 @@ One of the 4 types of skins.
 Refer to [Skins](../Skins.md#note-skin) for an explanation of these fields.
 
 ## Class `Options`
+
+Contains TECHMANIA options, per-track options and per-theme options. TECHMANIA will load options on startup, but it is up to the theme to save options if there are any changes. Access the current options via `tm.options`.
+
+Also note that, many options will not take effect automatically after you modify their value. Read the description of these fields for what to call to apply the options.
+
+```
+string kVersion
+```
+
+The version of the serialization format. The current value is "3". Refer to [format version history](../Format_version_history.md) for more details.
+
+```
+void SaveToFile()
+```
+
+Saves the current options to disk.
+
+### Graphics
+
+```
+int width
+int height
+int refreshRateNumerator
+int refreshRateDenominator
+UnityEngine.FullScreenMode fullScreenMode
+bool vSync
+```
+
+Resolution, refresh rate, full screen mode and VSync. Call `ApplyGraphicsSettings()` to apply these. The refresh rate is expressed as a fraction to support non-integer refresh rates.
+
+A list of all resolutions supported by the device is available at `unity.screen.resolutions`, which is a list of `UnityEngine.Resolution` structs.
+
+```
+void ApplyGraphicSettings()
+```
+
+Applies current graphic settings.
+
+```
+UnityEngine.Resolution GetCurrentResolutionAsObject()
+```
+
+Provides the current resolution as a `Resolution` struct.
+
+```
+void TemporarilyDisableVSync()
+```
+
+Temporarily disables VSync, regardless of whether it was true or false before the call. Useful for loading screens, as TECHMANIA can load no more than one thing per frame, so if the user's device can load things faster than one frame, VSync will cause unnecessary waiting.
+
+You do not need to call `ApplyGraphicSettings()` after this.
+
+```
+void RestoreVSync()
+```
+
+Restores `vSync` to its previous value before calling `TemporarilyDisableVSync()`, whether it was true or false.
+
+You do not need to call `ApplyGraphicSettings()` after this.
+
+### Audio
+
+```
+int masterVolumePercent
+int musicVolumePercent
+int keysoundVolumePercent
+int sfxVolumePercent
+```
+
+The volume of each audio channel, from 0 to 100. Call `ApplyVolumeSettings()` to apply these.
+
+```
+int audioBufferSize
+```
+
+The audio buffer size in samples. Usually a power of 2; default is 512. As the game explains, smaller value may reduce audio latency, but puts a higher strain on the user's system, and has a higher chance to cause audio stuttering or audio to stop altogether. Call `ApplyAudioBufferSize()` to apply this.
+
+```
+void ApplyVolumeSettings()
+void ApplyAudioBufferSize()
+```
+
+Applies current volume / audio buffer size settings.
+
+```
+int GetDefaultAudioBufferSize()
+```
+
+Returns the default audio buffer size on the user's system.
+
+### Appearance
+
+```
+string locale
+```
+
+The current locale. Refer to [`ThemeApi.ThemeL10n`](#class-themeapithemel10n) for more details on localization. Call `tm.l10n.ApplyLocale()` to apply this.
+
+Note that, even if your theme does not use `ThemeApi.ThemeL10n`, this setting still applies to things outside of your theme, such as the boot screen and the editor.
+
+```
+string noteSkin
+string vfxSkin
+string comboSkin
+string gameUiSkin
+```
+
+The names of the currently selected skins. After changing skins, call `tm.io.ReloadNoteSkin`, `tm.io.ReloadVfxSkin`, `tm.io.ReloadComboSkin` and `tm.io.ReloadGameUiSkin` respectively to load and apply the new skins.
+
+```
+bool reloadSkinsWhenLoadingPattern
+```
+
+Whether TECHMANIA should reload currently selected skins when loading a pattern. Useful for skin development.
+
+```
+string theme
+```
+
+Name of the currently selected theme. TECHMANIA does not support applying a theme at runtime; the user must restart TECHMANIA for the new theme to take effect.
+
+### Timing
+
+```
+int touchOffsetMs
+int touchLatencyMs
+int keyboardMouseOffsetMs
+int keyboardMouseLatencyMs
+```
+
+The note offset / input latency of touchscreen / keyboard and mouse, all in milliseconds. See [Offset and latency](../Offset_and_latency.md) for an explanation.
+
+### Custom data location
+
+```
+bool customDataLocation
+```
+
+Whether to use custom data locations instead of the default ones. Call `tm.paths.ApplyCustomDataLocation()` to apply this.
+
+```
+string tracksFolderLocation
+string skinsFolderLocation
+string themesFolderLocation
+```
+
+The full paths of the tracks / skins / themes folder, if `customDataLocation` is true. Call `tm.paths.ApplyCustomDataLocation()` to apply these.
+
+### Discord rich presence
+
+```
+bool discordRichPresence
+```
+
+Read only. Whether Discord rich presence is on.
+
+```
+void TurnOnDiscordRichPresence()
+void TurnOffDiscordRichPresence()
+```
+
+Turns on / off Discord rich presence. These will take effect immediately.
+
+### Miscellaneous
+
+```
+Ruleset ruleset
+```
+
+The current ruleset.
+
+```
+EditorOptions editorOptions
+Modifiers modifiers
+```
+
+See [`EditorOptions`](#class-editoroptions) and [`Modifiers`](#class-modifiers).
+
+### Per-track options
+
+```
+PerTrackOptions GetPerTrackOptions(string guid)
+```
+
+Returns the [`PerTrackOptions`](#class-pertrackoptions) object corresponding to the track identified by the guid. The guid of a track is available at its `trackMetadata.guid`. If no [`PerTrackOptions`](#class-pertrackoptions) object exists for the track, a new one will be created.
+
+### Per-theme options
+
+```
+Dictionary<string, string> GetThemeOptions(string themeName)
+```
+
+Returns a `Dictionary` holding the theme options for the specified theme. You can read and write the dictionary as you see fit, and all content will be saved to disk with `SaveToFile()`.
+
+From the user's perspective, a theme's name is its filename, which the user can change. To prevent themes from being disconnected from their options when a rename happens, we allow themes to identify themselves consistently with the `themeName` parameter.
+
+All `Dictionary` methods are available on the returned object, but keep in mind that all values must be strings. You can use `Parse` methods on .NET types to convert strings to other types.
 
 ## Class `Paths`
 
@@ -607,6 +848,20 @@ int bps
 See [track.tech specification](../track.tech_specification.md).
 
 ## Class `PerTrackOptions`
+
+Contains options specific to a track. Access the `PerTrackOptions` for a track via `Options.GetPerTrackOptions`.
+
+```
+bool noVideo
+```
+
+Whether to hide the track's BGA, if any. If on, the background image will display in the BGA's place.
+
+```
+int backgroundBrightness
+```
+
+In \[0, 10\], where 10 is full brightness. Applies to both BGA and background image.
 
 ## Class `Record`
 
