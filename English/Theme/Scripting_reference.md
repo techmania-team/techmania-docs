@@ -752,7 +752,9 @@ Turns on / off Discord rich presence. These will take effect immediately.
 Ruleset ruleset
 ```
 
-The current ruleset.
+The currently chosen ruleset, an enum between standard, legacy and custom.
+
+This (`tm.options.ruleset`) is different from the `Ruleset` object accessed at `tm.ruleset`, which contains the specific numbers in the currently loaded ruleset.
 
 ```
 EditorOptions editorOptions
@@ -782,6 +784,122 @@ From the user's perspective, a theme's name is its filename, which the user can 
 All `Dictionary` methods are available on the returned object, but keep in mind that all values must be strings. You can use `Parse` methods on .NET types to convert strings to other types.
 
 ## Class `Paths`
+
+Contains methods to retrieve paths of TECHMANIA-related folders, as well as methods to manipulate paths.
+
+```
+const string kTrackFilename = "track.tech"
+```
+
+The `track.tech` filename as a constant.
+
+### Resource folders
+
+There is a set of track, skin and theme folders in an on-disk location (either next to TECHMANIA.exe or in custom data locations), and another set in "streaming assets". See [Folders and zips](../Folders_and_zips.md) for an explanation of streaming assets.
+
+In most cases, TECHMANIA will conceptually merge contents in streaming assets into the on-disk location, so you do not need to care about streaming assets at all. If for any reason you need a path specifically in streaming assets, you can pass `streamingAssets = true` to the corresponding method.
+
+```
+void ApplyCustomDataLocation()
+```
+
+Call this after changing any option related to custom data locations to apply them.
+
+```
+string GetTrackRootFolder(bool streamingAssets = false)
+```
+
+Returns the root folder for tracks. The track list in `GlobalResources` is built from this folder and its subfolders.
+
+```
+string GetSkinRootFolder(bool streamingAssets = false)
+```
+
+Returns the root folder for skins, which is the folder above the folders for skin types.
+
+```
+string GetSkinRootFolderForType(SkinType type, bool streamingAssets = false)
+```
+
+Returns the root folder for the specified type of skin, which is a subfolder of `GetSkinRootFolder`. The skin list of each type in `GlobalResources` is built from subfolders of this folder.
+
+```
+string GetSkinFolder(SkinType type, string name)
+```
+
+Returns the folder containing the skin with the specified name.
+
+```
+string GetThemeFolder(bool streamingAssets = false)
+```
+
+Returns the folder for themes. The theme list in `GlobalResources` is built from files in this folder.
+
+```
+string GetThemeFilePath(string name)
+```
+
+Returns the path to the theme file with the specified name.
+
+```
+string GetOptionsFilePath()
+string GetRulesetFilePath()
+string GetRecordsFilePath()
+```
+
+Returns the path to the options file, ruleset file and records file, respectively.
+
+### Path manipulation
+
+```
+string RemoveCharsNotAllowedOnFileSystem(string input)
+```
+
+Returns a copy of `input` with the following characters removed: `\/*:?\"<>|`
+
+```
+string FullPathToUri(string fullPath)
+```
+
+Converts the path to a URI in the `file://` scheme.
+
+```
+string HidePlatformInternalPath(string fullPath)
+```
+
+On mobile, this removes parts of `fullPath` that expose the OS's internal file system. The output path is no longer a valid path, and only suitable for display.
+
+On PC, this returns `fullPath` itself.
+
+```
+string RelativePath(string reference, string absolutePath)
+```
+
+Converts `absolutePath` to a relative path in reference to `reference`.
+
+```
+string EscapeBackslash(string path)
+```
+
+Replaces `\` with `\\`, so that paths on Windows do not form escape sequences when displayed on a visual element.
+
+```
+string GoUpFrom(string path)
+```
+
+Returns `path`'s parent folder. However, this does not go higher than `GetTrackRootFolder`; the return value for that folder is itself.
+
+```
+string Combine(string path1, string path2)
+```
+
+Combines the path parts.
+
+```
+bool IsInStreamingAssets(string path)
+```
+
+Determines whether the input path is in streaming assets.
 
 ## Class `Pattern`
 
