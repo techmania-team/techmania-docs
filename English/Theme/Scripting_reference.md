@@ -258,6 +258,12 @@ double bpm
 
 At `pulse`, change BPM to `bpm`.
 
+```
+float time
+```
+
+`pulse` converted to time. Only available after calling `PrepareForTimeCalculation` on the pattern.
+
 ## Class `ComboSkin`
 
 One of the 4 types of skins.
@@ -313,6 +319,7 @@ int volumePercent
 int panPercent
 bool endOfScan
 int GetScanNumber(int bps)
+float time
 ```
 
 See [`Note`](#class-note).
@@ -328,6 +335,18 @@ List<DragNode> nodes
 ```
 
 The nodes in this drag note. These determine the curve's shape. See [`DragNode`](#class-dragnode). There must be at least 2 nodes in each drag note, and the first node's anchor must be at (0, 0).
+
+```
+float gracePeriodLength
+```
+
+The grace period's length, in seconds. Only available after calling `CalculateTimeOfAllNotes` on the pattern.
+
+```
+float endTime
+```
+
+The time of the note's end. Only available after calling `CalculateTimeOfAllNotes` on the pattern.
 
 ## Class `EditorOptions`
 
@@ -489,6 +508,7 @@ int volumePercent
 int panPercent
 bool endOfScan
 int GetScanNumber(int bps)
+float time
 ```
 
 See [`Note`](#class-note).
@@ -498,6 +518,18 @@ int duration
 ```
 
 The duration of the hold, in pulses.
+
+```
+float gracePeriodLength
+```
+
+The grace period's length, in seconds. Only available after calling `CalculateTimeOfAllNotes` on the pattern.
+
+```
+float endTime
+```
+
+The time of the note's end. Only available after calling `CalculateTimeOfAllNotes` on the pattern.
 
 ## Class `LegacyRulesetOverride`
 
@@ -575,6 +607,12 @@ int GetScanNumber(int bps)
 ```
 
 A helper method to calculate the scan number (0-index) this note is in. This takes end-of-scan into consideration.
+
+```
+float time
+```
+
+The correct time of this note,. in seconds after the backing track begins. For hold and drag notes, this is for the start of the note. Only available after calling `CalculateTimeOfAllNotes` on the pattern.
 
 ## Class `NoteSkin`
 
@@ -905,6 +943,8 @@ Determines whether the input path is in streaming assets.
 
 The unit of gameplay. A track contains any number of patterns.
 
+### Pattern content
+
 ```
 PatternMetadata patternMetadata
 LegacyRulesetOverride legacyRulesetOverride
@@ -942,6 +982,99 @@ bool IsHidden(int lane)
 ```
 
 A helper method to determine whether the specified lane is a hidden lane.
+
+### Timing calculation
+
+```
+void PrepareForTimeCalculation()
+```
+
+Calculates and fills the `time`, `endTime` and `bpmAtStart` fields of all BPM events and time stops in this patterns. This enables other timing-related methods on the pattern.
+
+```
+void GetLengthInSecondsAndScans(out float seconds, out int scans)
+```
+
+Calculates and returns the pattern's length in both seconds and scans. Requires that `PrepareForTimeCalculation()` has been called. In Lua, this method takes no parameters and returns 2 values: `local seconds, scans = pattern.GetLengthInSecondsAndScans()`.
+
+```
+void CalculateTimeOfAllNotes()
+```
+
+Calculates and fills the `time`, `endTime` and `gracePeriodLength` fields of all notes in this pattern. Requires that `PrepareForTimeCalculation()` has been called.
+
+```
+float TimeToPulse(float time)
+float PulseToTime(float pulse)
+```
+
+Converts between time and pulse. Requires that `PrepareForTimeCalculation()` has been called.
+
+```
+float GetBPMAt(float pulse)
+```
+
+Calculates and returns the BPM at the specified pulse. Requires that `PrepareForTimeCalculation()` has been called.
+
+### Statistics and radar
+
+```
+int NumPlayableNotes()
+```
+
+Calculates and returns the number of playable notes in the pattern.
+
+```
+Pattern.Radar CalculateRadar()
+```
+
+Calculates and returns the [`Radar`](#struct-patternradar) of this pattern. Requires that `PrepareForTimeCalculation()` has been called.
+
+### Fingerprint
+
+```
+void CalculateFingerprint()
+```
+
+Calculates the fingerprint of this pattern.
+
+```
+string fingerprint
+```
+
+Read-only. The pattern's fingerprint. Only available after calling `CalculateFingerprint()`.
+
+## Struct Pattern.RadarDimension
+
+Describes one dimension of a radar.
+
+```
+float raw
+int normalized
+```
+
+The raw and normalized values of this dimension. `normalized` is in \[0, 100\]. See [Radar](../Radar.md).
+
+## Struct Pattern.Radar
+
+A struct to describe a pattern from various dimensions. Calculate the radar of a pattern with `Pattern.CalculateRadar`. See [Radar](../Radar.md).
+
+```
+Pattern.RadarDimension density
+Pattern.RadarDimension peak
+Pattern.RadarDimension speed
+Pattern.RadarDimension chaos
+Pattern.RadarDimension async
+```
+
+The 5 main dimensions.
+
+```
+float suggestedLevel
+int suggestedLevelRounded
+```
+
+The suggested level of the pattern, calculated from the radar dimensions.
 
 ## Class `PatternMetadata`
 
@@ -983,9 +1116,208 @@ In \[0, 10\], where 10 is full brightness. Applies to both BGA and background im
 
 ## Class `Record`
 
+Stores the record for a specific pattern under a specific ruleset. Retrieve records with `tm.records.GetRecord`.
+
+```
+string guid
+string fingerprint
+Options.Ruleset ruleset
+int score
+PerformanceMedal medal
+string gameVersion
+```
+
+The fields in the record. `guid` and `fingerprint` are of the pattern. All fields are read only.
+
+```
+string Rank()
+```
+
+Converts `score` to a letter rank. See [`ScoreKeeper`](#class-scorekeeper)``.ScoreToRankAssumingStageClear``.
+
 ## Class `Records`
 
+Holds all of the player's records. Access the instance via `tm.records`.
+
+```
+string kVersion
+```
+
+The version of the serialization format. The current value is "1". Refer to [format version history](../Format_version_history.md) for more details.
+
+```
+Record GetRecord(Pattern p, Options.Ruleset ruleset)
+Record GetRecord(Pattern p)
+```
+
+Retrieves the [`Record`](#class-record) for the specified [`Pattern`](#class-pattern) and ruleset. The entire pattern must be passed in because as part of the process, TECHMANIA will calculate the input pattern's fingerprint, and only return a record if the fingerprint matches.
+
+The `ruleset` is the `Options.Ruleset` enum, not a `Ruleset` object. It is also optional. If omitted, this method will retrieve record for the currently selected ruleset. Note that no record will ever be created for the custom ruleset.
+
+If no record exists for the specified pattern and ruleset, returns nil.
+
 ## Class `Ruleset`
+
+Stores the actual numbers in a ruleset. Not to be confused with `Options.ruleset`, whose value is an enum `Ruleset`. Access the numbers in the currently selected ruleset via `tm.ruleset`.
+
+```
+string kVersion
+```
+
+The version of the serialization format. The current value is "2". Refer to [format version history](../Format_version_history.md) for more details.
+
+```
+List<float> timeWindows
+bool timeWindowsInPulses
+float longNoteGracePeriod
+bool longNoteGracePeriodInPulses
+List<float> scanMarginTopBottom
+List<float> scanMarginMiddle
+float scanMarginBeforeFirstBeat
+float scanMarginAfterLastBeat
+float hitboxWidth
+float hitboxHeight
+float chainHeadHitboxWidth
+float chainNodeHitboxWidth
+float dragHitboxWidth
+float dragHitboxHeight
+float ongoingDragHitboxWidth
+float ongoingDragHitboxHeight
+int maxHp
+List<int> hpDeltaBasic
+List<int> hpDeltaChain
+List<int> hpDeltaHold
+List<int> hpDeltaDrag
+List<int> hpDeltaRepeat
+List<int> hpDeltaBasicDuringFever
+List<int> hpDeltaChainDuringFever
+List<int> hpDeltaHoldDuringFever
+List<int> hpDeltaDragDuringFever
+List<int> hpDeltaRepeatDuringFever
+bool comboBonus
+bool constantFeverCoefficient
+int feverBonusOnMax
+int feverBonusOnCool
+int feverBonusOnGood
+```
+
+See [Rulesets](../Rulesets.md).
+
+```
+Ruleset standard
+Ruleset legacy
+Ruleset custom
+```
+
+The 3 available rulesets.
+
+```
+Status LoadCustomRuleset()
+```
+
+Attempts to load the custom ruleset from disk, and returns a [`Status`](#class-status) indicating whether it succeeded. If the custom ruleset is loaded, it is accessible from the `custom` field.
+
+Note that the game will call this internally when loading a pattern, if the custom ruleset is selected.
+
+## Class `ScoreKeeper`
+
+Keeps track of score, combo, HP and fever. Access the `ScoreKeeper` instance via `tm.game.scoreKeeper`. This instance is available in states `GameState.State.LoadComplete`, `GameState.State.Ongoing`, `GameState.State.Paused` and `GameState.State.Complete`.
+
+```
+bool stageFailed
+```
+
+Whether the player has failed to clear the stage due to losing all HP. If true, the score will be invalid.
+
+### Score
+
+```
+int totalNotes
+```
+
+Returns the total number of playable notes in the pattern.
+
+```
+int NumNotesWithJudgement(Judgement judgement)
+```
+
+Returns the current number of notes resolved with the specified judgement.
+
+```
+bool AllNotesResolved()
+```
+
+Returns whether all notes have been resolved.
+
+```
+int ScoreFromNotes()
+int totalFeverBonus
+int ComboBonus()
+```
+
+Returns the 3 parts that make up the total score: current score from notes, current cumulative fever bonus, and current combo bonus, respectively.
+
+```
+int TotalScore()
+```
+
+A helper that returns the sum of `ScoreFromNotes()`, `totalFeverBonus` and `ComboBonus()`.
+
+```
+int maxScore
+```
+
+The maximum possible score from notes on the current ruleset. If the ruleset enables combo bonus, this is 290,000. If the ruleset disables combo bonus, this is 300,000.
+
+```
+PerformanceMedal Medal()
+```
+
+Returns the best medal that the current score qualifies for. If the game is not complete yet, this assumes unresolved notes will be resolved with rainbow MAX.
+
+```
+string Rank()
+```
+
+Returns the rank of the current score, one of "S++", "S+", "S", "A++", "A+", "A", "B", "C", and "F" (on stage failed).
+
+```
+string ScoreToRankAssumingStageClear(int score)
+```
+
+A static method that returns the rank of the specified total score, instead of the current score. It also assumes no stage failed.
+
+### Combo
+
+```
+int currentCombo
+int maxCombo
+```
+
+The current combo and max combo so far.
+
+### HP
+
+```
+int maxHp
+int hp
+```
+
+The max HP and current HP, respectively.
+
+### Fever
+
+```
+ScoreKeeper.FeverState feverState
+```
+
+The current fever state.
+
+```
+float feverAmount
+```
+
+The current fever amount, in \[0, 1\].
 
 ## Class `SpriteSheet`
 
@@ -1588,6 +1920,24 @@ int duration
 ```
 
 At `pulse`, stop time for `duration` beats.
+
+```
+float time
+```
+
+`pulse` converted to time. Only available after calling `PrepareForTimeCalculation` on the pattern.
+
+```
+float endTime
+```
+
+The time when the time stop ends. Only available after calling `PrepareForTimeCalculation` on the pattern.
+
+```
+double bpmAtStart
+```
+
+The BPM when the time stop begins. Only available after calling `PrepareForTimeCalculation` on the pattern.
 
 ## Class `Track`
 
