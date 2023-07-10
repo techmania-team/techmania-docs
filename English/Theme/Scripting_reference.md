@@ -1321,6 +1321,29 @@ The current fever amount, in \[0, 1\].
 
 ## Class `SpriteSheet`
 
+Elements of skins. Each `SpriteSheet` object describes one image file and how it is sliced into sprites.
+
+```
+string filename
+int rows
+int columns
+int firstIndex
+int lastIndex
+int padding
+bool bilinearFilter
+float scale
+float speed
+bool additiveShader
+```
+
+See [Skins](../Skins.md).
+
+```
+Texture2D texture
+```
+
+The texture in `filename` loaded into memory.
+
 ## Class `Status`
 
 Contains either OK or an error message. Many I/O operations that may succedd or fail report the result with a `Status` object.
@@ -1351,6 +1374,72 @@ If the code is not "OK", these fields may contain a more detailed error message 
 
 ## Class `ThemeApi.CalibrationPreview`
 
+This interface allows your theme to render and control a preview of the offset and latency settings in `Options`. Access an instance via `tm.calibrationPreview`.
+
+### Setup
+
+```
+ThemeApi.VisualElementWrap previewContainer
+```
+
+The `VisualElementWrap` to render the preview in. TECHMANIA will spawn elements as its children.
+
+```
+List<string> timingDisplayClasses
+```
+
+A list of USS classes that TECHMANIA will apply to the timing display texts under each note.
+
+```
+int timingDisplayMaxLines
+```
+
+The max number of lines to display in each timing display. Each line corresponds to 1 touch / keystroke / click on the corresponding note.
+
+```
+string earlyString
+string lateString
+```
+
+The "early" and "late" strings. TECHMANIA will append them to each line in the timing display, in the format of "\<device\> \<time difference\> \<early/late string\>". This allows the timing display to be localized.
+
+```
+bool setEarlyLateColors
+Color earlyColor
+Color lateColor
+```
+
+Whether to set special colors for `earlyString` and `lateString`. Does not affect the rest of timing display. If set, these colors will override any styles in the USS classes.
+
+### Controls
+
+```
+void Begin()
+```
+
+Begins the calibration preview. TECHMANIA will render 5 notes in `previewContainer`, a timing display text under each note, and a scanline that scans from left to right. TECHMANIA will also play a predefined music track in the background, and predefined keysounds on each note.
+
+By default, the timing calculations will use note offset and input latency for touchscreen; call `SwitchToTouch()` and `SwitchToKeyboardMouse()` to change that.
+
+```
+void ResetSize()
+```
+
+Resets the layout of internal elements. Call this after changing the layout of `previewContainer`.
+
+```
+void SwitchToTouch()
+void SwitchToKeyboardMouse()
+```
+
+Tells the calibration preview to use note offset and input latency for touchscreen / keyboard and mouse, respectively.
+
+```
+void Conclude()
+```
+
+Stops the preview and removes all elements in `previewContainer`.
+
 ## Class `ThemeApi.EditorInterface`
 
 ## Class `ThemeApi.GameSetup`
@@ -1360,6 +1449,53 @@ If the code is not "OK", these fields may contain a more detailed error message 
 ## Class `ThemeApi.IO`
 
 ## Class `ThemeApi.SkinPreview`
+
+This interface allows your theme to render and control a preview of the skin settings in `Options`. Access an instance via `tm.skinPreview`.
+
+### Setup
+
+```
+ThemeApi.VisualElementWrap previewContainer
+```
+
+The `VisualElementWrap` to render the preview in. TECHMANIA will spawn elements as its children.
+
+```
+float bpm
+int lanes
+```
+
+The BPM and number of lanes in the preview.
+
+```
+Judgement judgement
+int combo
+bool fever
+```
+
+Options on the VFX and combo text rendered in the preview: which judgement to show, the combo number, and whether to show fever MAX instead of rainbow MAX / MAX.
+
+### Controls
+
+```
+void Begin()
+```
+
+Begins the skin preview. TECHMANIA will render 1 note in `previewContainer`, and a scanline that scans from left to right.
+
+No matter the number of playable lanes, the note will be rendered in the 2nd one from the top.
+
+```
+void ResetSize()
+```
+
+Resets the layout of internal elements. Call this after changing the layout of `previewContainer`.
+
+```
+void Conclude()
+```
+
+Stops the preview and removes all elements in `previewContainer`.
 
 ## Class `ThemeApi.StringWrap`
 
