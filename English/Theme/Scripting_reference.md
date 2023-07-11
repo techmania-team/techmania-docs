@@ -1442,9 +1442,197 @@ Stops the preview and removes all elements in `previewContainer`.
 
 ## Class `ThemeApi.EditorInterface`
 
+Allows your theme to launch and exit the TECHMANIA editor (recall that the editor is outside of themes). Access an instance via `tm.editorInterface`.
+
+### Launching and exiting
+
+```
+void LaunchOnTrack(string trackFolder)
+```
+
+Launches the editor on the track in the specified folder. When the user later exits the editor, TECHMANIA will call `onExit`.
+
+```
+string TrackToDirectoryName(string title, string artist)
+```
+
+A utility method to generate a track folder name based on the title, artist and current time.
+
+```
+Status CreateNewTrack(string parentFolder, string title, string artist, out string newTrackFolder)
+```
+
+Attempts to create a new track with the specified title and artist, in the specified parent folder. If successful, returns the new track's folder so you can pass it to `LaunchOnTrack`. It also updates the track lists in `tm.resources`.
+
+In Lua, this method returns 2 values: `local status, newTrackFolder = tm.editorInterface.CreateNewTrack(parentFolder, title, artist)`
+
+```
+function onExit
+```
+
+A callback that TECHMANIA will call when the user exits the editor by clicking the "back" button or "delete track" button on the track setup screen. It will be called with no arguments.
+
+Note that, if the user deletes a track, TECHMANIA will update the track lists in `tm.resources`.
+
+### Editor preview
+
+```
+function onPreview
+```
+
+A callback that TECHMANIA will call when the user enters editor preview by clicking the "preview" button in the pattern editor. It will be called with the following arguments:
+- `string trackFolder`
+- `Track track`
+- `Pattern pattern`
+- `int startingScan`
+
+However, these arguments are only for informational purposes. TECHMANIA will handle all the game setup internally.
+
+```
+void ReturnFromPreview()
+```
+
+Ends the editor preview and returns to the editor.
+
 ## Class `ThemeApi.GameSetup`
 
+Setup for the TECHMANIA game. Your theme should set up all fields before loading any pattern.
+
+### Per-pattern setup
+
+```
+string trackFolder
+string patternGuid
+```
+
+The track folder and pattern GUID of the pattern to load and play. `ThemeApi.GameState.BeginLoading()` will load the track and pattern specified here.
+
+### Common setup
+
+These fields only need to be set up once, and will be reused between patterns.
+
+```
+VisualElementWrap bgContainer
+VisualElementWrap gameContainer
+VisualElementWrap vfxComboContainer
+```
+
+The [`VisualElementWrap`](#class-themeapivisualelementwrap)s that hold the pattern's background, the game elements (note, scanlines, input feedback, etc.), and VFX and combo text, respectively. The three groups of elements are rendered in separate containers so you can insert other layers between them.
+
+`vfxComboContainer` is currently unused, but you should set it anyway, so in the future when TECHMANIA allows rendering VFX and combo text on UI Toolkit, it will work out of the box.
+
+```
+AudioClip assistTick
+```
+
+The sound to use for the "assist tick" modifier.
+
+```
+function onLoadProgress
+```
+
+A callback that is called when TECHMANIA makes any progress on loading the pattern. Parameter: [`LoadProgress`](#class-themeapigamesetuploadprogress).
+
+```
+function onLoadError
+```
+
+A callback that is called when TECHMANIA encounters an error when loading the pattern and enters `LoadError` state. Parameter: [`Status`](#class-status)
+
+The only available state change at this point is `ThemeApi.GameState.Conclude()`.
+
+```
+function onLoadComplete
+```
+
+A callback that is called when TECHMANIA completes loading a pattern and enters `LoadComplete` state. It becomes possible for your theme to call `ThemeApi.GameState.Begin()`. Parameter: none.
+
+```
+function onUpdate
+```
+
+A callback that is called every frame when TECHMANIA is in `Ongoing` or `Paused` state. Parameter: [`GameTimer`](#class-themeapigametimer).
+
+```
+function onNoteResolved
+```
+
+A callback that is called every time a note is resolved. Parameter: [`Note`](#class-note), [`Judgement`](#enum-judgement), [`ScoreKeeper`](#class-scorekeeper).
+
+```
+function onAllNotesResolved
+```
+
+A callback that is called right after the last note in a pattern is resolved. The game may not yet be complete at this point. Parameter: [`ScoreKeeper`](#class-scorekeeper).
+
+```
+function onComboTick
+```
+
+A callback that is called every time an ongoing hold or drag note increments combo count, whether it updates the max combo or not. Parameter: current combo as `int`.
+
+```
+function onFeverReady
+```
+
+A callback that is called when fever is ready to be activated. Parameter: none.
+
+```
+function onFeverUnready
+```
+
+A callback that is called when fever is no longer ready to be activated, due to a MISS or BREAK. Parameter: none.
+
+```
+function onFeverActivated
+```
+
+A callback that is called when fever is activated, whether by the player or by the auto fever modifier. Parameter: none.
+
+```
+function onFeverUpdate
+```
+
+A callback that is called when the fever value changes, whether due to resolving a note, or due to the flow of time when fever is active. Parameter: current fever value as `float`, in \[0, 1\].
+
+```
+function onFeverEnd
+```
+
+A callback that is called when fever ends after running is duration. Parameter: fever bonus from this activation as `int`.
+
+```
+function onStageClear
+```
+
+A callback that is called when the player completes the pattern and the game enters `Complete` state. The game will no longer accept input or play any background audio/video at this point. Parameter: `ScoreKeeper`.
+
+```
+function onStageFailed
+```
+
+A callback that is called when the player fails the game due to losing to all HP and the game enters `Complete` state. The game will no longer accept input or play any background audio/video at this point. Parameter: `ScoreKeeper`.
+
+## Class `ThemeApi.GameSetup.LoadProgress`
+
+Contains details on the progress of pattern loading.
+
+```
+string fileJustLoaded
+```
+
+The path of the most recently loaded file, **relative** to the track folder.
+
+```
+int filesLoaded
+int totalFiles
+```
+
+The number of files loaded so far, and the total number of files to load.
+
 ## Class `ThemeApi.GameState`
+
+## Class `ThemeApi.GameTimer`
 
 ## Class `ThemeApi.IO`
 
