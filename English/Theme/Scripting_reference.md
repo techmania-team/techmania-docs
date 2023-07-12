@@ -378,6 +378,83 @@ float lane
 float pulse
 ```
 
+## Class `GameTimer`
+
+Exposes the internal game timer. Access an instance via `tm.game.timer`. All fields are read-only.
+
+### Time
+
+```
+float baseTime
+```
+
+The "base time" in seconds, which drives the backing track, BGA, hidden notes and auto-play notes.
+
+```
+float prevFrameBaseTime
+```
+
+Base time of the previous frame.
+
+```
+float gameTime
+```
+
+The "game time" in seconds, which is calculated by applying the note offset to base time. This drives the scanlines and playable notes.
+
+```
+int speedPercent
+float speed
+```
+
+The game speed in integer percents (normal speed is 100) and float (normal speed is 1), respectively.
+
+### Pulse, beat, scan
+
+```
+int pulsesPerScan
+```
+
+A helper with conversion between pulse and scan. Equals (pulses per beat) * (beats per scan).
+
+```
+float pulse
+float beat
+float scan
+```
+
+The current pulse, beat and scan number, calculated from `gameTime`. These are all internal number, meaning they all start from 0, despite the editor showing them in 1-index.
+
+```
+int intPulse
+int intBeat
+int intScan
+```
+
+`pulse`, `beat` and `scan` rounded down to the nearest integer, for convenience.
+
+```
+float prevFrameScan
+int prevFrameIntScan
+```
+
+The `scan` and `intScan` of the previous frame. Some internal updates rely on this.
+
+### Pattern border
+
+```
+int firstScan
+int lastScan
+```
+
+The numbers of the first scan and last scan of the current pattern. Scan numbers start from 0.
+
+```
+float patternEndTime
+```
+
+The base time when the pattern ends, in seconds.
+
 ## Class `GameUISkin`
 
 One of the 4 types of skins.
@@ -1044,7 +1121,7 @@ string fingerprint
 
 Read-only. The pattern's fingerprint. Only available after calling `CalculateFingerprint()`.
 
-## Struct Pattern.RadarDimension
+## Struct `Pattern.RadarDimension`
 
 Describes one dimension of a radar.
 
@@ -1055,7 +1132,7 @@ int normalized
 
 The raw and normalized values of this dimension. `normalized` is in \[0, 100\]. See [Radar](../Radar.md).
 
-## Struct Pattern.Radar
+## Struct `Pattern.Radar`
 
 A struct to describe a pattern from various dimensions. Calculate the radar of a pattern with `Pattern.CalculateRadar`. See [Radar](../Radar.md).
 
@@ -1155,6 +1232,12 @@ Retrieves the [`Record`](#class-record) for the specified [`Pattern`](#class-pat
 The `ruleset` is the `Options.Ruleset` enum, not a `Ruleset` object. It is also optional. If omitted, this method will retrieve record for the currently selected ruleset. Note that no record will ever be created for the custom ruleset.
 
 If no record exists for the specified pattern and ruleset, returns nil.
+
+```
+void SaveToFile()
+```
+
+Saves the current records to disk.
 
 ## Class `Ruleset`
 
@@ -1632,7 +1715,140 @@ The number of files loaded so far, and the total number of files to load.
 
 ## Class `ThemeApi.GameState`
 
-## Class `ThemeApi.GameTimer`
+Interface to the state machine of the TECHMANIA game. See [`ThemeApi.GameState.State`](#enum-themeapigamestatestate) for an explanation on all possible states. Access an instance via `tm.game`. Also contains APIs to control the game in specific states.
+
+```
+ThemeApi.GameState.State state
+```
+
+The current state. Read only.
+
+### State transition
+
+```
+void BeginLoading()
+```
+
+Begins loading the game, using the track folder and pattern GUID in `tm.gameSetup`. Only callable from `Idle` state; transitions to `Loading` state.
+
+During loading, the game will call `tm.gameSetup.onLoadProgress`. If loading succeeds, the game will transition to `LoadComplete` state and call `tm.gameSetup.onLoadComplete`. If loading fails, the game will transition to `LoadError` state and call `tm.gameSetup.onLoadError`.
+
+```
+void Begin()
+```
+
+Begins the game. Only callable from `LoadComplete` state; transitions to `Ongoing` state.
+
+During the game, TECHMANIA will call various callbacks in `tm.gameSetup` related to notes, combo and fever. Once the game ends (either in stage clear or stage failed), the game will transition to `Complete` state and call `tm.gameSetup.onStageClear` or `tm.gameSetup.onStageFailed`.
+
+```
+void Pause()
+```
+
+Pauses the game. Only callable from `Ongoing` state; transitions to `Paused` state.
+
+```
+void Unpause()
+```
+
+Unpauses the game. Only callable from `Paused` state; transitions to `Ongoing` state.
+
+```
+void Conclude()
+```
+
+Concludes the current game and releases all related resources. Callable from any state; transitions to `Idle` state.
+
+Note that `scoreKeeper` will no longer be available after this call.
+
+### Game control
+
+```
+ScoreKeeper scoreKeeper
+```
+
+Provides the [`ScoreKeeper`](#class-scorekeeper) object for the current game. Only available in `LoadComplete`, `Ongoing`, `Paused` and `Complete` states.
+
+```
+GameTimer timer
+```
+
+Provides the [`GameTimer`](#class-gametimer) object for the current game. Only available in `LoadComplete`, `Ongoing` and `Paused` states.
+
+```
+void ActivateFever()
+```
+
+Activates fever. Only callable in `Ongoing` state, and when fever is ready.
+
+### Background
+
+```
+void UpdateBgBrightness()
+```
+
+Applies the background brightness from the [`PerTrackOptions`](#class-pertrackoptions) corresponding to the current track. Only callable in `Ongoing`, `Paused` and `Complete` states.
+
+```
+void ResetElementSizes()
+```
+
+Resets the layout of internal elements in `tm.gameSetup.gameContainer` and `tm.gameSetup.gameContainer`. Call this after changing the layout either. Only callable in `Ongoing`, `Paused` and `Complete` states.
+
+```
+void StopAllGameAudio()
+void StopBga()
+```
+
+Stops all game audio and BGA, respectively.
+
+### Score and record
+
+```
+bool ScoreIsValid()
+```
+
+Returns whether the current score is valid. A score becomes invalid if:
+* Stage failed, or
+* Any special modifier is used, or
+* A custom ruleset is used.
+
+```
+bool ScoreIsNewRecord()
+```
+
+Returns whether the current total score is a new record. If the score is not valid, this is always false. Only callable in `Complete` state.
+
+```
+void UpdateRecord()
+```
+
+Updates the record on the current pattern. Total score and medal are saved separately. Only callable in `Complete` state.
+
+The update is only in memory; call `tm.records.SaveToFile()` to save the records to disk.
+
+### Practice mode
+
+All methods here are only callable in practice mode.
+
+```
+void JumpToScan(int scan)
+```
+
+Jumps to the specified scan. Even though the editor displays scan numbers in 1-index (ie. the first scan is scan 1), internal scan numbers are in 0-index, including the argument to this method.
+
+```
+void SetSpeed(int speedPercent)
+```
+
+Sets the game speed. `speedPercent` must be positive.
+
+```
+bool autoPlay
+bool showHitbox
+```
+
+Gets or sets whether to enable auto play, and whether to show hitbox on notes, respectively.
 
 ## Class `ThemeApi.IO`
 
@@ -2315,8 +2531,6 @@ Refer to [Skins](../Skins.md#vfx-skin) for an explanation of these fields.
 
 ## Enum `CurveType`
 
-## Enum `GameState.State`
-
 ## Enum `Judgement`
 
 ## Enum `Modifiers.AssistTick`
@@ -2348,5 +2562,7 @@ Refer to [Skins](../Skins.md#vfx-skin) for an explanation of these fields.
 ## Enum `PerformanceMedal`
 
 ## Enum `ScoreKeeper.FeverState`
+
+## Enum `ThemeApi.GameState.State`
 
 ## Enum `VisualElementWrap.EventType`
