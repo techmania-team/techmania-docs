@@ -102,7 +102,7 @@ The `net` table exposes the following .NET types. You can find documentation on 
 |`string`|`ThemeApi.StringWrap`*|
 |`dateTime`|`System.DateTime`|
 
-\* Moonsharp converts .NET strings to Lua strings, so we are unable to call instance methods in `System.String` on strings. To work around this, we provide the `ThemeApi.StringWrap` class, making available most `System.String` instance methods as static methods. Refer to the reference on class `ThemeApi.StringWrap` for details and examples.
+\* Moonsharp converts .NET strings to Lua strings, so we are unable to call instance methods in `System.String` on strings. To work around this, we provide the `ThemeApi.StringWrap` class, making available most `System.String` instance methods as static methods. Refer to [`ThemeApi.StringWrap`](#class-themeapistringwrap) for details and examples.
 
 ## `unity` table
 
@@ -493,6 +493,8 @@ List<TrackWithError> GetTracksWithError(string parent)
 Returns all [`TrackSubfolder`](#class-globalresourcetracksubfolder), [`TrackInFolder`](#class-globalresourcetrackinfolder) or [`TrackWithError`](#class-globalresourcetrackwitherror) objects in the specified parent folder, corresponding to, respectively, subfolders in it, tracks in it (but not in a subfolder), and tracks with errors (due to I/O errors, deserialization errors, etc.) in it.
 
 `parent` should be the track root folder, available at `tm.paths.GetTrackRootFolder()`, or a subfolder of it.
+
+If there are no subfolders / tracks / tracks with errors in `parent`, or `parent` does not exist, returns an empty list.
 
 ```
 void ClearTrackList()
@@ -1852,6 +1854,71 @@ Gets or sets whether to enable auto play, and whether to show hitbox on notes, r
 
 ## Class `ThemeApi.IO`
 
+Contains methods to load resources from either the theme or the disk. Access this class via `tm.io`.
+
+### Loading from the theme
+
+```
+string LoadTextFileFromTheme(string path)
+UnityEngine.Texture2D LoadTextureFromTheme(string path)
+UnityEngine.AudioClip LoadAudioFromTheme(string path)
+UnityEngine.TextCore.Text.FontAsset LoadFontFromTheme(string path)
+```
+
+Loads a text file / texture / audio clip / font from the theme, respectively. These methods are synchronous and return the resource immediately. The `path` argument should begin with `Assets/UI/`. On error, these methods return `nil`.
+
+```
+void LoadVideoFromTheme(string path, function callback)
+```
+
+Loads a video from the theme as a `VideoElement` object. The callback will be called with 2 arguments: a [`Status`](#class-status) object, and the loaded [`VideoElement`](#class-themeapivideoelement) object.
+
+### Loading from the disk
+
+```
+bool FileExists(string path)
+```
+
+Returns whether a file exists at the specified path.
+
+```
+void LoadTextureFromFile(string path, function callback)
+void LoadAudioFromFile(string path, function callback)
+void LoadVideoFromFile(string path, function callback)
+```
+
+Loads a texture / audio clip / video from the disk, respectively. These methods are asynchronous and may take a few frames to complete. To receive the loaded resource, pass in a callback that will be called when the loading is complete. The callback will be called with 2 parameters: a [`Status`](#class-status) object, and the resource object (if status is OK):
+
+* `UnityEngine.Texture2D` for texture
+* `UnityEngine.AudioClip` for audio
+* [`VideoElement`](#class-themeapivideoelement) for video
+
+```
+Track LoadFullTrack(string path)
+```
+
+Loads the `track.tech` file at the specified path, and returns the deserialized [`Track`](#class-track) object. Since the track list in `GlobalResource` only contains minimized tracks, you can call this to load the full track if you need to access the notes.
+
+```
+void ReloadTrackList(function progressCallback, function completeCallback)
+void UpgradeAllTracks(function progressCallback, function completeCallback)
+```
+
+Reloads the track list from disk / upgrades all tracks to the latest version. `ReloadTrackList` does not modify tracks on disk and only updates the track list in `GlobalResource`. `UpgradeAllTracks` modifies tracks on disk, so there is a risk of I/O errors.
+
+Both methods take a while to complete. While the reload / upgrade is in progress, TECHMANIA will call `progressCallback` with the path of the track currently being loaded / upgraded, as a string. Once the reload / upgrade is complete, TECHMANIA will call `completeCallback` with a [`Status`](#class-status) object.
+
+```
+void ReloadNoteSkin(function progressCallback, function completeCallback)
+void ReloadVfxSkin(function progressCallback, function completeCallback)
+void ReloadComboSkin(function progressCallback, function completeCallback)
+void ReloadGameUiSkin(function progressCallback, function completeCallback)
+```
+
+Reloads the specified type of skin from disk. The name of the skin to load is read from options.
+
+All methods take a while to complete. While the reload is in progress, TECHMANIA will call `progressCallback` with the path of the file currently being loaded, as a string. Once the reload is complete, TECHMANIA will call `completeCallback` with a [`Status`](#class-status) object.
+
 ## Class `ThemeApi.SkinPreview`
 
 This interface allows your theme to render and control a preview of the skin settings in `Options`. Access an instance via `tm.skinPreview`.
@@ -1902,6 +1969,60 @@ void Conclude()
 Stops the preview and removes all elements in `previewContainer`.
 
 ## Class `ThemeApi.StringWrap`
+
+Provides common .NET string methods as static methods. Some instance methods are converted to static methods with the 1st argument being the string instance. Refer to [net table](#net-table) for why this is necessary. Access this class via `net.string`.
+
+```
+int Length(string s)
+bool Contains(string s, string value)
+bool EndsWith(string s, string value)
+string DoubleToString(double d, string format)
+string Format(string format, string arg)
+string Format(string format, string arg1, string arg2)
+string Format(string format, string arg1, string arg2, string arg3)
+string Format(string format, string arg1, string arg2, string arg3, string arg4)
+int IndexOf(string s, string value)
+int IndexOf(string s, string value, int startIndex)
+string Insert(string s, int startIndex, string value)
+string Join(string separator, string[] values)
+int LastIndexOf(string s, string value)
+int LastIndexOf(string s, string value, int startIndex)
+string PadLeft(string s, int totalWidth)
+string PadLeft(string s, int totalWidth, string paddingChar)
+string PadRight(string s, int totalWidth)
+string PadRight(string s, int totalWidth, string paddingChar)
+string Remove(string s, int startIndex, int count)
+string Replace(string s, string oldValue, string newValue)
+string[] Split(string s, string separator)
+bool StartsWith(string s, string value)
+string Substring(string s, int startIndex)
+string Substring(string s, int startIndex, int length)
+string ToLower(string s)
+string ToUpper(string s)
+string Trim(string s)
+string TrimEnd(string s)
+string TrimStart(string s)
+```
+
+Some examples of how to convert a .NET string instance method to a `StringWrap` static method:
+
+.NET: `string s = "foo";`
+
+Lua: `local s = "foo"`
+
+.NET: `int l = s.Length;`
+
+Lua: `local l = net.string.Length(s)`
+
+.NET: `string paddedS = s.PadLeft(5);`
+
+Lua: `local paddedS = net.string.PadLeft(s, 5)`
+
+Some notes on specific methods:
+
+* `DoubleToString`'s 2nd argument is the format string passed to .NET's `double.ToString`.
+* For methods that deal with indices, since they are passed to .NET, remember that they are in 0-index.
+* For `PadLeft` and `PadRight` that accept a `paddingChar`, since there is no character type in Lua, pass in a 1-character string.
 
 ## Class `ThemeApi.Techmania`
 
@@ -2080,6 +2201,69 @@ end)
 ```
 
 ## Class `ThemeApi.VideoElement`
+
+A wrapper around Unity's video player that can play video onto a specified [`VisualElementWrap`](#class-themeapivisualelementwrap). [`ThemeApi.IO`](#class-themeapiio)'s video loading methods return videos as `VideoElement` objects.
+
+Internally, the `VideoElement` manages a render texture, the video player plays onto it, and the target [`VisualElementWrap`]'s background image is set to it.
+
+Remember to `Dispose()` the `VideoElement` after you are done with the video, in order to release memory.
+
+```
+ThemeApi.VisualElementWrap targetElement
+```
+
+The `VisualElementWrap` to play the video on.
+
+```
+UnityEngine.Video.VideoPlayer player
+```
+
+Provides access to the underlying Unity video player.
+
+```
+UnityEngine.RenderTexture renderTexture
+```
+
+Provides access to the underlying render texture.
+
+### Properties
+
+```
+float length
+float time
+```
+
+The total length / current time of the video, both in seconds.
+
+```
+bool isPlaying
+bool isPaused
+```
+
+Whether the video is playing / paused. Both are read only.
+
+```
+bool isLooping
+```
+
+Whether the video loops.
+
+### Controls
+
+```
+void Play()
+void Pause()
+void Unpause()
+void Stop()
+```
+
+Plays / pauses / unpauses / stops the video.
+
+```
+void Dispose()
+```
+
+Disposes of the `VideoElement` and releases memory.
 
 ## Class `ThemeApi.VisualElementWrap`
 
