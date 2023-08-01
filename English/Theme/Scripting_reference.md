@@ -1479,6 +1479,18 @@ string filePath
 
 If the code is not "OK", these fields may contain a more detailed error message and/or the path of the file that caused the error.
 
+## Class `ThemeApi.ApplicationFocusEvent`
+
+A custom event raised when the TECHMANIA window gains or loses focus.
+
+This class inherits from `UnityEngine.UIElements.EventBase`.
+
+```
+bool focus
+```
+
+Whether the TECHMANIA window has focus.
+
 ## Class `ThemeApi.CalibrationPreview`
 
 This interface allows your theme to render and control a preview of the offset and latency settings in `Options`. Access an instance via `tm.calibrationPreview`.
@@ -1600,6 +1612,12 @@ void ReturnFromPreview()
 ```
 
 Ends the editor preview and returns to the editor.
+
+## Class `ThemeApi.FrameUpdateEvent`
+
+A custom event raised once every frame. Attaching callbacks to this event may affect performance.
+
+This class has no members other than those inherited from `UnityEngine.UIElements.EventBase`.
 
 ## Class `ThemeApi.GameSetup`
 
@@ -2481,13 +2499,13 @@ void RegisterCallback(ThemeApi.VisualElementWrap.EventType eventType,
     any data)
 ```
 
-Registers a callback function for the specified event type. The `data` parameter is optional, and can be of any Lua type. If `data` is set, it will be passed back to the callback when called.
+Registers a callback function for the specified event type. See [`EventType`](#enum-visualelementwrapeventtype) for all possible event types. The `data` parameter is optional, and can be of any Lua type. If `data` is set, it will be passed back to the callback when called.
 
 You can register multiple handlers for each event type on each element. This is one of the additional features `VisualElementWrap` provides over `VisualElement`.
 
 The callback will be called with 3 arguments:
 * The `ThemeApi.VisualElementWrap` receiving the event
-* The event object
+* The event object (see [`EventType`](#enum-visualelementwrapeventtype) for the type of this argument)
 * `data`
 
 Example:
@@ -2987,10 +3005,65 @@ Fever is activated and decreasing with time. No judgement will affect its value 
 
 ## Enum `ThemeApi.GameState.State`
 
-Describes possible states of the TECHMANIA rhythm game.
+Describes possible states of the TECHMANIA rhythm game. Query the current state with `tm.game.state`.
 
 ```
 Idle
 ```
 
+Waiting on the theme to fill `tm.gameSetup` and call `tm.game.BeginLoading()`, transitioning to `Loading` state.
+
+Any state can transition to `Idle` by calling `tm.game.Conclude()`.
+
+```
+Loading
+```
+
+TECHMANIA is loading the pattern specified in `tm.gameSetup` and calling the callbacks to report progress. Automatically transitions to `LoadError` or `LoadComplete` depending on whether the load is successful.
+
+```
+LoadError
+```
+
+TECHMANIA encountered an error while loading the pattern and cannot continue.
+
+```
+LoadComplete
+```
+
+TECHMANIA successfully loaded the pattern and is now ready to begin. Call `tm.game.Begin()` to begin the game and transition to `Ongoing` state.
+
+```
+Ongoing
+Paused
+```
+
+The game is ongoing / paused. Call `tm.game.Pause()` and `tm.game.Unpause()` to transition between these two states.
+
+```
+Complete
+```
+
+The game is complete, either by stage clear or stage fail. The game no longer updates or responds to input. Call `tm.game.Conclude()` to transition to `Idle`.
+
 ## Enum `VisualElementWrap.EventType`
+
+Describes the possible event types when registering an event callback in `ThemeApi.VisualElementWrap.RegisterCallback`. Each event type corresponds to a Unity type, which is the type of the 2nd argument passed to the callback.
+
+|`EventType`|Unity type|
+|--|--|
+|`ChangeBool`|`UnityEngine.UIElements.ChangeEvent<bool>`|
+|`ChangeInt`|`UnityEngine.UIElements.ChangeEvent<int>`|
+|`ChangeFloat`|`UnityEngine.UIElements.ChangeEvent<float>`|
+|`ChangeString`|`UnityEngine.UIElements.ChangeEvent<string>`|
+|`KeyDown`|`UnityEngine.UIElements.KeyDownEvent`|
+|`KeyUp`|`UnityEngine.UIElements.KeyUpEvent`|
+|`PointerDown`|`UnityEngine.UIElements.PointerDownEvent`|
+|`PointerUp`|`UnityEngine.UIElements.PointerUpEvent`|
+|`PointerEnter`|`UnityEngine.UIElements.PointerEnterEvent`|
+|`PointerLeave`|`UnityEngine.UIElements.PointerLeaveEvent`|
+|`PointerOver`|`UnityEngine.UIElements.PointerOverEvent`|
+|`PointerOut`|`UnityEngine.UIElements.PointerOutEvent`|
+|`Click`|`UnityEngine.UIElements.ClickEvent`|
+|`FrameUpdate`|`ThemeApi.FrameUpdateEvent`|
+|`ApplicationFocus`|`ThemeApi.ApplicationFocusEvent`|
