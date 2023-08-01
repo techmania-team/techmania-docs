@@ -636,6 +636,28 @@ bool HasAny()
 
 A helper method to determine whether there is any override at all in this object.
 
+## Class `Locale`
+
+Describes a locale in [`ThemeApi.ThemeL10n`](#class-themeapithemel10n).
+
+```
+string languageName
+```
+
+The language's name, read from row 2 of the string table.
+
+```
+List<string> localizers
+```
+
+The list of localizer names, read from row 3 of the string table.
+
+```
+Dictionary<string, string> strings
+```
+
+All strings in the locale.
+
 ## Class `Modifiers`
 
 Contains the currently selected modifiers. Access the `Modifiers` object via `tm.options.modifiers`.
@@ -796,9 +818,9 @@ Returns the default audio buffer size on the user's system.
 string locale
 ```
 
-The current locale. Refer to [`ThemeApi.ThemeL10n`](#class-themeapithemel10n) for more details on localization. Call `tm.l10n.ApplyLocale()` to apply this.
+The current locale. Refer to [`ThemeApi.ThemeL10n`](#class-themeapithemel10n) for more details on localization. If your theme uses `ThemeApi.ThemeL10n`, you need to call `tm.l10n.ApplyLocale()` to apply this.
 
-Note that, even if your theme does not use `ThemeApi.ThemeL10n`, this setting still applies to things outside of your theme, such as the boot screen and the editor.
+Note that, even if your theme does not use `ThemeApi.ThemeL10n`, this setting still applies to things outside of your theme, such as the boot screen and the editor, but you don't need to call `tm.l10n.ApplyLocale()`.
 
 ```
 string noteSkin
@@ -2182,6 +2204,55 @@ A Lua table exposing various TECHMANIA enums. Refer to [`tm.enum` table](#tmenum
 
 ## Class `ThemeApi.ThemeL10n`
 
+A toolkit to help you localize your theme. Usage of this class is completely optional. Access this class via `tm.l10n`.
+
+If you do use this class to localize your theme, you need to prepare a "string table" as a .csv file in your theme. Usage of some spreadsheet software (eg. Excel) is recommended to ensure correct format and escaping.
+
+The string table should follow the following format:
+
+* Row 1: empty cell, empty cell, one locale name per cell
+    * We recommend that you use the same locale names as TECHMANIA itself: `,,en,zh-Hans,zh-Hant,ja,ko`, and add more if needed
+* Row 2: empty cell, empty cell, one language name per cell
+    * Example: `,,English,简体中文,繁體中文,日本語,한국어`
+* Row 3: empty cell, empty cell, one comma-separated localizer name list per cell
+    * Example: `,,N/A,zh-Hans localizer,zh-Hant localizer,"jp localizer 1, jp localizer 2","ko localizer 1, ko localizer 2"`
+* Remaining rows: one string per row
+    * Column 1: comment, unused by this class
+    * Column 2: string key
+    * Columns 3 and onward: the string content in each locale
+    * Example: `The button in alert boxes,alert_ok,OK,确定,確定,OK,확인`
+
+Each string is identified by the corresponding string key, so they should all be unique in the string table. There are two types of string keys:
+
+1. Ones containing at least one `#`: each such key will be interpreted as a series of element names in the visual tree. When you call `ApplyLocale`, TECHMANIA will query each element name in succession, and overwrite the final element's text content with the string's content.
+    * For example, if a row in the string table is `,#alert-box #ok-button,OK,确定,確定,OK,확인`, and the current locale is `zh-Hans`, upon `ApplyLocale` TECHMANIA will set `tm.root.Q("alert-box").Q("ok-button").text` to `确定`.
+2. Ones containing no `#`: these keys carry no special meaning and will be ignored by `ApplyLocale`. You can still query the content of these keys with `GetString`.
+    * These keys may follow any format of your liking, as long as they don't contain `#`.
+
+```
+void Initialize(string stringTable)
+```
+
+Initializes localization with the specified string table. You should pass in the string table's entire content, instead of a path. Load a text file from the theme with `tm.io.LoadTextFileFromTheme`.
+
+```
+Dictionary<string, Locale> GetAllLocales()
+```
+
+Returns a dictionary of all locales in the string table. You can enumerate this dictionary as a Lua table. See [`Locale`](#class-locale).
+
+```
+void ApplyLocale()
+```
+
+Applies the current locale in `tm.options.locale` to the theme, replacing the text content of all elements that have a corresponding row in the string table.
+
+```
+string GetString(string key)
+```
+
+Returns the string content of the specified key under the current locale. If the key is not found, returns an empty string.
+
 ## Class `ThemeApi.UQueryStateWrap`
 
 A `ThemeApi.UQueryStateWrap` object is created when calling `Query` on [`ThemeApi.VisualElementWrap`](#class-themeapivisualelementwrap).
@@ -2711,42 +2782,215 @@ Refer to [Skins](../Skins.md#vfx-skin) for an explanation of these fields.
 
 # TECHMANIA enums
 
+For more details on the modifier enums, see [Modifiers](../Modifiers.md). Also note that while most modifier enums have a `Normal` or `None` value, they are all different values, ie. not equal to each other.
+
 ## Enum `ControlScheme`
+
+Describes one of TECHMANIA's supported control schemes.
+
+```
+Touch
+Keys
+KM
+```
 
 ## Enum `CurveType`
 
+Describes a drag note's curve type.
+
+```
+Bezier
+BSpline
+```
+
+In Bezier, each point on the curve is controlled by the anchor before it, the right control point on that anchor, the anchor after it, and the left control point on that anchor. In B-spline, each point on the curve is controlled by two anchors before it, and two anchors after it.
+
+See [Drag note curves](../Drag_note_curves.md) for more details.
+
 ## Enum `Judgement`
+
+Describes the possible judgements that a note can be resolved in, depending on the player's timing.
+
+```
+RainbowMax
+Max
+Cool
+Good
+Miss
+Break
+```
 
 ## Enum `Modifiers.AssistTick`
 
+```
+None
+AssistTick
+AutoAssistTick
+```
+
 ## Enum `Modifiers.ControlOverride`
+
+```
+None
+OverrideToTouch
+OverrideToKeys
+OverrideToKM
+```
 
 ## Enum `Modifiers.Fever`
 
+```
+Normal
+FeverOff
+AutoFever
+```
+
 ## Enum `Modifiers.Keysound`
+
+```
+Normal
+AutoKeysound
+```
 
 ## Enum `Modifiers.Mode`
 
+```
+Normal
+NoFail
+AutoPlay
+Practice
+```
+
 ## Enum `Modifiers.NoteOpacity`
+
+```
+Normal
+FadeOut
+FadeOut2
+FadeIn
+FadeIn2
+```
 
 ## Enum `Modifiers.NotePosition`
 
+```
+Normal
+Mirror
+```
+
 ## Enum `Modifiers.ScanDirection`
+
+```
+Normal
+RR
+LR
+LL
+```
 
 ## Enum `Modifiers.ScanlineOpacity`
 
+```
+Normal
+Blink
+Blink2
+Blind
+```
+
 ## Enum `Modifiers.ScanPosition`
+
+```
+Normal
+Swap
+```
 
 ## Enum `Modifiers.ScrollSpeed`
 
+```
+Normal
+HalfSpeed
+ShiftedHalfSpeed
+```
+
+## Enum `Modifiers.SuddenDeath`
+
+```
+Normal
+SuddenDeath
+```
+
 ## Enum `NoteType`
+
+Describes all possible types of notes.
+
+```
+Basic
+ChainHead
+ChainNode
+Hold
+Drag
+RepeatHead
+RepeatHeadHold
+Repeat
+RepeatHold
+```
+
+Among the repeat types, `RepeatHead` and `RepeatHeadHold` are the two types of heads, and `Repeat` and `RepeatHold` are the two types of ticks that follow heads. See [Terminology](../Terminology.md).
 
 ## Enum `Options.Ruleset`
 
+Describes the choices of rulesets. For the numbers and fields inside a ruleset, see [class `Ruleset`](#class-ruleset).
+
+```
+Standard
+Legacy
+Custom
+```
+
 ## Enum `PerformanceMedal`
+
+Describes the medals that the player may achieve after clearing a pattern.
+
+```
+NoMedal
+AllCombo
+PerfectPlay
+AbsolutePerfect
+```
+
+* `AllCombo` requires no `Miss` or `Break`.
+* `PerfectPlay` additionaly requires no `Cool` or `Good`.
+* `AbsolutePerfect` additionaly requires no `Max`; all judgements must be `RainbowMax`.
 
 ## Enum `ScoreKeeper.FeverState`
 
+Describes possible Fever states during gameplay.
+
+```
+Building
+```
+
+Fever is neither full or active. If fever is enabled, it will accumulate with each `RainbowMax` or `Max`, and decrease with each `Miss` or `Break`. If fever is disabled, it will remain at 0.
+
+When fever accumulates to 1, it will go to `Ready` state.
+
+```
+Ready
+```
+
+Fever is full and ready to be activated. On `Miss` or `Break`, it will decrease and return to `Building` state.
+
+```
+Active
+```
+
+Fever is activated and decreasing with time. No judgement will affect its value or state. When fever is fully depleted, it will return to `Building` state.
+
 ## Enum `ThemeApi.GameState.State`
+
+Describes possible states of the TECHMANIA rhythm game.
+
+```
+Idle
+```
 
 ## Enum `VisualElementWrap.EventType`
