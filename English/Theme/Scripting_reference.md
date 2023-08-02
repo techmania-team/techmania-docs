@@ -2118,23 +2118,26 @@ Exposes the respective classes.
 ### System dialogs
 
 ```
-string[] OpenSelectFileDialog(string title,
+void OpenSelectFileDialog(string title,
     string currentDirectory,
     bool multiSelect,
-    string[] supportedExtensionsWithoutDot)
+    string[] supportedExtensionsWithoutDot,
+    function callback)
 ```
 
-Opens the operating system's "open file" dialog and blocks. When the user closes the dialog, returns the full path of the selected files, if any. If the user cancels the dialog, returns an empty array. Only confirmed to work on Windows.
+Opens the operating system's "open file" dialog. If the user selects one or more files, calls the callback with an array of file paths. If the user cancels the dialog, does not call the callback.
 
-`title` is the title of the dialog. `currentDirectory` is the directory that the dialog starts at; pass in "" to start from the working directory. `multiSelect` specifies whether the user can select multiple files. `supportedExtensionsWithoutDot` is an array of supported file extensions, all without the dot.
+`title` is the title of the dialog. `currentDirectory` is the directory that the dialog starts at; pass in "" to start from the working directory. `multiSelect` specifies whether the user can select multiple files. `supportedExtensionsWithoutDot` is an array of supported file extensions, all without the dot. These parameters only work on Windows.
 
 ```
-string OpenSelectFolderDialog(string title, string currentDirectory)
+void OpenSelectFolderDialog(string title,
+    string currentDirectory,
+    function callback)
 ```
 
-Opens the operating system's "open folder" dialog and blocks. When the user closes the dialog, returns the full path of the selected folder. If the user cancels the dialog, returns `nil`. Only confirmed to work on Windows.
+Opens the operating system's "open folder" dialog. If the user selects a folder, calls the callback with its path. If the user cancels the dialog, does not call the callback.
 
-`title` is the title of the dialog. `currentDirectory` is the directory that the dialog starts at; pass in "" to start from the working directory.
+`title` is the title of the dialog. `currentDirectory` is the directory that the dialog starts at; pass in "" to start from the working directory. These parameters only work on Windows.
 
 ### Script execution
 
