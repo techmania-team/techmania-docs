@@ -3070,3 +3070,7 @@ Describes the possible event types when registering an event callback in `ThemeA
 |`Click`|`UnityEngine.UIElements.ClickEvent`|
 |`FrameUpdate`|`ThemeApi.FrameUpdateEvent`|
 |`ApplicationFocus`|`ThemeApi.ApplicationFocusEvent`|
+
+# On undocumented APIs
+
+If you read TECHMANIA's source code, you may discover some APIs that are exposed to Lua, but not documented in this reference. Please assume all such omissions are intentional, and these APIs may stop working without notice in a future API version. Do not use undocumented APIs.

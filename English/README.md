@@ -34,6 +34,8 @@
 
 [A C# programmer's quick guide to Lua](Theme/C%23_guide_to_Lua.md)
 
+[Writing a minimal theme from scratch](Theme/Writing_a_minimal_theme_from_scratch.md)
+
 [Scripting reference](Theme/Scripting_reference.md)
 
 # TECHMANIA Converter Documentation
