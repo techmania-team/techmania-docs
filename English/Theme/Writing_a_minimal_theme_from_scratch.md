@@ -303,11 +303,11 @@ end, pattern)
 
 Now we have completed all necessary setup. When it comes to actually starting, controlling and stopping the game, we need to interact with the TECHMANIA state machine, via `tm.game`, of type `ThemeApi.GameState`.
 
-When TECHMANIA launches, we are in the `Idle` state. Once we fill in the game setup and call `tm.game.BeginLoading()`, we enter `Loading` state and wait for the game to load. Once the load is complete, TECHMANIA will enter `LoadComplete` state and call `tm.gameSetup.onLoadComplete`. Typically this is our cue to call `tm.game.Start()` to start the game and enter `Ongoing` state. 
+When TECHMANIA launches, we are in the `Idle` state. Once we fill in the game setup and call `tm.game.BeginLoading()`, we enter `Loading` state and wait for the game to load. Once the load is complete, TECHMANIA will enter `LoadComplete` state and call `tm.gameSetup.onLoadComplete`. Typically this is our cue to call `tm.game.Begin()` to start the game and enter `Ongoing` state. 
 
 > **Task 16** Update `MainScript.txt` so that:
 > * After the pattern button's click handler sets up `tm.gameSetup.patternGuid`, call `tm.game.BeginLoading()`
-> * In the handler of `tm.gameSetup.onLoadComplete()`, call `tm.game.Start()`
+> * In the handler of `tm.gameSetup.onLoadComplete()`, call `tm.game.Begin()`
 
 > **Solution 16**
 >
@@ -409,10 +409,260 @@ end
 Now enter play mode, start a pattern, then fail it, and you should return to the select track screen.
 
 ## Select pattern screen, again
+
+Before we move on to result screen, there is an issue with the select pattern screen that we need to fix. It will happen when you select a track and pattern, fail it, then select another track.
+
+> **Task 20** Figure out what is the issue with select pattern screen and fix it.
+
+> **Solution 20** When you select a second track, patterns from both the first and second track will appear on the select pattern screen.
+>
+> This is because we only ever add buttons to the select pattern screen; we should also remove buttons from the previous track. Thankfully, since the select pattern screen contains nothing but pattern buttons, we can fix the issue simply by wiping out all pattern buttons before instantiating new ones.
+```lua
+function DisplayPatternsForTrack(minimizedTrack)
+    selectPatternScreen.RemoveAllChildren()  -- new
+    for _, pattern in ipairs(minimizedTrack.patterns) do
+        -- ... existing code omitted ...
+    end
+end
+```
+
 ## Result screen
+
+To keep the result screen minimal, we will only display the following:
+* Total score
+* Max combo
+* Rank
+* A button to return to select track screen
+
+As always, let's begin with UI layout.
+
+> **Task 21** Hide `game-screen`. Add another top-level full-screen element named `result-screen`. In it, add the following 4 elements:
+> * A Label named `total-score`
+> * A Label named `rank`
+> * A Label named `max-combo`
+> * A button named `proceed-button`, with the text "Proceed"
+>
+> Make sure all Labels are white so they are visible on a black background.
+
+> **Solution 21** At this point this should be trivial. Feel free to set up a new USS class named `white-text` and apply to the Labels.
+
+Then, the transition from game screen. This transition happens on stage clear, so it will be in `tm.gameSetup.onStageClear`'s handler. While we are here, why not also set up the transition from result screen to select track screen, which happens when the user clicks the Proceed button.
+
+> **Task 22** Update `MainScript.txt` so that `result-screen` is hidden at the start. Add code in `tm.gameSetup.onStageClear`'s handler that:
+> * hides `game-screen`
+> * shows `result-screen`
+>
+> Also add code so that when `proceed-button` is clicked:
+> * hide `result-screen`
+> * show `select-track-screen`
+
+> **Solution 22**
+```lua
+-- ... existing code omitted ...
+
+resultScreen = tm.root.Q("result-screen")
+resultScreen.display = false
+
+-- ... existing code omitted ...
+
+tm.gameSetup.onStageClear = function()
+    gameScreen.display = false
+    resultScreen.display = true
+end
+
+-- ... existing code omitted ...
+
+resultScreen.Q("proceed-button").RegisterCallback(tm.enum.eventType.click, function()
+    resultScreen.display = false
+    selectTrackScreen.display = true
+end)
+```
+
+You may remember that when handling `tm.game.onStageFailed`, we called `tm.game.Conclude()` to return the state machine to `Idle` state. But we don't do that immediately when handling `tm.game.onStageClear`. This is intentional, as we need the result numbers from `tm.game.scoreKeeper`, which will become unavailable in `Idle` state. We still need to conclude the game, but only after we gathered all the data we need from `tm.game.scoreKeeper`.
+
+Let's do exactly that. When transitioning to the result screen, we gather data from `tm.game.scoreKeeper`, display them in the elements, then conclude the game.
+
+> **Task 23** Add code to `tm.gameSetup.onStageClear`'s handler that:
+> * Reads the total score from `tm.game.scoreKeeper` and displays it on `total-score`
+> * Reads the rank from `tm.game.scoreKeeper` and displays it on `rank`
+> * Reads the max combo from `tm.game.scoreKeeper` and displays it on `max-combo`
+> * Calls `tm.game.Conclude()`
+
+> **Solution 23**
+```lua
+tm.gameSetup.onStageClear = function()
+    gameScreen.display = false
+    resultScreen.display = true
+
+    -- New code below
+    local scoreKeeper = tm.game.scoreKeeper
+    resultScreen.Q("total-score").text = "Total score: " .. tostring(scoreKeeper.TotalScore())
+    resultScreen.Q("rank").text = "Rank: " .. scoreKeeper.Rank()
+    resultScreen.Q("max-combo").text = "Max combo: " .. tostring(scoreKeeper.maxCombo)
+    tm.game.Conclude()
+end
+```
+
+And that's it! Enter play mode and enjoy your first theme from start to finish!
+
+## Full solution
+
+`MainTree.uxml`
+
+```xml
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Style.uss?fileID=7433441132597879392&amp;guid=10b3506755352f74388355c040965a49&amp;type=3#Style" />
+    <ui:VisualElement name="select-track-screen" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none;" />
+    <ui:VisualElement name="select-pattern-screen" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none;" />
+    <ui:VisualElement name="game-screen" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none;">
+        <ui:VisualElement name="bg-layer" class="fully-expand" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+        <ui:VisualElement name="game-container" class="fully-expand" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+            <ui:VisualElement name="hp-bar" style="background-color: rgb(0, 0, 0); height: 50px;">
+                <ui:VisualElement name="hp-fill" style="background-color: rgb(56, 142, 60); width: 70%; flex-grow: 1;" />
+                <ui:Label tabindex="-1" text="234564" display-tooltip-when-elided="true" name="score" class="fully-expand white-text" />
+            </ui:VisualElement>
+            <ui:VisualElement name="game-layer" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="vfx-layer" class="fully-expand" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+    </ui:VisualElement>
+    <ui:VisualElement name="result-screen" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="total-score" class="white-text" />
+        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="rank" class="white-text" />
+        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="max-combo" class="white-text" />
+        <ui:Button text="Proceed" display-tooltip-when-elided="true" name="proceed-button" />
+    </ui:VisualElement>
+</ui:UXML>
+```
+
+`Button.uxml`
+
+```xml
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Button text="Button" display-tooltip-when-elided="true" name="button" />
+</ui:UXML>
+
+```
+
+`Style.uss`
+
+```css
+.fully-expand {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.white-text {
+    color: rgb(255, 255, 255);
+}
+```
+
+`MainScript.txt`
+
+```lua
+api = getApi(1)
+tm = api.tm
+unity = api.unity
+
+selectTrackScreen = tm.root.Q("select-track-screen")
+selectTrackScreen.display = true
+
+selectPatternScreen = tm.root.Q("select-pattern-screen")
+selectPatternScreen.display = false
+
+gameScreen = tm.root.Q("game-screen")
+gameScreen.display = false
+
+resultScreen = tm.root.Q("result-screen")
+resultScreen.display = false
+
+function CommonGameSetup()
+    tm.gameSetup.bgContainer = gameScreen.Q("bg-layer")
+    tm.gameSetup.gameContainer = gameScreen.Q("game-layer")
+    tm.gameSetup.vfxComboContainer = gameScreen.Q("vfx-layer")
+    tm.gameSetup.onLoadComplete = function() tm.game.Begin() end
+    tm.gameSetup.onNoteResolved = function(_, _, scoreKeeper)
+        local hpPercent = scoreKeeper.hp * 100 / scoreKeeper.maxHp
+        UpdateGameHUD(hpPercent, scoreKeeper.ScoreFromNotes())
+    end
+    tm.gameSetup.onStageClear = function()
+        gameScreen.display = false
+        resultScreen.display = true
+
+        local scoreKeeper = tm.game.scoreKeeper
+        resultScreen.Q("total-score").text = "Total score: " .. tostring(scoreKeeper.TotalScore())
+        resultScreen.Q("rank").text = "Rank: " .. scoreKeeper.Rank()
+        resultScreen.Q("max-combo").text = "Max combo: " .. tostring(scoreKeeper.maxCombo)
+        tm.game.Conclude()
+    end
+    tm.gameSetup.onStageFailed = function()
+        tm.game.Conclude()
+        gameScreen.display = false
+        selectTrackScreen.display = true
+    end
+end
+CommonGameSetup()
+
+trackList = tm.resources.GetTracksInFolder(tm.paths.GetTrackRootFolder())
+for _, trackInFolder in ipairs(trackList) do
+    -- Instantiate track button
+    local instance = selectTrackScreen.InstantiateTemplate("Assets/UI/Button.uxml")
+    local button = instance.Q("button")
+    local trackTitle = trackInFolder.minimizedTrack.trackMetadata.title
+    button.text = trackTitle
+
+    button.RegisterCallback(tm.enum.eventType.click, function(_, _, trackInFolder)
+        selectTrackScreen.display = false
+        selectPatternScreen.display = true
+        tm.gameSetup.trackFolder = trackInFolder.folder
+        DisplayPatternsForTrack(trackInFolder.minimizedTrack)
+    end, trackInFolder)
+end
+
+function DisplayPatternsForTrack(minimizedTrack)
+    selectPatternScreen.RemoveAllChildren()
+    for _, pattern in ipairs(minimizedTrack.patterns) do
+        -- Instantiate pattern button
+        local instance = selectPatternScreen.InstantiateTemplate("Assets/UI/Button.uxml")
+        local button = instance.Q("button")
+
+        -- Collect metadata and build the text on the button
+        local metadata = pattern.patternMetadata
+        local patternText = tostring(metadata.playableLanes) .. "L | Level " .. tostring(metadata.level) .. " | " .. metadata.patternName
+        button.text = patternText
+
+        button.RegisterCallback(tm.enum.eventType.click, function(_, _, pattern)
+            selectPatternScreen.display = false
+            gameScreen.display = true
+            tm.gameSetup.patternGuid = pattern.patternMetadata.guid
+            UpdateGameHUD(100, 0)
+            tm.game.BeginLoading()
+        end, pattern)
+    end
+end
+
+function UpdateGameHUD(hpPercent, score)
+    gameScreen.Q("hp-fill").style.width = unity.styleLength.__new(unity.length.__new(hpPercent, unity.enum.lengthUnit.Percent))
+    gameScreen.Q("score").text = tostring(score)
+end
+
+resultScreen.Q("proceed-button").RegisterCallback(tm.enum.eventType.click, function()
+    resultScreen.display = false
+    selectTrackScreen.display = true
+end)
+```
+
 ## Next steps
 
-* No options
-* No pausing
-* No animation
-* No error handling
+Feel free to use the minimal theme as a starting point when building your dream theme. There are obviously many pieces missing in this minimal theme, such as:
+
+* Options menu
+* Pausing
+* Fever
+* Error handling
+
+Consult [the scripting reference](Scripting_reference.md), or ask in the community, if you need help. For releasing your theme, refer to instructions in the [introduction](Introduction.md) page.
+
+We look forward to your creativity. Good luck!
