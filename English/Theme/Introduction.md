@@ -110,5 +110,5 @@ When the Theme API exposes a C# class or object to Lua, it becomes a value of ty
 ## Next steps
 
 - [Writing a minimal theme from scratch](Writing_a_minimal_theme_from_scratch.md)
-- Themes how-to
+- [Themes how-to](Themes_How_To.md)
 - [Scripting reference](Scripting_reference.md)

@@ -36,6 +36,8 @@
 
 [Writing a minimal theme from scratch](Theme/Writing_a_minimal_theme_from_scratch.md)
 
+[Themes how-to](Themes_How_To.md)
+
 [Scripting reference](Theme/Scripting_reference.md)
 
 # TECHMANIA Converter Documentation
