@@ -1,10 +1,10 @@
-Applies to version: 1.1
+Applies to version: 2.0
 
 When a scanline passes the center of a note, play it!
 
 ![Animation showing a note and a scanline](https://i.imgur.com/OKvXPun.gif)
 
-TECHMANIA supports 3 different control schemes (Touch/Keys/KM), and 3 different numbers of lanes (2/3/4). When selecting a pattern, the icons to the left of its name tell you how many lanes are there, and which control scheme to use.
+TECHMANIA supports 3 different control schemes (Touch/Keys/KM), and 3 different numbers of playable lanes (2/3/4). When selecting a pattern, the icons to the left of its name tell you how many lanes are there, and which control scheme to use.
 
 ![An arrow pointing to lane icons and control scheme icons in the select pattern screen](https://imgur.com/gonfqIU.png)
 

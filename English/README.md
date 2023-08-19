@@ -28,6 +28,18 @@
 
 [track.tech specification](track.tech_specification.md)
 
+# TECHMANIA Theme API Documentation
+
+[Introduction to TECHMANIA themes](Theme/Introduction.md)
+
+[A C# programmer's quick guide to Lua](Theme/C%23_guide_to_Lua.md)
+
+[Writing a minimal theme from scratch](Theme/Writing_a_minimal_theme_from_scratch.md)
+
+[Themes how-to](Themes_How_To.md)
+
+[Scripting reference](Theme/Scripting_reference.md)
+
 # TECHMANIA Converter Documentation
 
 [.bms support](Converter/bms_support.md)

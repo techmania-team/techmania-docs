@@ -1,4 +1,4 @@
-Applies to version: 1.1
+Applies to version: 2.0
 
 Records are saved to and loaded from `records.json` in the [`TECHMANIA` folder](Folders_and_zips.md). This page explains the specification of this file.
 
@@ -9,9 +9,11 @@ The `records.json` file contains the format version and an array of individual r
 * `guid`: the GUID of the pattern.
 * `fingerprint`: the fingerprint of the pattern. Explained in the next section.
 * `ruleset`: 0 for standard, 1 for legacy. Refer to [Rulesets](Rulesets.md).
-* `score`
+* `score`: this includes Fever bonus and combo bonus, if any.
 * `medal`: 0 for no medal, 1 for All Combo, 2 for Perfect Play, 3 for Absolute Perfect.
 * `gameVersion`: the game version that this record is set on.
+
+Note the lack of max combo. TECHMANIA does not count combo consistently, and it has zero effect on score, therefore we decided to not include it in records.
 
 # Fingerprint
 
@@ -39,14 +41,4 @@ A score is considered invalid if any of the following conditions are met:
 * Any special modifier is in use
 * Stage failed
 
-When updating a record:
-* If the old record's game version is 1.0 and 1.0.1, update its fingerprint and game version regardless of whether the player set a new record (see next section).
-* Score and clear medal are updated separately. This means if the player achieved a better medal than the old record but not a better score, the medal would still be updated.
-
-# Records on 1.0 and 1.0.1
-
-Due to a design oversight, fingerprints on 1.0 and 1.0.1 did not go through the minimizing step. This meant that any change to the track format would invalidate all records on all patterns. This issue was fixed in 1.0.2.
-
-However, the change in fingerprinting algorithm also means all records set on 1.0 and 1.0.1 would be considered invalid on 1.0.2 and onward, due to mismatching fingerprints. To work around this issue:
-* When reading records on 1.0 and 1.0.1, we simply ignore the fingerprints.
-* When the player completes a pattern and there's a record on it on 1.0 or 1.0.1, the game silently updates the fingerprint and game version to 1.0.2, even if the player did not set a new record.
+When updating a record, score and clear medal are updated separately. This means if the player achieved a better medal than the old record but not a better score, the medal would still be updated.

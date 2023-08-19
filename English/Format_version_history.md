@@ -1,4 +1,4 @@
-Applies to version: 1.1
+Applies to version: 2.0
 
 TECHMANIA saves/loads many types of data to/from files on the disk. Each type of file follows a specific format, which are versioned alongside the game's version. This page documents the version history of these formats.
 
@@ -10,6 +10,7 @@ TECHMANIA saves/loads many types of data to/from files on the disk. Each type of
 |0.2-0.3|"2"|N/A|"1"|"1"|N/A|
 |0.4-0.9|"2"|"1"|"1"|"1"|N/A|
 |1.0-1.1|"3"|"1"|"2"|"2"|"1"|
+|2.0|"3"|"2"|"3"|"2"|"1"|
 
 # More notes on format versions
 
@@ -31,6 +32,10 @@ Format version "1":
 - Initial version.
 
 # options.json
+
+Format version "3":
+- Added theme-specific options.
+- Many fields related to appearance in version "2" are moved into the default theme's options.
 
 Format version "2":
 - Volumes are now stored as integer percents instead of floats.

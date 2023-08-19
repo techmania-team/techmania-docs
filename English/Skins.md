@@ -1,4 +1,4 @@
-Applies to version: 1.1
+Applies to version: 2.0
 
 This page explains how to make skins for TECHMANIA.
 
@@ -295,10 +295,12 @@ Each value, except for `scanCountdownCoversFiveEighthScans` and `touchClickFeedb
 |--|--|--|--|--|
 |`scanline`|Yes||||
 |`autoPlayScanline`|Yes||||
-|`scanCountdownBackground`||||Yes|
-|`scanCountdownNumbers`||||Yes|
-|`touchClickFeedback`|Yes||Yes|Yes|
+|`scanCountdownBackground`||||Temporary no*|
+|`scanCountdownNumbers`||||Temporary no*|
+|`touchClickFeedback`|Yes||Yes|Temporary no*|
 |`approachOverlay`||Yes|||
+
+\* Since 2.0 TECHMANIA's UI is built on UI Toolkit, which does not support shaders. Once supported is added, we will re-enable `additiveShader` on these elements.
 
 ### Scanline
 
