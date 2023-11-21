@@ -40,6 +40,8 @@
 
 [Scripting reference](Theme/Scripting_reference.md)
 
+[API update history](Theme/API_update_history.md)
+
 # TECHMANIA Converter Documentation
 
 [.bms support](Converter/bms_support.md)

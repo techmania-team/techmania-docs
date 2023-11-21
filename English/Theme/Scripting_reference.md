@@ -1,6 +1,6 @@
 # TECHMANIA Theme API scripting reference
 
-Applies to API version: 1
+Applies to API version: 2
 
 When reading on Github, you can click the menu button to the top right to reveal a table of contents.
 
@@ -1020,7 +1020,15 @@ Converts `absolutePath` to a relative path in reference to `reference`.
 string EscapeBackslash(string path)
 ```
 
+Deprecated. This method returns `path` unmodified. If you are sure you need to escape backslashes, call `ForceEscapeBackslash`.
+
+```
+string ForceEscapeBackslash(string path)
+```
+
 Replaces `\` with `\\`, so that paths on Windows do not form escape sequences when displayed on a visual element.
+
+Please note that visual elements by default do not parse escape sequences. In that case, calling this before displaying a string would result in double backslashes.
 
 ```
 string GoUpFrom(string path)
