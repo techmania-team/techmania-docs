@@ -900,23 +900,10 @@ int sfxVolumePercent
 The volume of each audio channel, from 0 to 100. Call `ApplyVolumeSettings()` to apply these.
 
 ```
-int audioBufferSize
-```
-
-The audio buffer size in samples. Usually a power of 2; default is 512. As the game explains, smaller value may reduce audio latency, but puts a higher strain on the user's system, and has a higher chance to cause audio stuttering or audio to stop altogether. Call `ApplyAudioBufferSize()` to apply this.
-
-```
 void ApplyVolumeSettings()
-void ApplyAudioBufferSize()
 ```
 
-Applies current volume / audio buffer size settings.
-
-```
-int GetDefaultAudioBufferSize()
-```
-
-Returns the default audio buffer size on the user's system.
+Applies current volume settings.
 
 ### Appearance
 
