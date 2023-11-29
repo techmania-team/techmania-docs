@@ -182,42 +182,40 @@ Classes within this section are sorted alphabetically, but properties and method
 
 ## Class `AudioSourceManager`
 
-Allows the playback of audio clips. You can access an `AudioSourceManager` object via `tm.audio`.
+Allows the playback of sounds. You can access an `AudioSourceManager` object via `tm.audio`.
+
+Starting 2.1 (API version 2), TECHMANIA uses FMOD as its audio backend.
+* When you load an audio file into memory, it is a "sound", in the form of a [`FmodSoundWrap`](#class-fmodsoundwrap) object. Some APIs may use the term "clip" for backwards compatibility.
+* When you play a sound, it is played in a "channel", in the form of a [`FmodChannelWrap`](#class-fmodchannelwrap) object.
+* Channels are routed into "channel group"s. TECHMANIA maintains four channel groups, for music, keysound, SFX, and master, respectively. You do not have control over channel groups other than volume.
 
 ### Playing audio
 
 ```
-UnityEngine.AudioSource PlayMusic(UnityEngine.AudioClip clip,
+FmodChannelWrap PlayMusic(FmodSoundWrap sound,
     float startTime = 0f,
     int volumePercent = 100,
     int panPercent = 0)
-UnityEngine.AudioSource PlayKeysound(UnityEngine.AudioClip clip,
+FmodChannelWrap PlayKeysound(FmodSoundWrap sound,
     bool hiddenLane,
     float startTime = 0f,
     int volumePercent = 100,
     int panPercent = 0)
-UnityEngine.AudioSource PlaySfx(UnityEngine.AudioClip clip,
+FmodChannelWrap PlaySfx(FmodSoundWrap sound,
     float startTime = 0f,
     int volumePercent = 100,
     int panPercent = 0)
 ```
 
-Plays the specified audio clip on the music / keysound / SFX channel, and returns the `AudioSource` playing the clip. You can load an audio clip from the theme with `tm.io.LoadAudioFromTheme`, or from the disk with `tm.io.LoadAudioFromFile`.
+Plays the specified sound on the music / keysound / SFX channel group, and returns the `FmodChannelWrap` playing the sound. You can load a sound from the theme with `tm.io.LoadAudioFromTheme`, or from the disk with `tm.io.LoadAudioFromFile`.
 
-The clip will start playing from `startTime` seconds. `volumePercent` is between 0 and 100. `panPercent` is between -100 (left) and 100 (right).
+The sound will start playing from `startTime` seconds. `volumePercent` is between 0 and 100. `panPercent` is between -100 (left) and 100 (right).
 
-For keysounds, in addition to the clip you also need to specify whether the note is in a playable lane or hidden lane. Keysounds in hidden lanes will be played through the music channel.
+For keysounds, in addition to the sound you also need to specify whether the note is in a playable lane or hidden lane. Keysounds in hidden lanes will be played through the music channel group.
 
-Please note that there are software and hardware limits on how many sounds per channel can play simultaneously. The software limits are:
+Please note that there are software and hardware limits on how many sounds can play simultaneously. The software limit is 64 sounds. If the limits are reached and either TECHMANIA or your theme plays another sound, it will cause one currently playing sound to stop.
 
-* 1 music clip
-* 32 keysounds in playable lanes
-* 64 keysounds in hidden lanes
-* 8 SFX clips
-
-If the limits are reached and either TECHMANIA or your theme plays another clip, it will cause one currently playing clip to stop.
-
-### Controlling all audio sources
+### Controlling all channels
 
 ```
 void PauseAll()
@@ -225,19 +223,19 @@ void UnpauseAll()
 void StopAll()
 ```
 
-Pauses, unpauses or stops all `AudioSource`s.
+Pauses, unpauses or stops all `FmodChannelWrap`s.
 
 ```
 void SetSpeed(float speed)
 ```
 
-Sets the playing speed of all `AudioSource`s. The normal speed is 1.
+Sets the playing speed of all `FmodChannelWrap`s. The normal speed is 1.
 
 ```
-bool IsAnySourcePlaying()
+bool IsAnySoundPlaying()
 ```
 
-Returns if there is currently any `AudioSource` playing audio.
+Returns if there is currently any `FmodChannelWrap` playing audio.
 
 ### Miscellaneous
 
@@ -245,7 +243,7 @@ Returns if there is currently any `AudioSource` playing audio.
 void ApplyVolume()
 ```
 
-Retrieves the volume values from TECHMANIA options and applies them to the `AudioSource`s. You need to call this after changing the volume values in options for them to take effect.
+Retrieves the volume values from TECHMANIA options and applies them to the channel groups. You need to call this after changing the volume values in options for them to take effect.
 
 ## Class `BpmEvent`
 
@@ -377,6 +375,114 @@ A named tuple of lane and pulse. Anchors and control points in drag nodes are al
 float lane
 float pulse
 ```
+
+## Class `FmodChannelWrap`
+
+A wrapper around a FMOD channel, created when you play a `FmodSoundWrap` with `AudioSourceManager` methods. It is designed to be backwards compatible with `UnityEngine.AudioSource`.
+
+It is important to note that a channel will be automatically released by FMOD when it stops, either due to the sound finishing or you calling `Stop`. Afterwards, all operations on the channel will result in errors. You can call `SetSoundEndCallback` to receive a callback when the sound finishes playing.
+
+```
+FmodSoundWrap sound
+```
+
+The sound that this channel is playing. This property has an alias `clip` for backwards compatibility.
+
+```
+bool isPlaying
+```
+
+Whether the channel is playing. Being paused is considered playing.
+
+```
+bool loop
+```
+
+Whether the channel loops.
+
+```
+float panStereo
+```
+
+The pan of the channel. -1 for left, 1 for right.
+
+```
+float pitch
+```
+
+The playback speed of the channel. 1 is normal speed. Changing speed will cause the pitch to change, hence the name.
+
+```
+float time
+int timeSamples
+```
+
+The current time of the playback, in seconds and samples.
+
+```
+float volume
+```
+
+The volume of the channel.
+* 0 is silent, 1 is full.
+* Smaller 0 to invert the signal.
+* Larger than 1 to amplify the signal.
+
+```
+void Pause()
+void UnPause()
+```
+
+Pauses and unpauses playback.
+
+```
+void Play()
+```
+
+An alias for `UnPause`.
+
+```
+void Stop()
+```
+
+Stops playback. The callback set in `SetSoundEndCallback`, if any, will be called, then the channel will become invalid.
+
+```
+void SetSoundEndCallback(function callback)
+```
+
+Registers a callback to be called when the channel stops. The callback will be called with no parameters.
+
+## Class `FmodSoundWrap`
+
+A wrapper around a FMOD sound, created when you load audio files with `ThemeApi.IO` methods. It is designed to be backwards compatible with `UnityEngine.AudioClip`.
+
+It is important to note that once a sound is loaded into memory, it stays in memory until you call `Release`. Failure to release unused sounds may cause TECHMANIA to run out of memory and crash.
+
+```
+int channels
+```
+
+The number of audio channels (not to be confused with FMOD channels) in the sound.
+
+```
+int frequency
+```
+
+The frequency in Hz.
+
+```
+float length
+int samples
+```
+
+The sound's length in seconds and samples.
+
+```
+void Release()
+```
+
+Releases the sound from memory. Afterwards, all operations on the sound will result in errors.
 
 ## Class `GameTimer`
 
@@ -1655,7 +1761,7 @@ The [`VisualElementWrap`](#class-themeapivisualelementwrap)s that hold the patte
 `vfxComboContainer` is currently unused, but you should set it anyway, so in the future when TECHMANIA allows rendering VFX and combo text on UI Toolkit, it will work out of the box.
 
 ```
-AudioClip assistTick
+FmodSoundWrap assistTick
 ```
 
 The sound to use for the "assist tick" modifier.
@@ -1909,11 +2015,11 @@ Contains methods to load resources from either the theme or the disk. Access thi
 ```
 string LoadTextFileFromTheme(string path)
 UnityEngine.Texture2D LoadTextureFromTheme(string path)
-UnityEngine.AudioClip LoadAudioFromTheme(string path)
+FmodSoundWrap LoadAudioFromTheme(string path)
 UnityEngine.TextCore.Text.FontAsset LoadFontFromTheme(string path)
 ```
 
-Loads a text file / texture / audio clip / font from the theme, respectively. These methods are synchronous and return the resource immediately. The `path` argument should begin with `Assets/UI/`. On error, these methods return `nil`.
+Loads a text file / texture / sound / font from the theme, respectively. These methods are synchronous and return the resource immediately. The `path` argument should begin with `Assets/UI/`. On error, these methods return `nil`.
 
 ```
 void LoadVideoFromTheme(string path, function callback)
@@ -1935,10 +2041,10 @@ void LoadAudioFromFile(string path, function callback)
 void LoadVideoFromFile(string path, function callback)
 ```
 
-Loads a texture / audio clip / video from the disk, respectively. These methods are asynchronous and may take a few frames to complete. To receive the loaded resource, pass in a callback that will be called when the loading is complete. The callback will be called with 2 parameters: a [`Status`](#class-status) object, and the resource object (if status is OK):
+Loads a texture / sound / video from the disk, respectively. These methods are asynchronous and may take a few frames to complete. To receive the loaded resource, pass in a callback that will be called when the loading is complete. The callback will be called with 2 parameters: a [`Status`](#class-status) object, and the resource object (if status is OK):
 
 * `UnityEngine.Texture2D` for texture
-* `UnityEngine.AudioClip` for audio
+* `FmodSoundWrap` for audio
 * [`VideoElement`](#class-themeapivideoelement) for video
 
 ```
