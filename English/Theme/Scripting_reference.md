@@ -905,6 +905,18 @@ void ApplyVolumeSettings()
 
 Applies current volume settings.
 
+```
+bool useAsio
+```
+
+Whether to use ASIO. Only available on Windows. Call `ApplyAsio()` to apply this.
+
+```
+void ApplyAsio()
+```
+
+Applies `useAsio`. Note that if the player doesn't have ASIO4ALL installed when turning this on, FMOD will not produce an error, but then all audio playback will be stuck at 0 seconds.
+
 ### Appearance
 
 ```
