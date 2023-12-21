@@ -180,9 +180,9 @@ The `unity.enum` table exposes the following Unity enums.
 
 Classes within this section are sorted alphabetically, but properties and methods within each class are grouped by usage. To quickly find references for a class, press Ctrl+F and search for "class \<classname\>".
 
-## Class `AudioSourceManager`
+## Class `AudioManager`
 
-Allows the playback of sounds. You can access an `AudioSourceManager` object via `tm.audio`.
+Allows the playback of sounds. You can access an `AudioManager` object via `tm.audio`.
 
 Starting 2.1 (API version 2), TECHMANIA uses FMOD as its audio backend.
 * When you load an audio file into memory, it is a "sound", in the form of a [`FmodSoundWrap`](#class-fmodsoundwrap) object. Some APIs may use the term "clip" for backwards compatibility.
@@ -213,7 +213,7 @@ The sound will start playing from `startTime` seconds. `volumePercent` is betwee
 
 For keysounds, in addition to the sound you also need to specify whether the note is in a playable lane or hidden lane. Keysounds in hidden lanes will be played through the music channel group.
 
-Please note that there are software and hardware limits on how many sounds can play simultaneously. The software limit is 64 sounds. If the limits are reached and either TECHMANIA or your theme plays another sound, it will cause one currently playing sound to stop.
+Please note that there are software and hardware limits on how many sounds can play simultaneously. If the limits are reached and either TECHMANIA or your theme plays another sound, it will cause one currently playing sound to stop.
 
 ### Controlling all channels
 
@@ -236,6 +236,12 @@ bool IsAnySoundPlaying()
 ```
 
 Returns if there is currently any `FmodChannelWrap` playing audio.
+
+```
+bool IsAnySourcePlaying()
+```
+
+Deprecated. Alias of `IsAnySoundPlaying()`, kept for backwards compatibility.
 
 ### Miscellaneous
 
@@ -378,7 +384,7 @@ float pulse
 
 ## Class `FmodChannelWrap`
 
-A wrapper around a FMOD channel, created when you play a `FmodSoundWrap` with `AudioSourceManager` methods. It is designed to be backwards compatible with `UnityEngine.AudioSource`.
+A wrapper around a FMOD channel, created when you play a `FmodSoundWrap` with `AudioManager` methods. It is designed to be backwards compatible with `UnityEngine.AudioSource`.
 
 It is important to note that a channel will be automatically released by FMOD when it stops, either due to the sound finishing or you calling `Stop`. Afterwards, all operations on the channel will result in errors. You can call `SetSoundEndCallback` to receive a callback when the sound finishes playing.
 
@@ -457,7 +463,7 @@ Registers a callback to be called when the channel stops. The callback will be c
 
 A wrapper around a FMOD sound, created when you load audio files with `ThemeApi.IO` methods. It is designed to be backwards compatible with `UnityEngine.AudioClip`.
 
-It is important to note that once a sound is loaded into memory, it stays in memory until you call `Release`. Failure to release unused sounds may cause TECHMANIA to run out of memory and crash.
+It is important to note that once a sound is loaded into memory, it stays in memory until you call `Release`. Failure to release unused sounds, especially those loaded from files, may cause TECHMANIA to run out of memory and crash.
 
 ```
 int channels
@@ -916,6 +922,13 @@ void ApplyAsio()
 ```
 
 Applies `useAsio`. Note that if the player doesn't have ASIO4ALL installed when turning this on, FMOD will not produce an error, but then all audio playback will be stuck at 0 seconds.
+
+```
+int audioBufferSize
+int numAudioBuffers
+```
+
+The size (in samples) and quantity of audio buffers. The default is 1024 samples, 4 buffers. These are only applied on TECHMANIA startup. Refer to FMOD's [documentation](https://www.fmod.com/docs/2.02/api/core-api-system.html#system_setdspbuffersize) for more explanation on these settings.
 
 ### Appearance
 
@@ -2215,7 +2228,7 @@ ThemeApi.GameState game
 ThemeApi.EditorInterface editor
 ThemeApi.SkinPreview skinPreview
 ThemeApi.calibrationPreview calibrationPreview
-AudioSourceManager audio
+AudioManager audio
 ```
 
 Provides access to the instances of the respective classes.
