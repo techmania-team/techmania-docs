@@ -177,7 +177,9 @@ local demoTable = {}
 print(demoTable["foo"])
 -- To set value at a specific key
 demoTable["foo"] = 123
-demoTable.bar = 456
+demoTable.bar = 456  -- syntactic sugar for ["bar"]
+-- To remove a key
+demoTable.baz = nil
 -- To test the existence of a key
 if (demoTable["baz"] ~= nil) then ... end
 
@@ -185,6 +187,8 @@ if (demoTable["baz"] ~= nil) then ... end
 -- Output:
 -- foo 123
 -- bar 456
+--
+-- Note that nil values are skipped
 for key, value in pairs(demoTable) do
   print(key .. " " .. value)
 end
