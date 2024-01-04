@@ -68,6 +68,8 @@ The `tm` object gives you access to various TECHMANIA types. Refer to class [`Th
 |`ruleset`|`Options.Ruleset`|
 |`gameState`|`GameState.State`|
 |`skinType`|`SkinType`|
+|`platform`|`ThemeApi.Techmania.Platform`|
+|`statusCode`|`Status.Code`|
 |Enums in tracks, patterns and notes|
 |`controlScheme`|`ControlScheme`|
 |`noteType`|`NoteType`|
@@ -1582,28 +1584,36 @@ The texture in `filename` loaded into memory.
 Contains either OK or an error message. Many I/O operations that may succedd or fail report the result with a `Status` object.
 
 ```
-string code
+Status.Code codeEnum
 ```
 
 The status code, one of the following:
-* "OK": no error, operation successfully finished.
-* "NotFound": some file is not found.
-* "IOError": an I/O error when reading or writing a file.
-* "FormatError": the format of some file is invalid.
-* "OtherError": an error that does not fit any other category.
+* `Status.Code.OK`: no error, operation successfully finished.
+* `Status.Code.NotFound`: some file is not found.
+* `Status.Code.IOError`: an I/O error when reading or writing a file.
+* `Status.Code.FormatError`: the format of some file is invalid.
+* `Status.Code.OtherError`: an error that does not fit any other category.
+
+The `Status.Code` enum is exposed to Lua as `tm.enum.statusCode`.
+
+```
+string code
+```
+
+Returns `codeEnum` as a string. Deprecated; new code should use `codeEnum`.
 
 ```
 bool Ok()
 ```
 
-A shortcut to check whether the code is "OK".
+A shortcut to check whether the code is `OK`.
 
 ```
 string errorMessage
 string filePath
 ```
 
-If the code is not "OK", these fields may contain a more detailed error message and/or the path of the file that caused the error.
+If the code is not `OK`, these fields may contain a more detailed error message and/or the path of the file that caused the error.
 
 ## Class `ThemeApi.ApplicationFocusEvent`
 
@@ -2326,10 +2336,18 @@ void OpenURL(string url)
 Opens the specified URL with the default browser. If the URL is a file or directory on the user's disk, this will open the File Explorer instead. Only confirmed to work on Windows.
 
 ```
+ThemeApi.Techmania.Platform GetPlatformEnum()
+```
+
+Returns the current platform, one of `ThemeApi.Techmania.Platform.Windows`, `ThemeApi.Techmania.Platform.Linux`, `ThemeApi.Techmania.Platform.macOS`, `ThemeApi.Techmania.Platform.Android`, `ThemeApi.Techmania.Platform.iOS` and `ThemeApi.Techmania.Platform.Unknown`.
+
+The `ThemeApi.Techmania.Platform` enum is exposed to Lua as `tm.enum.platform`.
+
+```
 string GetPlatform()
 ```
 
-Returns the current platform, one of `"Windows"`, `"Linux"`, `"macOS"`, `"Android"`, `"iOS"` and `"Unknown"`.
+Returns `GetPlatformEnum()` as a string. Deprecated; new code should use `GetPlatformEnum()`.
 
 ```
 string Version()
