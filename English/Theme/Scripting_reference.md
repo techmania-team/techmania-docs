@@ -2237,6 +2237,12 @@ Provides the root element in the visual tree. From here you can query other elem
 Note that, when TECHMANIA transitions to and away from your theme (such as to the editor), it does so by setting the `display` property of the root element. It is adviced that you never change this property on the root element from your theme, in order to not interfere with this transition.
 
 ```
+ThemeApi.VisualElementWrap WrapVisualElement(UnityEngine.UIElements.VisualElement e)
+```
+
+Creates a `VisualElementWrap` object around the specified `VisualElement` object. This is the reverse of `VisualElementWrap.inner`.
+
+```
 UnityEngine.UIElements.PanelSettings panelSettings
 ```
 
@@ -2540,6 +2546,12 @@ UnityEngine.UIElements.VisualElement inner
 ```
 
 Provides the internal `VisualElement` object that the `VisualElementWrap` object wraps around.
+
+If you wish to do the reverse, ie. create a `VisualElementWrap` object on a `VisualElement` object, you can call `ThemeApi.Techmania.WrapVisualElement`:
+
+```
+local wrap = tm.WrapVisualElement(inner)
+```
 
 ```
 bool Equals(UnityEngine.UIElements.VisualElement other)

@@ -19,6 +19,7 @@ Switched to FMOD as the audio backend. All usages of `UnityEngine.AudioClip` and
 * Added versions of `Status.code` and `ThemeApi.Techmania.GetPlatform()` that return an enum instead of string.
 * Added methods to `ThemeApi.IO` that release assets (textures, sounds, videos) loaded from files. Themes should use these methods to control their memory footprint.
 * Added `ThemeApi.Techmania.InEditor()` that returns whether TECHMANIA is running inside the Unity editor.
+* Added `ThemeApi.Techmania.WrapVisualElement(VisualElement)` that creates a `VisualElementWrap` object.
 
 # API version 1
 
