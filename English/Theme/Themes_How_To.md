@@ -73,3 +73,7 @@ See `ThemeApi.EditorInterface`.
 ## Display previews for skins / timing calibration
 
 See `ThemeApi.CalibrationPreview` and `ThemeApi.SkinPreview`.
+
+## Managing memory
+
+TODO

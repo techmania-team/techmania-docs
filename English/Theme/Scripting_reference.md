@@ -388,19 +388,19 @@ float pulse
 
 A wrapper around a FMOD channel, created when you play a `FmodSoundWrap` with `AudioManager` methods. It is designed to be backwards compatible with `UnityEngine.AudioSource`.
 
-It is important to note that a channel will be automatically released by FMOD when it stops, either due to the sound finishing or you calling `Stop`. Afterwards, all operations on the channel will result in errors. You can call `SetSoundEndCallback` to receive a callback when the sound finishes playing.
+It is important to note that a channel will be automatically released by FMOD when it stops, either due to the sound finishing or you calling `Stop`. Afterwards, all operations on the channel will result in warnings in the Unity console. You can call `SetSoundEndCallback` to receive a callback when the sound finishes playing. Currently there is no way to check whether an `FmodChannelWrap` object contains a valid channel.
 
 ```
 FmodSoundWrap sound
 ```
 
-The sound that this channel is playing. This property has an alias `clip` for backwards compatibility.
+The sound that this channel is playing. Read only. This property has an alias `clip` for backwards compatibility.
 
 ```
 bool isPlaying
 ```
 
-Whether the channel is playing. Being paused is considered playing.
+Whether the channel is playing. Read only. Being paused is considered playing.
 
 ```
 bool loop
@@ -465,32 +465,32 @@ Registers a callback to be called when the channel stops. The callback will be c
 
 A wrapper around a FMOD sound, created when you load audio files with `ThemeApi.IO` methods. It is designed to be backwards compatible with `UnityEngine.AudioClip`.
 
-It is important to note that once a sound is loaded into memory, it stays in memory until you call `Release`. Failure to release unused sounds, especially those loaded from files, may cause TECHMANIA to run out of memory and crash.
+It is important to note that once a sound is loaded into memory, it stays in memory until you call `IO.ReleaseAudio`. Failure to release unused sounds, especially those loaded from files, may cause TECHMANIA to run out of memory and crash.
 
 ```
 int channels
 ```
 
-The number of audio channels (not to be confused with FMOD channels) in the sound.
+The number of audio channels (not to be confused with FMOD channels) in the sound. Read only.
 
 ```
 int frequency
 ```
 
-The frequency in Hz.
+The frequency in Hz. Read only.
 
 ```
 float length
 int samples
 ```
 
-The sound's length in seconds and samples.
+The sound's length in seconds and samples. Both read only.
 
 ```
-void Release()
+bool Equals(FmodSoundWrap other)
 ```
 
-Releases the sound from memory. Afterwards, all operations on the sound will result in errors.
+Returns whether this object and the other object refer to the same FMOD sound.
 
 ## Class `GameTimer`
 
@@ -2030,7 +2030,9 @@ Gets or sets whether to enable auto play, and whether to show hitbox on notes, r
 
 ## Class `ThemeApi.IO`
 
-Contains methods to load resources from either the theme or the disk. Access this class via `tm.io`.
+Contains methods to load resources from either the theme or a file on disk. Access this class via `tm.io`.
+
+Note that resources loaded from files will remain in memory until you release them. To avoid out-of-memory crashes, remember to release resources loaded from files (eg. eyecatches, preview tracks, preview BGAs) after you no longer need them. Resources loaded from the theme are meant to stay in memory for the entire TECHMANIA session, so you do not need to release them (except for videos; see `LoadVideoFromTheme`).
 
 ### Loading from the theme
 
@@ -2049,7 +2051,9 @@ void LoadVideoFromTheme(string path, function callback)
 
 Loads a video from the theme as a `VideoElement` object. The callback will be called with 2 arguments: a [`Status`](#class-status) object, and the loaded [`VideoElement`](#class-themeapivideoelement) object.
 
-### Loading from the disk
+Note that, different from other forms of resources, `VideoElement` objects involve a Unity `GameObject` in addition to the video clip. This `GameObject` needs to be destroyed after you are done with the video, whether the video comes from the theme or a file. Therefore, you should call `ReleaseVideo` in both cases. Calling `ReleaseVideo` on a `VideoElement` loaded from the theme will not release the video clip.
+
+### Loading from a file
 
 ```
 bool FileExists(string path)
@@ -2063,11 +2067,21 @@ void LoadAudioFromFile(string path, function callback)
 void LoadVideoFromFile(string path, function callback)
 ```
 
-Loads a texture / sound / video from the disk, respectively. These methods are asynchronous and may take a few frames to complete. To receive the loaded resource, pass in a callback that will be called when the loading is complete. The callback will be called with 2 parameters: a [`Status`](#class-status) object, and the resource object (if status is OK):
+Loads a texture / sound / video from a file, respectively. These methods are asynchronous and may take a few frames to complete. To receive the loaded resource, pass in a callback that will be called when the loading is complete. The callback will be called with 2 parameters: a [`Status`](#class-status) object, and the resource object (if status is OK):
 
 * `UnityEngine.Texture2D` for texture
 * `FmodSoundWrap` for audio
 * [`VideoElement`](#class-themeapivideoelement) for video
+
+Remember to `Release` these resources after you are done with them.
+
+```
+void ReleaseTexture(UnityEngineTexture2D texture)
+void ReleaseAudio(FmodSoundWrap sound)
+void ReleaseVideo(VideoElement video)
+```
+
+Releases a texture / sound / video from memory, respectively.
 
 ```
 Track LoadFullTrack(string path)
@@ -2094,6 +2108,14 @@ void ReloadGameUiSkin(function progressCallback, function completeCallback)
 Reloads the specified type of skin from disk. The name of the skin to load is read from options.
 
 All methods take a while to complete. While the reload is in progress, TECHMANIA will call `progressCallback` with the path of the file currently being loaded, as a string. Once the reload is complete, TECHMANIA will call `completeCallback` with a [`Status`](#class-status) object.
+
+```
+int numTexturesFromFile
+int numSoundsFromFile
+int numVideosFromFile
+```
+
+The number of textures, sounds and videos that are loaded from files and not yet released, respectively.
 
 ## Class `ThemeApi.SkinPreview`
 
@@ -2336,6 +2358,12 @@ void OpenURL(string url)
 Opens the specified URL with the default browser. If the URL is a file or directory on the user's disk, this will open the File Explorer instead. Only confirmed to work on Windows.
 
 ```
+bool InEditor()
+```
+
+Returns whether TECHMANIA is running inside the Unity editor.
+
+```
 ThemeApi.Techmania.Platform GetPlatformEnum()
 ```
 
@@ -2442,7 +2470,7 @@ A wrapper around Unity's video player that can play video onto a specified [`Vis
 
 Internally, the `VideoElement` manages a render texture, the video player plays onto it, and the target [`VisualElementWrap`]'s background image is set to it.
 
-Remember to `Dispose()` the `VideoElement` after you are done with the video, in order to release memory.
+Remember to call `IO.ReleaseVideo` on the `VideoElement` after you are done with it, in order to release memory.
 
 ```
 ThemeApi.VisualElementWrap targetElement
@@ -2499,7 +2527,7 @@ Plays / pauses / unpauses / stops the video.
 void Dispose()
 ```
 
-Disposes of the `VideoElement` and releases memory.
+Deprecated; new code should call `IO.ReleaseVideo`.
 
 ## Class `ThemeApi.VisualElementWrap`
 
@@ -3150,6 +3178,18 @@ Active
 
 Fever is activated and decreasing with time. No judgement will affect its value or state. When fever is fully depleted, it will return to `Building` state.
 
+## Enum `Status.Code`
+
+Describes the result of an operation.
+
+```
+OK
+NotFound
+IOError
+FormatError
+OtherError
+```
+
 ## Enum `ThemeApi.GameState.State`
 
 Describes possible states of the TECHMANIA rhythm game. Query the current state with `tm.game.state`.
@@ -3192,6 +3232,19 @@ Complete
 ```
 
 The game is complete, either by stage clear or stage fail. The game no longer updates or responds to input. Call `tm.game.Conclude()` to transition to `Idle`.
+
+## Enum `ThemeApi.Techmania.Platform`
+
+Describes the platform that TECHMANIA is built on.
+
+```
+Windows
+Linux
+macOS
+Android
+iOS
+Unknown
+```
 
 ## Enum `VisualElementWrap.EventType`
 
