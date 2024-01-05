@@ -76,4 +76,10 @@ See `ThemeApi.CalibrationPreview` and `ThemeApi.SkinPreview`.
 
 ## Managing memory
 
-TODO
+The following resources need to be manually released after you are done with them in order to conserve memory:
+* Textures loaded from files
+* Sounds loaded from files
+* Videos loaded from the theme
+* Videos loaded from files
+
+See `ThemeApi.IO`.

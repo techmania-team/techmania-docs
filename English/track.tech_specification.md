@@ -1,4 +1,4 @@
-Applies to version: 2.0
+Applies to version: 2.1
 
 This page explains the specification of TECHMANIA's .tech format.
 
