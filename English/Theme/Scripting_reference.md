@@ -2535,6 +2535,14 @@ void Dispose()
 
 Deprecated; new code should call `IO.ReleaseVideo`.
 
+```
+void SetVideoEndCallback(function callback)
+```
+
+Registers a callback to be called when the video reaches its end. The callback will be called with no parameters.
+
+For looping videos, this callback will be called every time the video reaches its end.
+
 ## Class `ThemeApi.VisualElementWrap`
 
 A wrapper around Unity's `UnityEngine.UIElements.VisualElement` class, providing various additional functionalities. Each object corresponds to one element in the visual tree.
