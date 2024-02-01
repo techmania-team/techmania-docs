@@ -1,4 +1,4 @@
-Applies to version: 2.0
+Applies to version: 2.1
 
 TECHMANIA supports various modifiers that allow you to customize the gameplay experience. When selecting a pattern, click the "Modifiers" button to view and select modifiers. This page explains the available modifiers.
 

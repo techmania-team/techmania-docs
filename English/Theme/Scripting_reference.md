@@ -68,6 +68,8 @@ The `tm` object gives you access to various TECHMANIA types. Refer to class [`Th
 |`ruleset`|`Options.Ruleset`|
 |`gameState`|`GameState.State`|
 |`skinType`|`SkinType`|
+|`platform`|`ThemeApi.Techmania.Platform`|
+|`statusCode`|`Status.Code`|
 |Enums in tracks, patterns and notes|
 |`controlScheme`|`ControlScheme`|
 |`noteType`|`NoteType`|
@@ -180,44 +182,42 @@ The `unity.enum` table exposes the following Unity enums.
 
 Classes within this section are sorted alphabetically, but properties and methods within each class are grouped by usage. To quickly find references for a class, press Ctrl+F and search for "class \<classname\>".
 
-## Class `AudioSourceManager`
+## Class `AudioManager`
 
-Allows the playback of audio clips. You can access an `AudioSourceManager` object via `tm.audio`.
+Allows the playback of sounds. You can access an `AudioManager` object via `tm.audio`.
+
+Starting 2.1 (API version 2), TECHMANIA uses FMOD as its audio backend.
+* When you load an audio file into memory, it is a "sound", in the form of a [`FmodSoundWrap`](#class-fmodsoundwrap) object. Some APIs may use the term "clip" for backwards compatibility.
+* When you play a sound, it is played in a "channel", in the form of a [`FmodChannelWrap`](#class-fmodchannelwrap) object.
+* Channels are routed into "channel group"s. TECHMANIA maintains four channel groups, for music, keysound, SFX, and master, respectively. You do not have control over channel groups other than volume.
 
 ### Playing audio
 
 ```
-UnityEngine.AudioSource PlayMusic(UnityEngine.AudioClip clip,
+FmodChannelWrap PlayMusic(FmodSoundWrap sound,
     float startTime = 0f,
     int volumePercent = 100,
     int panPercent = 0)
-UnityEngine.AudioSource PlayKeysound(UnityEngine.AudioClip clip,
+FmodChannelWrap PlayKeysound(FmodSoundWrap sound,
     bool hiddenLane,
     float startTime = 0f,
     int volumePercent = 100,
     int panPercent = 0)
-UnityEngine.AudioSource PlaySfx(UnityEngine.AudioClip clip,
+FmodChannelWrap PlaySfx(FmodSoundWrap sound,
     float startTime = 0f,
     int volumePercent = 100,
     int panPercent = 0)
 ```
 
-Plays the specified audio clip on the music / keysound / SFX channel, and returns the `AudioSource` playing the clip. You can load an audio clip from the theme with `tm.io.LoadAudioFromTheme`, or from the disk with `tm.io.LoadAudioFromFile`.
+Plays the specified sound on the music / keysound / SFX channel group, and returns the `FmodChannelWrap` playing the sound. You can load a sound from the theme with `tm.io.LoadAudioFromTheme`, or from the disk with `tm.io.LoadAudioFromFile`.
 
-The clip will start playing from `startTime` seconds. `volumePercent` is between 0 and 100. `panPercent` is between -100 (left) and 100 (right).
+The sound will start playing from `startTime` seconds. `volumePercent` is between 0 and 100. `panPercent` is between -100 (left) and 100 (right).
 
-For keysounds, in addition to the clip you also need to specify whether the note is in a playable lane or hidden lane. Keysounds in hidden lanes will be played through the music channel.
+For keysounds, in addition to the sound you also need to specify whether the note is in a playable lane or hidden lane. Keysounds in hidden lanes will be played through the music channel group.
 
-Please note that there are software and hardware limits on how many sounds per channel can play simultaneously. The software limits are:
+Please note that there are software and hardware limits on how many sounds can play simultaneously. If the limits are reached and either TECHMANIA or your theme plays another sound, it will cause one currently playing sound to stop.
 
-* 1 music clip
-* 32 keysounds in playable lanes
-* 64 keysounds in hidden lanes
-* 8 SFX clips
-
-If the limits are reached and either TECHMANIA or your theme plays another clip, it will cause one currently playing clip to stop.
-
-### Controlling all audio sources
+### Controlling all channels
 
 ```
 void PauseAll()
@@ -225,19 +225,25 @@ void UnpauseAll()
 void StopAll()
 ```
 
-Pauses, unpauses or stops all `AudioSource`s.
+Pauses, unpauses or stops all `FmodChannelWrap`s.
 
 ```
 void SetSpeed(float speed)
 ```
 
-Sets the playing speed of all `AudioSource`s. The normal speed is 1.
+Sets the playing speed of all `FmodChannelWrap`s. The normal speed is 1.
+
+```
+bool IsAnySoundPlaying()
+```
+
+Returns if there is currently any `FmodChannelWrap` playing audio.
 
 ```
 bool IsAnySourcePlaying()
 ```
 
-Returns if there is currently any `AudioSource` playing audio.
+Deprecated. Alias of `IsAnySoundPlaying()`, kept for backwards compatibility.
 
 ### Miscellaneous
 
@@ -245,7 +251,7 @@ Returns if there is currently any `AudioSource` playing audio.
 void ApplyVolume()
 ```
 
-Retrieves the volume values from TECHMANIA options and applies them to the `AudioSource`s. You need to call this after changing the volume values in options for them to take effect.
+Retrieves the volume values from TECHMANIA options and applies them to the channel groups. You need to call this after changing the volume values in options for them to take effect.
 
 ## Class `BpmEvent`
 
@@ -377,6 +383,114 @@ A named tuple of lane and pulse. Anchors and control points in drag nodes are al
 float lane
 float pulse
 ```
+
+## Class `FmodChannelWrap`
+
+A wrapper around a FMOD channel, created when you play a `FmodSoundWrap` with `AudioManager` methods. It is designed to be backwards compatible with `UnityEngine.AudioSource`.
+
+It is important to note that a channel will be automatically released by FMOD when it stops, either due to the sound finishing or you calling `Stop`. Afterwards, all operations on the channel will result in warnings in the Unity console. You can call `SetSoundEndCallback` to receive a callback when the sound finishes playing. Currently there is no way to check whether an `FmodChannelWrap` object contains a valid channel.
+
+```
+FmodSoundWrap sound
+```
+
+The sound that this channel is playing. Read only. This property has an alias `clip` for backwards compatibility.
+
+```
+bool isPlaying
+```
+
+Whether the channel is playing. Read only. Being paused is considered playing.
+
+```
+bool loop
+```
+
+Whether the channel loops.
+
+```
+float panStereo
+```
+
+The pan of the channel. -1 for left, 1 for right.
+
+```
+float pitch
+```
+
+The playback speed of the channel. 1 is normal speed. Changing speed will cause the pitch to change, hence the name.
+
+```
+float time
+int timeSamples
+```
+
+The current time of the playback, in seconds and samples.
+
+```
+float volume
+```
+
+The volume of the channel.
+* 0 is silent, 1 is full.
+* Smaller 0 to invert the signal.
+* Larger than 1 to amplify the signal.
+
+```
+void Pause()
+void UnPause()
+```
+
+Pauses and unpauses playback.
+
+```
+void Play()
+```
+
+An alias for `UnPause`.
+
+```
+void Stop()
+```
+
+Stops playback. The callback set in `SetSoundEndCallback`, if any, will be called, then the channel will become invalid.
+
+```
+void SetSoundEndCallback(function callback)
+```
+
+Registers a callback to be called when the channel stops. The callback will be called with no parameters.
+
+## Class `FmodSoundWrap`
+
+A wrapper around a FMOD sound, created when you load audio files with `ThemeApi.IO` methods. It is designed to be backwards compatible with `UnityEngine.AudioClip`.
+
+It is important to note that once a sound is loaded into memory, it stays in memory until you call `IO.ReleaseAudio`. Failure to release unused sounds, especially those loaded from files, may cause TECHMANIA to run out of memory and crash.
+
+```
+int channels
+```
+
+The number of audio channels (not to be confused with FMOD channels) in the sound. Read only.
+
+```
+int frequency
+```
+
+The frequency in Hz. Read only.
+
+```
+float length
+int samples
+```
+
+The sound's length in seconds and samples. Both read only.
+
+```
+bool Equals(FmodSoundWrap other)
+```
+
+Returns whether this object and the other object refer to the same FMOD sound.
 
 ## Class `GameTimer`
 
@@ -794,23 +908,29 @@ int sfxVolumePercent
 The volume of each audio channel, from 0 to 100. Call `ApplyVolumeSettings()` to apply these.
 
 ```
-int audioBufferSize
-```
-
-The audio buffer size in samples. Usually a power of 2; default is 512. As the game explains, smaller value may reduce audio latency, but puts a higher strain on the user's system, and has a higher chance to cause audio stuttering or audio to stop altogether. Call `ApplyAudioBufferSize()` to apply this.
-
-```
 void ApplyVolumeSettings()
-void ApplyAudioBufferSize()
 ```
 
-Applies current volume / audio buffer size settings.
+Applies current volume settings.
 
 ```
-int GetDefaultAudioBufferSize()
+bool useAsio
 ```
 
-Returns the default audio buffer size on the user's system.
+Whether to use ASIO. Only available on Windows. Call `ApplyAsio()` to apply this.
+
+```
+void ApplyAsio()
+```
+
+Applies `useAsio`. Note that if the player doesn't have ASIO4ALL installed when turning this on, FMOD will not produce an error, but then all audio playback will be stuck at 0 seconds.
+
+```
+int audioBufferSize
+int numAudioBuffers
+```
+
+The size (in samples) and quantity of audio buffers. The default is 1024 samples, 4 buffers. These are only applied on TECHMANIA startup. Refer to FMOD's [documentation](https://www.fmod.com/docs/2.02/api/core-api-system.html#system_setdspbuffersize) for more explanation on these settings.
 
 ### Appearance
 
@@ -1456,28 +1576,36 @@ The texture in `filename` loaded into memory.
 Contains either OK or an error message. Many I/O operations that may succedd or fail report the result with a `Status` object.
 
 ```
-string code
+Status.Code codeEnum
 ```
 
 The status code, one of the following:
-* "OK": no error, operation successfully finished.
-* "NotFound": some file is not found.
-* "IOError": an I/O error when reading or writing a file.
-* "FormatError": the format of some file is invalid.
-* "OtherError": an error that does not fit any other category.
+* `Status.Code.OK`: no error, operation successfully finished.
+* `Status.Code.NotFound`: some file is not found.
+* `Status.Code.IOError`: an I/O error when reading or writing a file.
+* `Status.Code.FormatError`: the format of some file is invalid.
+* `Status.Code.OtherError`: an error that does not fit any other category.
+
+The `Status.Code` enum is exposed to Lua as `tm.enum.statusCode`.
+
+```
+string code
+```
+
+Returns `codeEnum` as a string. Deprecated; new code should use `codeEnum`.
 
 ```
 bool Ok()
 ```
 
-A shortcut to check whether the code is "OK".
+A shortcut to check whether the code is `OK`.
 
 ```
 string errorMessage
 string filePath
 ```
 
-If the code is not "OK", these fields may contain a more detailed error message and/or the path of the file that caused the error.
+If the code is not `OK`, these fields may contain a more detailed error message and/or the path of the file that caused the error.
 
 ## Class `ThemeApi.ApplicationFocusEvent`
 
@@ -1647,7 +1775,7 @@ The [`VisualElementWrap`](#class-themeapivisualelementwrap)s that hold the patte
 `vfxComboContainer` is currently unused, but you should set it anyway, so in the future when TECHMANIA allows rendering VFX and combo text on UI Toolkit, it will work out of the box.
 
 ```
-AudioClip assistTick
+FmodSoundWrap assistTick
 ```
 
 The sound to use for the "assist tick" modifier.
@@ -1894,18 +2022,20 @@ Gets or sets whether to enable auto play, and whether to show hitbox on notes, r
 
 ## Class `ThemeApi.IO`
 
-Contains methods to load resources from either the theme or the disk. Access this class via `tm.io`.
+Contains methods to load resources from either the theme or a file on disk. Access this class via `tm.io`.
+
+Note that resources loaded from files will remain in memory until you release them. To avoid out-of-memory crashes, remember to release resources loaded from files (eg. eyecatches, preview tracks, preview BGAs) after you no longer need them. Resources loaded from the theme are meant to stay in memory for the entire TECHMANIA session, so you do not need to release them (except for videos; see `LoadVideoFromTheme`).
 
 ### Loading from the theme
 
 ```
 string LoadTextFileFromTheme(string path)
 UnityEngine.Texture2D LoadTextureFromTheme(string path)
-UnityEngine.AudioClip LoadAudioFromTheme(string path)
+FmodSoundWrap LoadAudioFromTheme(string path)
 UnityEngine.TextCore.Text.FontAsset LoadFontFromTheme(string path)
 ```
 
-Loads a text file / texture / audio clip / font from the theme, respectively. These methods are synchronous and return the resource immediately. The `path` argument should begin with `Assets/UI/`. On error, these methods return `nil`.
+Loads a text file / texture / sound / font from the theme, respectively. These methods are synchronous and return the resource immediately. The `path` argument should begin with `Assets/UI/`. On error, these methods return `nil`.
 
 ```
 void LoadVideoFromTheme(string path, function callback)
@@ -1913,7 +2043,9 @@ void LoadVideoFromTheme(string path, function callback)
 
 Loads a video from the theme as a `VideoElement` object. The callback will be called with 2 arguments: a [`Status`](#class-status) object, and the loaded [`VideoElement`](#class-themeapivideoelement) object.
 
-### Loading from the disk
+Note that, different from other forms of resources, `VideoElement` objects involve a Unity `GameObject` in addition to the video clip. This `GameObject` needs to be destroyed after you are done with the video, whether the video comes from the theme or a file. Therefore, you should call `ReleaseVideo` in both cases. Calling `ReleaseVideo` on a `VideoElement` loaded from the theme will not release the video clip.
+
+### Loading from a file
 
 ```
 bool FileExists(string path)
@@ -1927,11 +2059,21 @@ void LoadAudioFromFile(string path, function callback)
 void LoadVideoFromFile(string path, function callback)
 ```
 
-Loads a texture / audio clip / video from the disk, respectively. These methods are asynchronous and may take a few frames to complete. To receive the loaded resource, pass in a callback that will be called when the loading is complete. The callback will be called with 2 parameters: a [`Status`](#class-status) object, and the resource object (if status is OK):
+Loads a texture / sound / video from a file, respectively. These methods are asynchronous and may take a few frames to complete. To receive the loaded resource, pass in a callback that will be called when the loading is complete. The callback will be called with 2 parameters: a [`Status`](#class-status) object, and the resource object (if status is OK):
 
 * `UnityEngine.Texture2D` for texture
-* `UnityEngine.AudioClip` for audio
+* `FmodSoundWrap` for audio
 * [`VideoElement`](#class-themeapivideoelement) for video
+
+Remember to `Release` these resources after you are done with them.
+
+```
+void ReleaseTexture(UnityEngineTexture2D texture)
+void ReleaseAudio(FmodSoundWrap sound)
+void ReleaseVideo(VideoElement video)
+```
+
+Releases a texture / sound / video from memory, respectively.
 
 ```
 Track LoadFullTrack(string path)
@@ -1958,6 +2100,14 @@ void ReloadGameUiSkin(function progressCallback, function completeCallback)
 Reloads the specified type of skin from disk. The name of the skin to load is read from options.
 
 All methods take a while to complete. While the reload is in progress, TECHMANIA will call `progressCallback` with the path of the file currently being loaded, as a string. Once the reload is complete, TECHMANIA will call `completeCallback` with a [`Status`](#class-status) object.
+
+```
+int numTexturesFromFile
+int numSoundsFromFile
+int numVideosFromFile
+```
+
+The number of textures, sounds and videos that are loaded from files and not yet released, respectively.
 
 ## Class `ThemeApi.SkinPreview`
 
@@ -2079,6 +2229,12 @@ Provides the root element in the visual tree. From here you can query other elem
 Note that, when TECHMANIA transitions to and away from your theme (such as to the editor), it does so by setting the `display` property of the root element. It is adviced that you never change this property on the root element from your theme, in order to not interfere with this transition.
 
 ```
+ThemeApi.VisualElementWrap WrapVisualElement(UnityEngine.UIElements.VisualElement e)
+```
+
+Creates a `VisualElementWrap` object around the specified `VisualElement` object. This is the reverse of `VisualElementWrap.inner`.
+
+```
 UnityEngine.UIElements.PanelSettings panelSettings
 ```
 
@@ -2102,7 +2258,7 @@ ThemeApi.GameState game
 ThemeApi.EditorInterface editor
 ThemeApi.SkinPreview skinPreview
 ThemeApi.calibrationPreview calibrationPreview
-AudioSourceManager audio
+AudioManager audio
 ```
 
 Provides access to the instances of the respective classes.
@@ -2200,10 +2356,24 @@ void OpenURL(string url)
 Opens the specified URL with the default browser. If the URL is a file or directory on the user's disk, this will open the File Explorer instead. Only confirmed to work on Windows.
 
 ```
+bool InEditor()
+```
+
+Returns whether TECHMANIA is running inside the Unity editor.
+
+```
+ThemeApi.Techmania.Platform GetPlatformEnum()
+```
+
+Returns the current platform, one of `ThemeApi.Techmania.Platform.Windows`, `ThemeApi.Techmania.Platform.Linux`, `ThemeApi.Techmania.Platform.macOS`, `ThemeApi.Techmania.Platform.Android`, `ThemeApi.Techmania.Platform.iOS` and `ThemeApi.Techmania.Platform.Unknown`.
+
+The `ThemeApi.Techmania.Platform` enum is exposed to Lua as `tm.enum.platform`.
+
+```
 string GetPlatform()
 ```
 
-Returns the current platform, one of `"Windows"`, `"Linux"`, `"macOS"`, `"Android"`, `"iOS"` and `"Unknown"`.
+Returns `GetPlatformEnum()` as a string. Deprecated; new code should use `GetPlatformEnum()`.
 
 ```
 string Version()
@@ -2298,7 +2468,7 @@ A wrapper around Unity's video player that can play video onto a specified [`Vis
 
 Internally, the `VideoElement` manages a render texture, the video player plays onto it, and the target [`VisualElementWrap`]'s background image is set to it.
 
-Remember to `Dispose()` the `VideoElement` after you are done with the video, in order to release memory.
+Remember to call `IO.ReleaseVideo` on the `VideoElement` after you are done with it, in order to release memory.
 
 ```
 ThemeApi.VisualElementWrap targetElement
@@ -2351,11 +2521,21 @@ void Stop()
 
 Plays / pauses / unpauses / stops the video.
 
+`Stop` is known to cause unexplained freezes in other videos at times. If you run into this, consider calling `Pause` instead.
+
 ```
 void Dispose()
 ```
 
-Disposes of the `VideoElement` and releases memory.
+Deprecated; new code should call `IO.ReleaseVideo`.
+
+```
+void SetVideoEndCallback(function callback)
+```
+
+Registers a callback to be called when the video reaches its end. The callback will be called with no parameters.
+
+For looping videos, this callback will be called every time the video reaches its end.
 
 ## Class `ThemeApi.VisualElementWrap`
 
@@ -2368,6 +2548,12 @@ UnityEngine.UIElements.VisualElement inner
 ```
 
 Provides the internal `VisualElement` object that the `VisualElementWrap` object wraps around.
+
+If you wish to do the reverse, ie. create a `VisualElementWrap` object on a `VisualElement` object, you can call `ThemeApi.Techmania.WrapVisualElement`:
+
+```
+local wrap = tm.WrapVisualElement(inner)
+```
 
 ```
 bool Equals(UnityEngine.UIElements.VisualElement other)
@@ -3006,6 +3192,18 @@ Active
 
 Fever is activated and decreasing with time. No judgement will affect its value or state. When fever is fully depleted, it will return to `Building` state.
 
+## Enum `Status.Code`
+
+Describes the result of an operation.
+
+```
+OK
+NotFound
+IOError
+FormatError
+OtherError
+```
+
 ## Enum `ThemeApi.GameState.State`
 
 Describes possible states of the TECHMANIA rhythm game. Query the current state with `tm.game.state`.
@@ -3048,6 +3246,19 @@ Complete
 ```
 
 The game is complete, either by stage clear or stage fail. The game no longer updates or responds to input. Call `tm.game.Conclude()` to transition to `Idle`.
+
+## Enum `ThemeApi.Techmania.Platform`
+
+Describes the platform that TECHMANIA is built on.
+
+```
+Windows
+Linux
+macOS
+Android
+iOS
+Unknown
+```
 
 ## Enum `VisualElementWrap.EventType`
 
