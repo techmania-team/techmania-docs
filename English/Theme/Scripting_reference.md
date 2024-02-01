@@ -2529,6 +2529,8 @@ void Stop()
 
 Plays / pauses / unpauses / stops the video.
 
+`Stop` is known to cause unexplained freezes in other videos at times. If you run into this, consider calling `Pause` instead.
+
 ```
 void Dispose()
 ```
