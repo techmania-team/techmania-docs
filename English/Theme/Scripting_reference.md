@@ -2908,9 +2908,15 @@ Converts a point in the screen space to the element's local space.
 
 ```
 bool ContainsPointInScreenSpace(UnityEngine.Vector2 screenSpace)
+bool ContainsPointInScreenSpace(UnityEngine.Vector3 screenSpace)
 ```
 
-Returns whether the element contains the specified point in screen space.
+Returns whether the element contains the specified point in screen space. If passing in a `Vector3`, the z coordinate is ignored.
+
+Beware that when you get pointer positions from a UI Toolkit pointer event, they are not in screen space, so plugging them into this function will not work as expected. To check whether an element contains a pointer event's position:
+* Check the `pointerId` field on the event to see whether it's from the mouse or a touch
+* If mouse (`pointerId == 0`), use `unity.input.mousePosition` as the pointer position
+* If touch (`pointerId > 0`), use `unity.input.GetTouch(pointerId - 1).position` as the pointer position
 
 ## Class `TimeStop`
 
