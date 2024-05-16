@@ -1,4 +1,4 @@
-Applies to version: 2.1
+Applies to version: 2.2
 
 TECHMANIA supports various modifiers that allow you to customize the gameplay experience. When selecting a pattern, click the "Modifiers" button to view and select modifiers. This page explains the available modifiers.
 
@@ -83,6 +83,8 @@ Selecting "Half speed" will invalidate your score.
 # Practice mode
 
 Practice mode allows you to jump back and forth between scans, pick a section in the pattern and loop over it, as well as change the game's speed. In practice mode, HP, score and Fever are disabled. Additionally, the loop function means the game will never end on its own. You can quit the game from the pause menu.
+
+Please note that practice mode is unavailable in setlists.
 
 The following controls are available:
 

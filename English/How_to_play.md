@@ -1,4 +1,4 @@
-Applies to version: 2.1
+Applies to version: 2.2
 
 When a scanline passes the center of a note, play it!
 
@@ -90,3 +90,11 @@ Regardless of control scheme, you can activate Fever in any of the following way
 * Clicking the Fever button
 
 While active, Fever will improve the judgement of notes played, and recover HP faster.
+
+# About setlists
+
+Setlists are a more challenging way to play TECHMANIA, where you play 4 patterns in a row. Browse and play setlists from the "Setlists" button in the main menu.
+
+A setlist is a named collection of patterns. After selecting a setlist, you need to choose 3 patterns from it, and play through them in one setting, on one HP bar. After finishing all 3 stages, TECHMANIA will choose a 4th pattern for you, and you need to complete it as well to finish the whole setlist.
+
+To further increase the challenge, you can only use 25% of your HP bar for each stage. This means, if you finish the 1st stage with more than 0% but less than 75% of your total HP, it's still counted as a failure. Likewise, you must finish the 2nd stage with more than 50% HP, and the 3rd stage with more than 25% HP.

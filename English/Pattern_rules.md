@@ -1,4 +1,4 @@
-Applies to version: 2.1
+Applies to version: 2.2
 
 Due to the variety of note types, it is possible to place notes in a way that may cause the game to freeze when loading, make some notes appear weird, make some notes unplayable, or make the pattern hard to read. In an effort to reduce these issues, we establish the following rules on patterns. Most of these do not apply to hidden notes.
 
