@@ -22,6 +22,8 @@
 
 [Rulesets](Rulesets.md)
 
+[setlist.tech specification](setlist.tech_specification.md)
+
 [Skins](Skins.md)
 
 [Terminology](Terminology.md)

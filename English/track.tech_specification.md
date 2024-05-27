@@ -1,6 +1,6 @@
-Applies to version: 2.1
+Applies to version: 2.2
 
-This page explains the specification of TECHMANIA's .tech format.
+This page explains the specification of TECHMANIA's .tech format for tracks.
 
 If you are working on applications to parse, manipulate or convert .tech files, consider doing it in C# so you can include [Track.cs](https://github.com/techmania-team/techmania/blob/master/TECHMANIA/Assets/Scripts/Serializable/Track.cs) and call `Track.Serialize` and `Track.Deserialize`, making it unnecessary to read the following.
 

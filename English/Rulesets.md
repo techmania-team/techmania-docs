@@ -1,4 +1,4 @@
-Applies to version: 2.1
+Applies to version: 2.2
 
 A ruleset is a collection of parameters that determine the difficulty of TECHMANIA. The game contains the following rulesets:
 - Standard: the default, intended ruleset
@@ -18,9 +18,76 @@ Standard ruleset:
 
 ```
 {
-    "version": "2",
+    "version": "3",
 
-    "timeWindows": [0.04, 0.07, 0.1, 0.15, 0.2],
+    "windowsAndDeltas": {
+        "timeWindows": [0.04, 0.07, 0.1, 0.15, 0.2],
+        "hpDeltaBasic": [3, 3, 3, 3, -50, -50],
+        "hpDeltaChain": [3, 3, 3, 3, -50, -50],
+        "hpDeltaHold": [3, 3, 3, 3, -50, -50],
+        "hpDeltaDrag": [3, 3, 3, 3, -50, -50],
+        "hpDeltaRepeat": [3, 3, 3, 3, -50, -50],
+        "hpDeltaBasicDuringFever": [5, 5, 5, 5, -50, -50],
+        "hpDeltaChainDuringFever": [5, 5, 5, 5, -50, -50],
+        "hpDeltaHoldDuringFever": [5, 5, 5, 5, -50, -50],
+        "hpDeltaDragDuringFever": [5, 5, 5, 5, -50, -50],
+        "hpDeltaRepeatDuringFever": [5, 5, 5, 5, -50, -50]
+    },
+    "windowsAndDeltasSetlist": [
+        {
+            "timeWindows": [0.04, 0.07, 0.1, 0.15, 0.2],
+            "hpDeltaBasic": [2, 2, 2, 2, -30, -30],
+            "hpDeltaChain": [2, 2, 2, 2, -30, -30],
+            "hpDeltaHold": [2, 2, 2, 2, -30, -30],
+            "hpDeltaDrag": [2, 2, 2, 2, -30, -30],
+            "hpDeltaRepeat": [2, 2, 2, 2, -30, -30],
+            "hpDeltaBasicDuringFever": [3, 3, 3, 3, -30, -30],
+            "hpDeltaChainDuringFever": [3, 3, 3, 3, -30, -30],
+            "hpDeltaHoldDuringFever": [3, 3, 3, 3, -30, -30],
+            "hpDeltaDragDuringFever": [3, 3, 3, 3, -30, -30],
+            "hpDeltaRepeatDuringFever": [3, 3, 3, 3, -30, -30]
+        },
+        {
+            "timeWindows": [0.04, 0.07, 0.1, 0.15, 0.2],
+            "hpDeltaBasic": [2, 2, 2, 2, -30, -30],
+            "hpDeltaChain": [2, 2, 2, 2, -30, -30],
+            "hpDeltaHold": [2, 2, 2, 2, -30, -30],
+            "hpDeltaDrag": [2, 2, 2, 2, -30, -30],
+            "hpDeltaRepeat": [2, 2, 2, 2, -30, -30],
+            "hpDeltaBasicDuringFever": [3, 3, 3, 3, -30, -30],
+            "hpDeltaChainDuringFever": [3, 3, 3, 3, -30, -30],
+            "hpDeltaHoldDuringFever": [3, 3, 3, 3, -30, -30],
+            "hpDeltaDragDuringFever": [3, 3, 3, 3, -30, -30],
+            "hpDeltaRepeatDuringFever": [3, 3, 3, 3, -30, -30]
+        },
+        {
+            "timeWindows": [0.04, 0.07, 0.1, 0.15, 0.2],
+            "hpDeltaBasic": [1, 1, 1, 1, -30, -30],
+            "hpDeltaChain": [1, 1, 1, 1, -30, -30],
+            "hpDeltaHold": [1, 1, 1, 1, -30, -30],
+            "hpDeltaDrag": [1, 1, 1, 1, -30, -30],
+            "hpDeltaRepeat": [1, 1, 1, 1, -30, -30],
+            "hpDeltaBasicDuringFever": [2, 2, 2, 2, -30, -30],
+            "hpDeltaChainDuringFever": [2, 2, 2, 2, -30, -30],
+            "hpDeltaHoldDuringFever": [2, 2, 2, 2, -30, -30],
+            "hpDeltaDragDuringFever": [2, 2, 2, 2, -30, -30],
+            "hpDeltaRepeatDuringFever": [2, 2, 2, 2, -30, -30]
+        },
+        {
+            "timeWindows": [0.04, 0.07, 0.1, 0.15, 0.2],
+            "hpDeltaBasic": [1, 1, 1, 1, -30, -30],
+            "hpDeltaChain": [1, 1, 1, 1, -30, -30],
+            "hpDeltaHold": [1, 1, 1, 1, -30, -30],
+            "hpDeltaDrag": [1, 1, 1, 1, -30, -30],
+            "hpDeltaRepeat": [1, 1, 1, 1, -30, -30],
+            "hpDeltaBasicDuringFever": [2, 2, 2, 2, -30, -30],
+            "hpDeltaChainDuringFever": [2, 2, 2, 2, -30, -30],
+            "hpDeltaHoldDuringFever": [2, 2, 2, 2, -30, -30],
+            "hpDeltaDragDuringFever": [2, 2, 2, 2, -30, -30],
+            "hpDeltaRepeatDuringFever": [2, 2, 2, 2, -30, -30]
+        }
+    ],
+    
     "timeWindowsInPulses": false,
     "longNoteGracePeriod": 0.15,
     "longNoteGracePeriodInPulses": false,
@@ -39,16 +106,6 @@ Standard ruleset:
     "ongoingDragHitboxHeight": 2,
 
     "maxHp": 1000,
-    "hpDeltaBasic": [3, 3, 3, 3, -50, -50],
-    "hpDeltaChain": [3, 3, 3, 3, -50, -50],
-    "hpDeltaHold": [3, 3, 3, 3, -50, -50],
-    "hpDeltaDrag": [3, 3, 3, 3, -50, -50],
-    "hpDeltaRepeat": [3, 3, 3, 3, -50, -50],
-    "hpDeltaBasicDuringFever": [5, 5, 5, 5, -50, -50],
-    "hpDeltaChainDuringFever": [5, 5, 5, 5, -50, -50],
-    "hpDeltaHoldDuringFever": [5, 5, 5, 5, -50, -50],
-    "hpDeltaDragDuringFever": [5, 5, 5, 5, -50, -50],
-    "hpDeltaRepeatDuringFever": [5, 5, 5, 5, -50, -50],
 
     "comboBonus": false,
 
@@ -63,9 +120,76 @@ Legacy ruleset:
 
 ```
 {
-    "version": "2",
+    "version": "3",
 
-    "timeWindows": [12.5, 37.5, 51.25, 65, 83.75],
+    "windowsAndDeltas": {
+        "timeWindows": [12.5, 37.5, 51.25, 65, 83.75],
+        "hpDeltaBasic": [30, 30, 15, 0, -300, -600],
+        "hpDeltaChain": [30, 30, 15, 0, -350, -500],
+        "hpDeltaHold": [30, 30, 15, 0, -350, -500],
+        "hpDeltaDrag": [30, 30, 15, 0, -350, -500],
+        "hpDeltaRepeat": [30, 30, 15, 0, -350, -500],
+        "hpDeltaBasicDuringFever": [30, 30, 30, 0, -300, -600],
+        "hpDeltaChainDuringFever": [30, 30, 30, 0, -350, -500],
+        "hpDeltaHoldDuringFever": [30, 30, 30, 0, -350, -500],
+        "hpDeltaDragDuringFever": [30, 30, 30, 0, -350, -500],
+        "hpDeltaRepeatDuringFever": [30, 30, 30, 0, -350, -500]
+    },
+    "windowsAndDeltasSetlist": [
+        {
+            "timeWindows": [12.5, 37.5, 51.25, 65, 83.75],
+            "hpDeltaBasic": [15, 15, 0, 0, -200, -300],
+            "hpDeltaChain": [15, 15, 0, 0, -200, -300],
+            "hpDeltaHold": [7, 7, 0, 0, -200, -380],
+            "hpDeltaDrag": [7, 7, 0, 0, -200, -380],
+            "hpDeltaRepeat": [15, 15, 0, 0, -200, -300],
+            "hpDeltaBasicDuringFever": [15, 15, 15, 0, -200, -300],
+            "hpDeltaChainDuringFever": [15, 15, 15, 0, -200, -300],
+            "hpDeltaHoldDuringFever": [7, 7, 7, 0, -200, -380],
+            "hpDeltaDragDuringFever": [7, 7, 7, 0, -200, -380],
+            "hpDeltaRepeatDuringFever": [15, 15, 15, 0, -200, -300]
+        },
+        {
+            "timeWindows": [12.5, 37.5, 51.25, 65, 83.75],
+            "hpDeltaBasic": [10, 10, 0, 0, -200, -400],
+            "hpDeltaChain": [10, 10, 0, 0, -200, -400],
+            "hpDeltaHold": [7, 7, 0, 0, -220, -460],
+            "hpDeltaDrag": [7, 7, 0, 0, -220, -460],
+            "hpDeltaRepeat": [10, 10, 0, 0, -200, -400],
+            "hpDeltaBasicDuringFever": [10, 10, 10, 0, -200, -400],
+            "hpDeltaChainDuringFever": [10, 10, 10, 0, -200, -400],
+            "hpDeltaHoldDuringFever": [7, 7, 7, 0, -220, -460],
+            "hpDeltaDragDuringFever": [7, 7, 7, 0, -220, -460],
+            "hpDeltaRepeatDuringFever": [10, 10, 10, 0, -200, -400]
+        },
+        {
+            "timeWindows": [12.5, 37.5, 51.25, 65, 83.75],
+            "hpDeltaBasic": [7, 7, 0, 0, -200, -400],
+            "hpDeltaChain": [7, 7, 0, 0, -200, -400],
+            "hpDeltaHold": [7, 7, 0, 0, -220, -460],
+            "hpDeltaDrag": [7, 7, 0, 0, -220, -460],
+            "hpDeltaRepeat": [10, 10, 0, 0, -200, -400],
+            "hpDeltaBasicDuringFever": [7, 7, 7, 0, -200, -400],
+            "hpDeltaChainDuringFever": [7, 7, 7, 0, -200, -400],
+            "hpDeltaHoldDuringFever": [7, 7, 7, 0, -220, -460],
+            "hpDeltaDragDuringFever": [7, 7, 7, 0, -220, -460],
+            "hpDeltaRepeatDuringFever": [10, 10, 10, 0, -200, -400]
+        },
+        {
+            "timeWindows": [12.5, 37.5, 51.25, 65, 83.75],
+            "hpDeltaBasic": [7, 7, 0, 0, -200, -400],
+            "hpDeltaChain": [7, 7, 0, 0, -200, -400],
+            "hpDeltaHold": [7, 7, 0, 0, -220, -460],
+            "hpDeltaDrag": [7, 7, 0, 0, -220, -460],
+            "hpDeltaRepeat": [7, 7, 0, 0, -200, -400],
+            "hpDeltaBasicDuringFever": [7, 7, 7, 0, -200, -400],
+            "hpDeltaChainDuringFever": [7, 7, 7, 0, -200, -400],
+            "hpDeltaHoldDuringFever": [7, 7, 7, 0, -220, -460],
+            "hpDeltaDragDuringFever": [7, 7, 7, 0, -220, -460],
+            "hpDeltaRepeatDuringFever": [7, 7, 7, 0, -200, -400]
+        }
+    ],
+
     "timeWindowsInPulses": true,
     "longNoteGracePeriod": 0.1,
     "longNoteGracePeriodInPulses": false,
@@ -84,16 +208,6 @@ Legacy ruleset:
     "ongoingDragHitboxHeight": 1.15,
 
     "maxHp": 10000,
-    "hpDeltaBasic": [30, 30, 15, 0, -300, -600],
-    "hpDeltaChain": [30, 30, 15, 0, -350, -500],
-    "hpDeltaHold": [30, 30, 15, 0, -350, -500],
-    "hpDeltaDrag": [30, 30, 15, 0, -350, -500],
-    "hpDeltaRepeat": [30, 30, 15, 0, -350, -500],
-    "hpDeltaBasicDuringFever": [30, 30, 30, 0, -300, -600],
-    "hpDeltaChainDuringFever": [30, 30, 30, 0, -350, -500],
-    "hpDeltaHoldDuringFever": [30, 30, 30, 0, -350, -500],
-    "hpDeltaDragDuringFever": [30, 30, 30, 0, -350, -500],
-    "hpDeltaRepeatDuringFever": [30, 30, 30, 0, -350, -500],
 
     "comboBonus": true,
 
@@ -116,7 +230,13 @@ Below are descriptions of each parameter in the ruleset.
 
 The ruleset format version. Must be "2".
 
-## Timing windows
+## Windows and deltas
+
+Short for time windows and HP deltas. These are the parameters that can be different whether you are playing individual patterns or a setlist; also different for each stage within a setlist. Time windows and HP deltas will be further explained in later sections.
+
+`windowsAndDeltas` contains the windows and deltas when playing individual patterns; `windowsAndDeltasSetlist` is an array of 4 objects, each corresponding to one stage in a setlist. This means, the first set of windows and deltas under `windowsAndDeltasSetlist` will apply when you play the 1st pattern in a setlist, the second set applies on the 2nd pattern, and so on.
+
+## Time windows
 
 `timeWindows` is an array of 5 numbers (referred to as `timeWindows[0]` through `timeWindows[4]`), corresponding to the time window of Rainbow MAX, MAX, COOL, GOOD and MISS, respectively. All time windows are in seconds by default, but if `timeWindowsInPulses` is `true`, then they are in pulses. A pulse is 1/240 of a beat.
 
@@ -127,6 +247,14 @@ When you play a note, the game will compare the current time and the note's corr
 If it's `timeWindows[4]` or more before a note's correct time, the game will ignore all input on the note. If it's `timeWindows[4]` past a note's correct time and the game still received no input on that note, it becomes a BREAK.
 
 `longNoteGracePeriod` is a special window applied to long notes (hold, drag and repeat hold). It can also be in seconds or pulses, depending on `longNoteGracePeriodInPulses`. After a long note loses input, it will not cause a MISS until `longNoteGracePeriod` seconds or pulses has passed.
+
+## HP and HP delta
+
+**Watch out!** HP-related parameters must be integers.
+
+HP deltas are defined as 10 arrays (`hpDeltaBasic` etc.); each array contains 6 numbers, corresponding to Rainbow MAX, MAX, COOL, GOOD, MISS and BREAK, respectively.
+
+The player starts with `maxHp` points of HP. On each judgement, the game looks up the HP delta value from the array matching the note type, Fever status and judgement, then adds the delta to the current HP. A positive delta will increase HP; A negative delta will decrease HP.
 
 ## Hitbox sizes
 
@@ -153,14 +281,6 @@ Likewise, the game leaves a margin before the first beat and after the last beat
 ![A diagram showing the meaning of scanMarginBeforeFirstBeat and scanMarginAfterLastBeat](https://imgur.com/PiHpGiJ.png)
 
 All values are in multiples of the screen's width. In the standard ruleset, the two margins are 15% and 10% of the screen's width respectively; in the legacy ruleset, they are 15.7% and 9.3%.
-
-## HP
-
-**Watch out!** HP-related parameters must be integers.
-
-HP deltas are defined as 10 arrays (`hpDeltaBasic` etc.); each array contains 6 numbers, corresponding to Rainbow MAX, MAX, COOL, GOOD, MISS and BREAK, respectively.
-
-The player starts with `maxHp` points of HP. On each judgement, the game looks up the HP delta value from the array matching the note type, Fever status and judgement, then adds the delta to the current HP. A positive delta will increase HP; A negative delta will decrease HP.
 
 ## Score and combo bonus
 
@@ -227,3 +347,4 @@ Failed        | F
 290001-295000 | S+
 295001-300000 | S++
 ```
+For setlists, divide the score by 4 before using this table.
