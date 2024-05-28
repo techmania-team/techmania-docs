@@ -1,6 +1,8 @@
+Applies to version: 2.2 (Theme API version 3)
+
 # Introduction to TECHMANIA themes
 
-Starting with 2.0, themes make up the entirety of TECHMANIA's UI (excluding the boot sequence and editor). Players can swap between themes to customize their UI. This article gives an overview on themes from a technical perspective, as well as how to develop them.
+Starting with 2.0, themes make up the entirety of TECHMANIA's UI (excluding the boot sequence and editors). Players can swap between themes to customize their UI. This article gives an overview on themes from a technical perspective, as well as how to develop them.
 
 ## Prerequisites
 

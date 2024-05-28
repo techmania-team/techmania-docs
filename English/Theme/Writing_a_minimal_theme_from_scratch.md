@@ -1,3 +1,5 @@
+Applies to version: 2.2 (Theme API version 3)
+
 # Writing a minimal theme from scratch
 
 This article aims to guide you to write a minimum viable TECHMANIA theme from scratch. Prerequisite: you have read the [Introduction](Introduction.md).

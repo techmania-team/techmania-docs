@@ -599,12 +599,12 @@ Returns the names of all available skins of the specified type.
 ### Resources on tracks
 
 ```
-List<TrackSubfolder> GetSubfolders(string parent)
+List<Subfolder> GetTrackSubfolders(string parent)
 List<TrackInFolder> GetTracksInFolder(string parent)
-List<TrackWithError> GetTracksWithError(string parent)
+List<ResourceWithError> GetTracksWithError(string parent)
 ```
 
-Returns all [`TrackSubfolder`](#class-globalresourcetracksubfolder), [`TrackInFolder`](#class-globalresourcetrackinfolder) or [`TrackWithError`](#class-globalresourcetrackwitherror) objects in the specified parent folder, corresponding to, respectively, subfolders in it, tracks in it (but not in a subfolder), and tracks with errors (due to I/O errors, deserialization errors, etc.) in it.
+Returns all [`Subfolder`](#class-globalresourcesubfolder), [`TrackInFolder`](#class-globalresourcetrackinfolder) or [`ResourceWithError`](#class-globalresourceresourcewitherror) objects in the specified parent folder, corresponding to, respectively, subfolders in it, tracks in it (but not in a subfolder), and tracks with errors (due to I/O errors, deserialization errors, etc.) in it.
 
 `parent` should be the track root folder, available at `tm.paths.GetTrackRootFolder()`, or a subfolder of it.
 
@@ -614,13 +614,49 @@ If there are no subfolders / tracks / tracks with errors in `parent`, or `parent
 void ClearTrackList()
 ```
 
-Clears the in-memory track list to release memory. After calling this, `GetSubfolders`, `GetTracksInFolder` and `GetTracksWithError` will stop working.
+Clears the in-memory track list to release memory. After calling this, `GetTrackSubfolders`, `GetTracksInFolder` and `GetTracksWithError` will stop working.
 
 ```
 bool anyOutdatedTrack
 ```
 
 Whether there is any track in an outdated format on disk. Currently there is no way to query which specific track is outdated.
+
+### Resource on setlists
+
+```
+List<Subfolder> GetSetlistSubfolders(string parent)
+List<SetlistInFolder> GetSetlistsInFolder(string parent)
+List<ResourceWithError> GetSetlistsWithError(string parent)
+```
+
+Returns all [`Subfolder`](#class-globalresourcesubfolder), [`SetlistInFolder`](#class-globalresourcesetlistinfolder) or [`ResourceWithError`](#class-globalresourceresourcewitherror) objects in the specified parent folder, corresponding to, respectively, subfolders in it, setlists in it (but not in a subfolder), and setlists with errors (due to I/O errors, deserialization errors, etc.) in it.
+
+`parent` should be the setlist root folder, available at `tm.paths.GetSetlistRootFolder()`, or a subfolder of it.
+
+If there are no subfolders / setlists / setlists with errors in `parent`, or `parent` does not exist, returns an empty list.
+
+```
+void ClearSetlistList()
+```
+
+Clears the in-memory setlist list to release memory. After calling this, `GetSetlistSubfolders`, `GetSetlistsInFolder` and `GetSetlistsWithError` will stop working.
+
+```
+bool anyOutdatedSetlist
+```
+
+Whether there is any setlist in an outdated format on disk. Currently there is no way to query which specific setlist is outdated.
+
+```
+Status SearchForPatternReference(Setlist.PatternReference reference, out TrackInFolder trackInFolder, out Pattern minimizedPattern)
+```
+
+Dereferences a [`Setlist.PatternReference`](#class-setlistpatternreference) by searching through all patterns loaded into memory for one that matches the reference's track GUID and pattern GUID.
+
+If found, returns an OK status, a [`GlobalResource.TrackInFolder`](#class-globalresourcetrackinfolder) object describing the track, and the minimized pattern. See `TrackInFolder` for what "minimize" means.
+
+If not found, returns a status with code `Status.Code.NotFound`, and both out parameters are null.
 
 ### Resource on themes
 
@@ -630,9 +666,9 @@ List<string> GetThemeList()
 
 Returns the names of all available themes.
 
-## Class `GlobalResource.TrackSubfolder`
+## Class `GlobalResource.Subfolder`
 
-Describes a subfolder in some parent folder given to `GlobalResource.GetSubfolders`.
+Describes a subfolder in some parent folder given to `GlobalResource.GetTrackSubfolders` or `GlobalResource.GetSetlistSubfolders`.
 
 ```
 string name
@@ -648,6 +684,28 @@ string eyecatchFullPath
 
 The full path to the eyecatch image inside this subfolder, if any. If a subfolder does not have an eyecatch, the value is nil.
 
+## Class `GlobalResource.SetlistInFolder`
+
+Describes a setlist in some parent folder given to `GlobalResource.GetSetlistsInFolder`.
+
+```
+string folder
+```
+
+The full path to the folder that holds the `setlist.tech` file. File names in the setlist, such as eyecatch image and background image, should be concatenated to this folder to get the full path.
+
+```
+DateTime modifiedTime
+```
+
+The last modified time of `folder`. For newly unzipped folders, this is the time of unzipping.
+
+```
+Setlist setlist
+```
+
+The setlist loaded from `setlist.tech`. Different from tracks, setlists are loaded to memory in their entirety.
+
 ## Class `GlobalResource.TrackInFolder`
 
 Describes a track in some parent folder given to `GlobalResource.GetTracksInFolder`.
@@ -662,7 +720,7 @@ The full path to the folder that holds the `track.tech` file. File names in the 
 DateTime modifiedTime
 ```
 
-The last modified time of `folder`.
+The last modified time of `folder`. For newly unzipped folders, this is the time of unzipping.
 
 ```
 Track minimizedTrack
@@ -670,7 +728,7 @@ Track minimizedTrack
 
 The minimized track loaded from `track.tech`. To save memory, TECHMANIA discards all notes, BPM events and time stops from tracks when building the track list. If you need the full track, call `tm.io.LoadFullTrack`.
 
-## Class `GlobalResource.TrackWithError`
+## Class `GlobalResource.ResourceWithError`
 
 Describes a track with error in some parent folder given to `GlobalResource.GetTracksWithError`.
 
@@ -984,11 +1042,12 @@ Whether to use custom data locations instead of the default ones. Call `tm.paths
 
 ```
 string tracksFolderLocation
+string setlistsFolderLocation
 string skinsFolderLocation
 string themesFolderLocation
 ```
 
-The full paths of the tracks / skins / themes folder, if `customDataLocation` is true. Call `tm.paths.ApplyCustomDataLocation()` to apply these.
+The full paths of the tracks / setlists / skins / themes folder, if `customDataLocation` is true. Call `tm.paths.ApplyCustomDataLocation()` to apply these.
 
 ### Discord rich presence
 
@@ -1048,13 +1107,14 @@ Contains methods to retrieve paths of TECHMANIA-related folders, as well as meth
 
 ```
 const string kTrackFilename = "track.tech"
+const string kSetlistFilename = "setlist.tech"
 ```
 
-The `track.tech` filename as a constant.
+The `track.tech` and `setlist.tech` filenames as constants.
 
 ### Resource folders
 
-There is a set of track, skin and theme folders in an on-disk location (either next to TECHMANIA.exe or in custom data locations), and another set in "streaming assets". See [Folders and zips](../Folders_and_zips.md) for an explanation of streaming assets.
+There is a set of track, setlist, skin and theme folders in an on-disk location (either next to TECHMANIA.exe or in custom data locations), and another set in "streaming assets". See [Folders and zips](../Folders_and_zips.md) for an explanation of streaming assets.
 
 In most cases, TECHMANIA will conceptually merge contents in streaming assets into the on-disk location, so you do not need to care about streaming assets at all. If for any reason you need a path specifically in streaming assets, you can pass `streamingAssets = true` to the corresponding method.
 
@@ -1066,9 +1126,10 @@ Call this after changing any option related to custom data locations to apply th
 
 ```
 string GetTrackRootFolder(bool streamingAssets = false)
+string GetSetlistRootFolder(bool streamingAssets = false)
 ```
 
-Returns the root folder for tracks. The track list in `GlobalResources` is built from this folder and its subfolders.
+Returns the root folder for tracks / setlists. The track / setlist list in `GlobalResources` is built from this folder and its subfolders.
 
 ```
 string GetSkinRootFolder(bool streamingAssets = false)
@@ -1545,6 +1606,86 @@ float feverAmount
 ```
 
 The current fever amount, in \[0, 1\].
+
+## Class `Setlist`
+
+## Class `Setlist.PatternReference`
+
+## Class `SetlistScoreKeeper`
+
+Keeps track of score, combo, HP and fever while playing a setlist. Access the `SetlistScoreKeeper` instance via `tm.game.setlist.scoreKeeper`. This instance is available in states `GameState.State.LoadComplete`, `GameState.State.Ongoing`, `GameState.State.Paused`, `GameState.State.PartialComplete` and `GameState.State.Complete`.
+
+Internally, `SetlistScoreKeeper` maintains a list of up to 4 child `ScoreKeeper` instances, one for each stage. Most `SetlistScoreKeeper` fields work by aggregating the same field on all children `ScoreKeeper`s.
+
+```
+bool stageFailed
+```
+
+Whether the player has failed to clear the setlist due to losing all HP, or not meeting the HP threshold after a stage. If true, the score will be invalid.
+
+### Accessing child `ScoreKeeper`s
+
+```
+ScoreKeeper GetScoreKeeperForStage(int stage)
+```
+
+Returns the child `ScoreKeeper` for the specified stage number in 0-index. Returns null if the stage hasn't started yet.
+
+```
+ScoreKeeper GetCurrentScoreKeeper()
+```
+
+A convenience method to return the child `ScoreKeeper` corresponding to the current stage.
+
+### Score
+
+```
+int totalNotes
+int totalFeverBonus
+int maxScore
+int NumNotesWithJudgement(Judgement judgement)
+bool AllNotesResolved()
+int ScoreFromNotes()
+int ComboBonus()
+int TotalScore()
+PerformanceMedal Medal()
+string ScoreToRankAssumingStageClear(int score)
+string Rank()
+```
+
+The same fields in `ScoreKeeper` but for the entire setlist. See `ScoreKeeper` for explanations.
+
+### Combo
+
+```
+int currentCombo
+int maxCombo
+```
+
+The current combo and max combo of the setlist so far. Combo will not reset between stages.
+
+### HP
+
+```
+int maxHp
+int hp
+```
+
+The max HP and current HP in the setlist, respectively.
+
+### Fever
+
+```
+ScoreKeeper.FeverState feverState
+```
+
+The current fever state. It will be reset to `Building` between stages.
+
+```
+float feverAmount
+```
+
+The current fever amount, in \[0, 1\]. It will not reset between stages.
 
 ## Class `SpriteSheet`
 

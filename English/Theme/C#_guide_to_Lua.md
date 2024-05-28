@@ -1,3 +1,5 @@
+Applies to version: 2.2 (Theme API version 3)
+
 # A C# programmer's quick guide to Lua
 
 This article aims to cover the minimal amount of Lua knowledge required to develop TECHMANIA themes. If you are already familiar with Lua, you don't need to read this article. It will also not contain anything specific to TECHMANIA's Theme API.

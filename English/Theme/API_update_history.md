@@ -1,3 +1,21 @@
+# API version 3
+
+TECHMANIA version: 2.2
+
+Unity version: 2022.3.30f1
+
+This update is focused on setlists.
+
+* Added class `SetlistScoreKeeper`, allowing you to query the current score in a setlist using an interface similar to `ScoreKeeper`.
+* On `GlobalResource`
+    * Added methods on setlists.
+    * Added class `GlobalResource.SetlistInFolder`.
+    * Classes `TrackSubfolder` and `TrackWithError` are renamed to `Subfolder` and `ResourceWithError` to be reusable by setlists. This renaming does not affect Lua code.
+    * `GetSubfolder(string parent)` is deprecated as it's ambiguous between tracks and setlists. It will still work on tracks, after printing a warning to the console. Please call `GetTrackSubfolders(string parent)` or `GetSetlistSubfolders(string parent)` instead.
+* Added fields on setlists to the following classes:
+    * `Paths`
+    * `Options`
+
 # API version 2
 
 TECHMANIA version: 2.1
