@@ -6,6 +6,7 @@ Unity version: 2022.3.30f1
 
 This update is focused on setlists.
 
+* Added classes `Setlist`, `Setlist.PatternReference` and `Setlist.HiddenPattern`.
 * Added class `SetlistScoreKeeper`, allowing you to query the current score in a setlist using an interface similar to `ScoreKeeper`.
 * On `GlobalResource`
     * Added methods on setlists.
@@ -15,6 +16,9 @@ This update is focused on setlists.
 * Added fields on setlists to the following classes:
     * `Paths`
     * `Options`
+    * `Records` (also added class `SetlistRecord`)
+    * `Pattern`
+* `LegacyRulesetOverride` is renamed to `WindowsAndDeltas` so it can be reused in rulesets.
 
 # API version 2
 

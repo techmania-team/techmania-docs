@@ -91,6 +91,9 @@ The `tm` object gives you access to various TECHMANIA types. Refer to class [`Th
 |`judgement`|`Judgement`|
 |`performanceMedal`|`PerformanceMedal`|
 |`feverState`|`ScoreKeeper.FeverState`|
+|Enums related to setlists|
+|`hiddenPatternCriteriaType`|`Setlist.HiddenPatternCriteriaType`|
+|`hiddenPatternCriteriaDirection`|`Setlist.HiddenPatternCriteriaDirection`|
 
 ## `net` table
 
@@ -782,32 +785,6 @@ float endTime
 
 The time of the note's end. Only available after calling `CalculateTimeOfAllNotes` on the pattern.
 
-## Class `LegacyRulesetOverride`
-
-Contains override values for the legacy ruleset, specific to the pattern that contains it.
-
-```
-List<float> timeWindows
-List<int> hpDeltaBasic
-List<int> hpDeltaChain
-List<int> hpDeltaHold
-List<int> hpDeltaDrag
-List<int> hpDeltaRepeat
-List<int> hpDeltaBasicDuringFever
-List<int> hpDeltaChainDuringFever
-List<int> hpDeltaHoldDuringFever
-List<int> hpDeltaDragDuringFever
-List<int> hpDeltaRepeatDuringFever
-```
-
-See [track.tech specification](../track.tech_specification.md). Empty lists mean no override.
-
-```
-bool HasAny()
-```
-
-A helper method to determine whether there is any override at all in this object.
-
 ## Class `Locale`
 
 Describes a locale in [`ThemeApi.ThemeL10n`](#class-themeapithemel10n).
@@ -1229,10 +1206,13 @@ The unit of gameplay. A track contains any number of patterns.
 
 ```
 PatternMetadata patternMetadata
-LegacyRulesetOverride legacyRulesetOverride
+WindowsAndDeltas legacyRulesetOverride
+List<WindowsAndDeltas> legacySetlistOverride
 ```
 
-See [`PatternMetadata`](#class-patternmetadata) and [`LegacyRulesetOverride`](#class-legacyrulesetoverride).
+See [`PatternMetadata`](#class-patternmetadata) and [`WindowsAndDeltas`](#class-windowsanddeltas).
+
+`legacySetlistOverride` contains 4 elements, one for each stage.
 
 ```
 List<BpmEvent> bpmEvents
@@ -1444,6 +1424,21 @@ void SaveToFile()
 
 Saves the current records to disk.
 
+### Setlists
+
+```
+SetlistRecord setlist.GetRecord(Setlist s, Options.Ruleset ruleset)
+SetlistRecord setlist.GetRecord(Setlist s)
+```
+
+Retrieves the [`SetlistRecord`](#class-setlistrecord) for the specified [`Setlist`](#class-setlist) and ruleset.
+
+The `ruleset` is the `Options.Ruleset` enum, not a `Ruleset` object. It is also optional. If omitted, this method will retrieve record for the currently selected ruleset. Note that no record will ever be created for the custom ruleset.
+
+If no record exists for the specified setlist and ruleset, returns nil.
+
+Technically these methods are on a field in `Records` named `setlist`, but for simplicity you can treat `setlist.` as part of the method name.
+
 ## Class `Ruleset`
 
 Stores the actual numbers in a ruleset. Not to be confused with `Options.ruleset`, whose value is an enum `Ruleset`. Access the numbers in the currently selected ruleset via `tm.ruleset`.
@@ -1452,10 +1447,21 @@ Stores the actual numbers in a ruleset. Not to be confused with `Options.ruleset
 string kVersion
 ```
 
-The version of the serialization format. The current value is "2". Refer to [format version history](../Format_version_history.md) for more details.
+The version of the serialization format. The current value is "3". Refer to [format version history](../Format_version_history.md) for more details.
 
 ```
-List<float> timeWindows
+WindowsAndDeltas windowsAndDeltas
+```
+
+The time windows and HP deltas when playing single patterns. See [Rulesets](../Rulesets.md).
+
+```
+List<WindowsAndDeltas> windowsAndDeltasSetlist
+```
+
+The time windows and HP deltas when playing setlists. Contains 4 elements, one for each stage. See [Rulesets](../Rulesets.md).
+
+```
 bool timeWindowsInPulses
 float longNoteGracePeriod
 bool longNoteGracePeriodInPulses
@@ -1472,16 +1478,6 @@ float dragHitboxHeight
 float ongoingDragHitboxWidth
 float ongoingDragHitboxHeight
 int maxHp
-List<int> hpDeltaBasic
-List<int> hpDeltaChain
-List<int> hpDeltaHold
-List<int> hpDeltaDrag
-List<int> hpDeltaRepeat
-List<int> hpDeltaBasicDuringFever
-List<int> hpDeltaChainDuringFever
-List<int> hpDeltaHoldDuringFever
-List<int> hpDeltaDragDuringFever
-List<int> hpDeltaRepeatDuringFever
 bool comboBonus
 bool constantFeverCoefficient
 int feverBonusOnMax
@@ -1609,7 +1605,94 @@ The current fever amount, in \[0, 1\].
 
 ## Class `Setlist`
 
+A named collection of patterns.
+
+```
+string kVersion
+```
+
+The version of the serialization format. The current value is "1". Refer to [format version history](../Format_version_history.md) for more details.
+
+```
+SetlistMetadata setlistMetadata
+```
+
+See [`SetlistMetadata`](#class-setlistmetadata).
+
+```
+List<Setlist.PatternReference> selectablePatterns
+List<Setlist.HiddenPattern> hiddenPatterns
+```
+
+The selectable and hidden patterns in this setlist. Selectable patterns are references; hidden patterns contain a reference and a criteria. See [`Setlist.PatternReference`](#class-setlistpatternreference) and [`Setlist.HiddenPattern`](#class-setlisthiddenpattern).
+
+## Class `Setlist.HiddenPattern`
+
+Contains a hidden pattern in a setlist.
+
+```
+Setlist.PatternReference reference
+```
+
+A reference to the pattern.
+
+```
+Setlist.HiddenPatternCriteriaType criteriaType
+Setlist.HiddenPatternCriteriaDirection criteriaDirection
+int criteriaValue
+```
+
+The type, direction and value of the criteria. When TECHMANIA evaluates whether this hidden pattern should be chosen, it will take the actual value specified by the criteria type, and check whether it's in the specified direction (< or >) of the criteria value.
+
 ## Class `Setlist.PatternReference`
+
+A reference to a pattern.
+
+```
+string trackTitle
+string trackGuid
+string patternName
+int patternLevel
+int patternPlayableLanes
+string patternGuid
+```
+
+The identifier and metadata of the referenced pattern. Only `trackGuid` and `patternGuid` are actually used to find patterns; all other fields are for informational purposes.
+
+## Class `SetlistMetadata`
+
+```
+string guid
+string title
+string description
+string eyecatchImage
+string backImage
+ControlScheme controlScheme
+```
+
+See [setlist.tech specification](../setlist.tech_specification.md).
+
+## Class `SetlistRecord`
+
+Stores the record for a specific setlist under a specific ruleset. Retrieve records with `tm.records.setlist.GetRecord`.
+
+```
+string setlistGuid
+List<string> patternGuids
+List<string> patternFingerprints
+Options.Ruleset ruleset
+int score
+PerformanceMedal medal
+string gameVersion
+```
+
+The fields in the record. `patternGuids` and `patternFingerprints` have 4 elements each. All fields are read only.
+
+```
+string Rank()
+```
+
+Converts `score` to a letter rank. See [`ScoreKeeper`](#class-scorekeeper)``.ScoreToRankAssumingStageClear``.
 
 ## Class `SetlistScoreKeeper`
 
@@ -3134,6 +3217,32 @@ One of the 4 types of skins.
 
 Refer to [Skins](../Skins.md#vfx-skin) for an explanation of these fields.
 
+## Class `WindowsAndDeltas`
+
+Describes the time windows and HP deltas of a ruleset or a legacy ruleset override.
+
+```
+List<float> timeWindows
+List<int> hpDeltaBasic
+List<int> hpDeltaChain
+List<int> hpDeltaHold
+List<int> hpDeltaDrag
+List<int> hpDeltaRepeat
+List<int> hpDeltaBasicDuringFever
+List<int> hpDeltaChainDuringFever
+List<int> hpDeltaHoldDuringFever
+List<int> hpDeltaDragDuringFever
+List<int> hpDeltaRepeatDuringFever
+```
+
+See [Rulesets](../Rulesets.md).
+
+```
+bool HasAny()
+```
+
+A helper method to determine whether there is any value at all in this object.
+
 # TECHMANIA enums
 
 For more details on the modifier enums, see [Modifiers](../Modifiers.md). Also note that while most modifier enums have a `Normal` or `None` value, they are all different values, ie. not equal to each other.
@@ -3314,6 +3423,38 @@ AbsolutePerfect
 * `AllCombo` requires no `Miss` or `Break`.
 * `PerfectPlay` additionaly requires no `Cool` or `Good`.
 * `AbsolutePerfect` additionaly requires no `Max`; all judgements must be `RainbowMax`.
+
+## Enum `Setlist.HiddenPatternCriteriaType`
+
+Describes the type of a hidden pattern's criteria.
+
+```
+Index
+Level
+HP
+Score
+Combo
+MaxCombo
+D100
+```
+
+See the setlist editor for explanations.
+
+## Enum `Setlist.HiddenPatternCriteriaDirection`
+
+Describes the direction of a hidden pattern's criteria.
+
+```
+SmallerThan
+```
+
+The actual value specified by the criteria type must be smaller than the criteria value.
+
+```
+LargerThan
+```
+
+The actual value specified by the criteria type must be larger than the criteria value.
 
 ## Enum `ScoreKeeper.FeverState`
 
