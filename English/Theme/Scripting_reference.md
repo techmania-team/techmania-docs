@@ -1,6 +1,6 @@
 # TECHMANIA Theme API scripting reference
 
-Applies to API version: 1
+Applies to API version: 3
 
 When reading on Github, you can click the menu button to the top right to reveal a table of contents.
 
@@ -1437,7 +1437,7 @@ The `ruleset` is the `Options.Ruleset` enum, not a `Ruleset` object. It is also 
 
 If no record exists for the specified setlist and ruleset, returns nil.
 
-Technically these methods are on a field in `Records` named `setlist`, but for simplicity you can treat `setlist.` as part of the method name.
+Technically these methods are on an internal field in `Records` named `setlist`, but for simplicity you can treat `setlist.` as part of the method name.
 
 ## Class `Ruleset`
 
@@ -1919,31 +1919,34 @@ Allows your theme to launch and exit the TECHMANIA editor (recall that the edito
 
 ```
 void LaunchOnTrack(string trackFolder)
+void LaunchOnSetlist(string setlistFOlder)
 ```
 
-Launches the editor on the track in the specified folder. When the user later exits the editor, TECHMANIA will call `onExit`.
+Launches the editor on the track / setlist in the specified folder. When the user later exits the editor, TECHMANIA will call `onExit`.
 
 ```
 string TrackToDirectoryName(string title, string artist)
+string SetlistToDirectoryName(string title)
 ```
 
-A utility method to generate a track folder name based on the title, artist and current time.
+A utility method to generate a track / setlist folder name based on the title, artist (track only) and current time.
 
 ```
 Status CreateNewTrack(string parentFolder, string title, string artist, out string newTrackFolder)
+Status CreateNewSetlist(string parentFolder, string title, out string newSetlistFolder)
 ```
 
-Attempts to create a new track with the specified title and artist, in the specified parent folder. If successful, returns the new track's folder so you can pass it to `LaunchOnTrack`. It also updates the track lists in `tm.resources`.
+Attempts to create a new track / setlist with the specified title and artist (track only), in the specified parent folder. If successful, returns the new track / setlist's folder so you can pass it to `LaunchOnTrack` / `LaunchOnSetlist`. It also updates the track / setlist lists in `tm.resources`.
 
-In Lua, this method returns 2 values: `local status, newTrackFolder = tm.editorInterface.CreateNewTrack(parentFolder, title, artist)`
+In Lua, these methods return 2 values: `local status, newTrackFolder = tm.editorInterface.CreateNewTrack(parentFolder, title, artist)`
 
 ```
 function onExit
 ```
 
-A callback that TECHMANIA will call when the user exits the editor by clicking the "back" button or "delete track" button on the track setup screen. It will be called with no arguments.
+A callback that TECHMANIA will call when the user exits the editor by clicking the "back" button or "delete track / setlist" button. It will be called with no arguments.
 
-Note that, if the user deletes a track, TECHMANIA will update the track lists in `tm.resources`.
+Note that, if the user deletes a track or setlist, TECHMANIA will update the corresponding lists in `tm.resources`.
 
 ### Editor preview
 
@@ -1973,7 +1976,7 @@ This class has no members other than those inherited from `UnityEngine.UIElement
 
 ## Class `ThemeApi.GameSetup`
 
-Setup for the TECHMANIA game. Your theme should set up all fields before loading any pattern.
+Setup for the TECHMANIA game. Your theme should set up all fields before loading any pattern or setlist.
 
 ### Per-pattern setup
 
@@ -1984,9 +1987,77 @@ string patternGuid
 
 The track folder and pattern GUID of the pattern to load and play. `ThemeApi.GameState.BeginLoading()` will load the track and pattern specified here.
 
+### Pattern common setup
+
+```
+function onStageClear
+```
+
+A callback that is called when the player completes the pattern and the game enters `Complete` state. The game will no longer accept input or play any background audio/video at this point. Parameter: [`ScoreKeeper`](#class-scorekeeper). Will not be called in setlists.
+
+```
+function onStageFailed
+```
+
+A callback that is called when the player fails the game due to losing to all HP and the game enters `Complete` state. The game will no longer accept input or play any background audio/video at this point. Parameter: [`ScoreKeeper`](#class-scorekeeper). Will not be called in setlists.
+
+### Per-setlist setup
+
+Technically these fields are on an internal field in `GameSetup` named `setlist`, but for simplicity you can treat `setlist.` as part of the field name.
+
+```
+bool setlist.enabled
+```
+
+Whether TECHMANIA should load the setlist specified in setlist setup, or the pattern specified in per-pattern setup. Remember to turn it off if the user leaves setlists and plays a single pattern.
+
+```
+string setlist.setlistFolder
+```
+
+The folder containing the `setlist.tech` file to load and play. `ThemeApi.GameState.setlist.Prepare()` will load the setlist specified here.
+
+```
+List<int> setlist.patternIndices
+```
+
+The indices (in 0-index) of selectable patterns to play in this setlist. Should contain exactly 3 elements.
+
+```
+int setlist.hiddenPatternIndex
+```
+
+The index (in 0-index) of the hidden pattern that TECHMANIA has chosen. Read only. Will only be available once TECHMANIA enters `PartialComplete` state after stage 3.
+
+### Setlist common setup
+
+```
+function setlist.onPartialComplete
+```
+
+A callback that is called when the player completes stage 1, 2 or 3 with HP above threshold. TECHMANIA will be in `PartialComplete` state when this is called. Parameter: [`SetlistScoreKeeper`](#class-setlistscorekeeper).
+
+```
+function setlist.onHpBelowThreshold
+```
+
+A callback that is called when the player completes stage 1, 2 or 3 with HP below threshold. TECHMANIA will be in `Complete` state when this is called. Parameter: [`SetlistScoreKeeper`](#class-setlistscorekeeper).
+
+```
+function setlist.onSetlistAllClear
+```
+
+A callback that is called when the player completes stage 4, therefore completing the entire setlist. TECHMANIA will be in `Complete` state when this is called. Parameter: [`SetlistScoreKeeper`](#class-setlistscorekeeper).
+
+```
+function setlist.onSetlistFailed
+```
+
+A callback that is called when the player's HP hits 0 when playing a setlist. TECHMANIA will be in `Complete` state when this is called. Parameter: [`SetlistScoreKeeper`](#class-setlistscorekeeper).
+
 ### Common setup
 
-These fields only need to be set up once, and will be reused between patterns.
+These fields only need to be set up once, and will be reused between patterns / setlists.
 
 ```
 VisualElementWrap bgContainer
@@ -2077,18 +2148,6 @@ function onFeverEnd
 ```
 
 A callback that is called when fever ends after running is duration. Parameter: fever bonus from this activation as `int`.
-
-```
-function onStageClear
-```
-
-A callback that is called when the player completes the pattern and the game enters `Complete` state. The game will no longer accept input or play any background audio/video at this point. Parameter: `ScoreKeeper`.
-
-```
-function onStageFailed
-```
-
-A callback that is called when the player fails the game due to losing to all HP and the game enters `Complete` state. The game will no longer accept input or play any background audio/video at this point. Parameter: `ScoreKeeper`.
 
 ## Class `ThemeApi.GameSetup.LoadProgress`
 
@@ -2244,6 +2303,61 @@ bool showHitbox
 
 Gets or sets whether to enable auto play, and whether to show hitbox on notes, respectively.
 
+### Setlist
+
+Technically these fields are on an internal field in `GameState` named `setlist`, but for simplicity you can treat `setlist.` as part of the field name.
+
+```
+int setlist.currentStage
+```
+
+Read only. The number of current stage the player is on, in 0-index. It can be 0, 1 or 2 for selectable patterns, and 3 for hidden pattern. Incremented on each call to `setlist.LoadNextPattern()`.
+
+```
+SetlistScoreKeeper setlist.scoreKeeper
+```
+
+Provides access to [`SetlistScoreKeeper`](#class-setlistscorekeeper).
+
+```
+Status setlist.Prepare()
+```
+
+Loads the setlist specified in `tm.gameSetup.setlist` (but not any pattern in it) and transitions to `PreparedSetlist` state on success. Your theme should then call `tm.game.setlist.LoadNextPattern()` to begin loading the first pattern.
+
+On error, returns a non-OK `Status` object.
+
+The load is synchronous, so it may block on disk I/O for a bit.
+
+```
+void setlist.LoadNextPattern()
+```
+
+Begins to load the next pattern in the setlist and transitions to `Loading` state.
+
+```
+bool setlist.ScoreIsValid()
+```
+
+Returns whether the current score is valid. A score becomes invalid if:
+* Stage failed, or
+* Any special modifier is used, or
+* A custom ruleset is used.
+
+```
+bool setlist.ScoreIsNewRecord()
+```
+
+Returns whether the current total score is a new record. If the score is not valid, this is always false. Only callable in `Complete` state.
+
+```
+void setlist.UpdateRecord()
+```
+
+Updates the record on the current setlist. Total score and medal are saved separately. Only callable in `Complete` state.
+
+The update is only in memory; call `tm.records.SaveToFile()` to save the records to disk.
+
 ## Class `ThemeApi.IO`
 
 Contains methods to load resources from either the theme or a file on disk. Access this class via `tm.io`.
@@ -2313,6 +2427,13 @@ void UpgradeAllTracks(function progressCallback, function completeCallback)
 Reloads the track list from disk / upgrades all tracks to the latest version. `ReloadTrackList` does not modify tracks on disk and only updates the track list in `GlobalResource`. `UpgradeAllTracks` modifies tracks on disk, so there is a risk of I/O errors.
 
 Both methods take a while to complete. While the reload / upgrade is in progress, TECHMANIA will call `progressCallback` with the path of the track currently being loaded / upgraded, as a string. Once the reload / upgrade is complete, TECHMANIA will call `completeCallback` with a [`Status`](#class-status) object.
+
+```
+void ReloadSetlistList(function progressCallback, function completeCallback)
+void UpgradeAllSetlists(function progressCallback, function completeCallback)
+```
+
+Similar to `ReloadTrackList` and `UpgradeAllTracks` but for setlists.
 
 ```
 void ReloadNoteSkin(function progressCallback, function completeCallback)
@@ -3500,9 +3621,15 @@ Describes possible states of the TECHMANIA rhythm game. Query the current state 
 Idle
 ```
 
-Waiting on the theme to fill `tm.gameSetup` and call `tm.game.BeginLoading()`, transitioning to `Loading` state.
+Waiting on the theme to fill `tm.gameSetup` and call either `tm.game.BeginLoading()` (transitions to `Loading`) for patterns or `tm.game.setlist.Prepare()` (transitions to `PreparedSetlist`) for setlists.
 
 Any state can transition to `Idle` by calling `tm.game.Conclude()`.
+
+```
+PreparedSetlist
+```
+
+Setlist only. TECHMANIA has loaded the specified setlist, and is waiting on the theme to call `tm.game.setlist.LoadNextPattern()`, transitioning to `Loading`.
 
 ```
 Loading
@@ -3528,6 +3655,14 @@ Paused
 ```
 
 The game is ongoing / paused. Call `tm.game.Pause()` and `tm.game.Unpause()` to transition between these two states.
+
+```
+PartialComplete
+```
+
+Setlist only. The player has completed stages 1, 2 or 3 with HP above threshold. The game no longer updates or responds to input. Call `tm.game.setlist.LoadNextPattern()` to proceed, transitioning to `Loading`.
+
+Note that, if the player completed stage 4, or completed stage 1/2/3 with HP below threshold, or hit 0 HP, TECHMANIA will transition to `Complete` state.
 
 ```
 Complete

@@ -8,16 +8,24 @@ This update is focused on setlists.
 
 * Added classes `Setlist`, `Setlist.PatternReference` and `Setlist.HiddenPattern`.
 * Added class `SetlistScoreKeeper`, allowing you to query the current score in a setlist using an interface similar to `ScoreKeeper`.
-* On `GlobalResource`
-    * Added methods on setlists.
-    * Added class `GlobalResource.SetlistInFolder`.
-    * Classes `TrackSubfolder` and `TrackWithError` are renamed to `Subfolder` and `ResourceWithError` to be reusable by setlists. This renaming does not affect Lua code.
-    * `GetSubfolder(string parent)` is deprecated as it's ambiguous between tracks and setlists. It will still work on tracks, after printing a warning to the console. Please call `GetTrackSubfolders(string parent)` or `GetSetlistSubfolders(string parent)` instead.
 * Added fields on setlists to the following classes:
     * `Paths`
     * `Options`
     * `Records` (also added class `SetlistRecord`)
     * `Pattern`
+    * `ThemeApi.EditorInterface`
+    * `ThemeApi.GameSetup`
+    * `ThemeApi.GameState`
+    * `ThemeApi.IO`
+* On `GlobalResource`
+    * Added methods on setlists.
+    * Added class `GlobalResource.SetlistInFolder`.
+    * Classes `TrackSubfolder` and `TrackWithError` are renamed to `Subfolder` and `ResourceWithError` to be reusable by setlists. This renaming does not affect Lua code.
+    * `GetSubfolder(string parent)` is deprecated as it's ambiguous between tracks and setlists. It will still work on tracks, after printing a warning to the console. Please call `GetTrackSubfolders(string parent)` or `GetSetlistSubfolders(string parent)` instead.
+* On `VisualElementWrap`
+    * Event callbacks now support `PointerMoveEvent`
+    * Added overload of `ContainsPointInScreenSpace` that takes a `Vector3`
+* Added states `PreparedSetlist` and `PartialComplete` to the TECHMANIA state machine.
 * `LegacyRulesetOverride` is renamed to `WindowsAndDeltas` so it can be reused in rulesets.
 
 # API version 2
