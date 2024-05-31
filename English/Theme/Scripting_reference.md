@@ -3619,7 +3619,7 @@ Describes possible states of the TECHMANIA rhythm game. Query the current state 
 
 A diagram showing all states and possible transitions:
 
-(insert diagram)
+![TECHMANIA state machine](https://github.com/techmania-team/techmania-docs/assets/30272345/99f2ace1-b423-4b8c-93af-38f05b135089)
 
 ```
 Idle
