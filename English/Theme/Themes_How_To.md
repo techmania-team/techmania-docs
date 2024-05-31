@@ -45,6 +45,7 @@ Each theme gets its own dictionary to store any option it needs. Access it via `
 
 * Fill in `tm.gameSetup` (of type `ThemeApi.GameSetup`)
   * Only track folder and pattern GUID are required. TECHMANIA will handle the loading of the pattern.
+  * For setlists, fill in fields that start with `setlist`. Make sure `setlist.enabled` is set to true.
 * Interact with the TECHMANIA state machine via methods in `tm.game` (of type `ThemeApi.GameState`)
   * Likewise, TECHMANIA will handle the background, score keeping and gameplay; your theme only needs to respond to events, such as fever being activated and note being resolved.
   * A typical workflow is:
@@ -54,13 +55,24 @@ Each theme gets its own dictionary to store any option it needs. Access it via `
     * During game play, theme calls `tm.game.Pause()`, `tm.game.Unpause()` and `tm.game.ActivateFever()` as necessary
     * After stage clear or stage failed, TECHMANIA calls `tm.gameSetup.onStageClear` or `tm.game.StageFailed`
     * Theme calls `tm.game.Conclude()`
+  * A typical workflow for setlists is:
+    * Theme fills `tm.gameSetup` and calls `tm.game.setlist.Prepare()`
+    * TECHMANIA loads the setlist
+    * Theme calls `tm.game.setlist.LoadNextPattern()`
+    * TECHMANIA loads the 1st pattern and calls `tm.gameSetup.onLoadComplete`
+    * Theme calls `tm.game.Begin()`
+    * During game play, theme calls `tm.game.Pause()`, `tm.game.Unpause()` and `tm.game.ActivateFever()` as necessary
+    * After the player clears or fails a stage, TECHMANIA calls `tm.gameSetup.setlist.onPartialComplete`, `tm.gameSetup.setlist.onHpBelowThreshold` or `tm.gameSetup.setlist.onSetlistFailed`
+    * If the player hasn't failed yet, theme calls `tm.gameSetup.LoadNextPattern()` for stage 2, and the previous few steps repeat for all 4 stages
+    * After the setlist is complete, theme calls `tm.game.Conclude()`
 * During the game, you can query information on the ongoing game from `tm.game.scoreKeeper` and `tm.game.timer`.
+  * For setlists, use `tm.game.setlist.scoreKeeper` instead of `tm.game.scoreKeeper`
 
 ## Get and set records
 
-To get the record on a pattern, call `tm.records.GetRecord` and pass in the full pattern. Tracks from `tm.resources` are minimized and do not contain full patterns; you will need to manually load them with `tm.io.LoadFullTrack`.
+To get the record on a pattern / setlist, call `tm.records.GetRecord` / `tm.records.setlist.GetRecord` and pass in the full pattern / setlist. Tracks from `tm.resources` are minimized and do not contain full patterns; you will need to manually load them with `tm.io.LoadFullTrack`.
 
-When the game is in `Complete` state, you can call `tm.game.ScoreIsNewRecord()` to check if the player made a new record, and `tm.game.UpdateRecord()` to update the in-memory record.
+When the game is in `Complete` state, you can call `tm.game.ScoreIsNewRecord()` to check if the player made a new record, and `tm.game.UpdateRecord()` to update the in-memory record. For setlists, call `tm.game.setlist.ScoreIsNewRecord()` and `tm.game.setlist.UpdateRecord()`.
 
 ## Localization
 

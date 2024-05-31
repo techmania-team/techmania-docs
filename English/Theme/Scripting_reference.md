@@ -3617,6 +3617,10 @@ OtherError
 
 Describes possible states of the TECHMANIA rhythm game. Query the current state with `tm.game.state`.
 
+A diagram showing all states and possible transitions:
+
+(insert diagram)
+
 ```
 Idle
 ```
