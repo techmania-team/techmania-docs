@@ -46,7 +46,8 @@ For each sprite sheet, you need to write an accompanying JSON object to describe
   
   "scale": <number, skin-specific>,
   "speed": <number, skin-specific>,
-  "additiveShader": <true or false, skin-specific>
+  "additiveShader": <true or false, skin-specific>,
+  "flipWhenScanningLeft", <true or false, skin-specific>
 }
 ```
 
@@ -85,16 +86,18 @@ All fields other than `filename` are optional, and will take the following defau
 * `scale`: 1
 * `speed`: 1
 * `additiveShader`: false
+* `flipWhenScanningLeft`: false
 
 This means if you write a filename and nothing else, TECHMANIA will load the entire file as one sprite.
 
 ### Skin-specific fields
 
-`scale`, `speed` and `additiveShader` are only supported by specific items in specific skins. In the skins that support them:
+`scale`, `speed`, `additiveShader` and `flipWhenScanningLeft` are only supported by specific items in specific skins. In the skins that support them:
 
 * `scale` determines the in-game size of sprites, in multiples of a lane's height. Different skins define this parameter slightly differently, which will be discussed in detail in their corresponding sections.
 * `speed` determines the speed of the animation, in multiples of 60 frames per second. For example, `"speed": 0.5` means the animation plays at 30 frames per second.
 * `additiveShader` determines whether the sprites are rendered with an additive shader. This will cause the colors of the sprites to be added to the layers below them, instead of replace the layers below them.
+* `flipWhenScanningLeft` determines whether the sprites are flipped (usually horizontally) when on a right-to-left scan. For skin items that do not support this field, it's behavior on a right-to-left scan is usually hardcoded.
 
 ![An image demonstrating normal and additive shaders](https://imgur.com/oR6gHqA.png)
 
@@ -124,24 +127,24 @@ The `skin.json` file in a note skin follows the following format:
 ```
 Each value is a sprite sheet. Refer to the [Terminology](Terminology.md) page for the meaning of most fields.
 
-|Item|Supports `scale`|Supports `speed`|Supports `additiveShader`|
-|--|--|--|--|
-|`basic`|Yes \*square|||
-|`chainHead`|Yes \*square|||
-|`chainNode`|Yes \*square|||
-|`chainPath`|Yes \*1-D|||
-|`dragHead`|Yes \*square|||
-|`dragCurve`|Yes \*1-D|||
-|`holdHead`|Yes \*square|||
-|`holdTrail`|Yes \*1-D|||
-|`holdTrailEnd`||||
-|`holdOngoingTrail`|Yes \*1-D|||
-|`repeatHead`|Yes \*square|||
-|`repeat`|Yes \*square|||
-|`repeatHoldTrail`|Yes \*1-D|||
-|`repeatHoldTrailEnd`||||
-|`repeatPath`|Yes \*1-D|||
-|`repeatPathEnd`||||
+|Item|Supports `scale`|Supports `speed`|Supports `additiveShader`|Supports `flipWhenScanningLeft`|
+|--|--|--|--|--|
+|`basic`|Yes \*square|||Yes|
+|`chainHead`|Yes \*square|||Yes|
+|`chainNode`|Yes \*square|||Yes|
+|`chainPath`|Yes \*1-D|||Yes|
+|`dragHead`|Yes \*square|||Yes|
+|`dragCurve`|Yes \*1-D|||Yes|
+|`holdHead`|Yes \*square|||Yes|
+|`holdTrail`|Yes \*1-D||||
+|`holdTrailEnd`|||||
+|`holdOngoingTrail`|Yes \*1-D||||
+|`repeatHead`|Yes \*square|||Yes|
+|`repeat`|Yes \*square|||Yes|
+|`repeatHoldTrail`|Yes \*1-D||||
+|`repeatHoldTrailEnd`|||||
+|`repeatPath`|Yes \*1-D||||
+|`repeatPathEnd`|||||
 
 ### Scaling
 
@@ -166,9 +169,17 @@ Each value is a sprite sheet. Refer to the [Terminology](Terminology.md) page fo
 
 All animations will play at a speed of one cycle per beat, and the 1st sprites in each sprite sheet will be the ones shown at whole beats.
 
-### Rotation and flipping
+### Rotation
 
-For the sprites in `basic`, `chainHead`, `chainNode`, `dragHead`, `holdHead`, `repeatHead` and `repeat`, TECHMANIA will not flip them regardless of scan direction. Furthermore, for `chainHead`, `chainNode` and `dragHead`, TECHMANIA assumes the sprites point to the right, and from there will rotate them to point in the direction of the next chain node or the curve. The last node in a chain will point to the same direction as the second last node.
+For `chainHead`, `chainNode` and `dragHead`, TECHMANIA assumes the sprites point to the right, and from there will rotate them to point in the direction of the next chain node or the curve. The last node in a chain will point to the same direction as the second last node.
+
+Each `chainPath` connecting two chain head/nodes will be rotated to point from the later to the earlier one. This can be counterintuitive, but is a result as how chain notes are rendered.
+
+### Flipping
+
+All note heads, plus `chainNode`, `chainPath`, `dragCurve` and `repeat`, support `flipWhenScanningLeft`.
+
+Hold trails, trail ends, repeat paths and repeat path ends do not support `flipWhenScanningLeft`. They are hardcoded to always horizontally flip on right-to-left scans.
 
 # VFX skin
 The `skin.json` file in a VFX skin follows the following format:
@@ -195,22 +206,22 @@ The `skin.json` file in a VFX skin follows the following format:
 
 In a VFX skin, each effect (except for Fever overlay) is drawn in multiple layers, each layer being one sprite sheet. The layers will be drawn in the order of their definition, so the last layer in the list will show up at the top. You cannot omit the `[]` even when there is only 0 or 1 layers in an effect.
 
-|Item|Explanation|Looping|Supports `scale`|Supports `speed`|Supports `additiveShader`|
-|--|--|--|--|--|--|
-|`feverOverlay`|Overlay when Fever is active|Yes|Yes|Yes||
-|`basicMax`|Max on basic/chain notes||Yes|Yes|Yes|
-|`basicCool`|Cool on basic/chain notes||Yes|Yes|Yes|
-|`basicGood`|Good on basic/chain notes||Yes|Yes|Yes|
-|`dragOngoing`|VFX on drag heads|Yes|Yes|Yes|Yes|
-|`dragComplete`|VFX after drags are complete||Yes|Yes|Yes|
-|`holdOngoingHead`|VFX on hold heads|Yes|Yes|Yes|Yes|
-|`holdOngoingTrail`|VFX on hold trails, following scanline|Yes|Yes|Yes|Yes|
-|`holdComplete`|VFX after holds are complete||Yes|Yes|Yes|
-|`repeatHead`|VFX on repeat heads||Yes|Yes|Yes|
-|`repeatNote`|VFX on repeat notes||Yes|Yes|Yes|
-|`repeatHoldOngoingHead`|VFX on heads when playing repeat holds|Yes|Yes|Yes|Yes|
-|`repeatHoldOngoingTrail`|VFX on trails when playing repeat holds|Yes|Yes|Yes|Yes|
-|`repeatHoldComplete`|VFX after repeat holds are complete||Yes|Yes|Yes|
+|Item|Explanation|Looping|Supports `scale`|Supports `speed`|Supports `additiveShader`|Supports `flipWhenScanningLeft`|
+|--|--|--|--|--|--|--|
+|`feverOverlay`|Overlay when Fever is active|Yes|Yes|Yes||Yes|
+|`basicMax`|Max on basic/chain notes||Yes|Yes|Yes||
+|`basicCool`|Cool on basic/chain notes||Yes|Yes|Yes||
+|`basicGood`|Good on basic/chain notes||Yes|Yes|Yes||
+|`dragOngoing`|VFX on drag heads|Yes|Yes|Yes|Yes||
+|`dragComplete`|VFX after drags are complete||Yes|Yes|Yes||
+|`holdOngoingHead`|VFX on hold heads|Yes|Yes|Yes|Yes||
+|`holdOngoingTrail`|VFX on hold trails, following scanline|Yes|Yes|Yes|Yes||
+|`holdComplete`|VFX after holds are complete||Yes|Yes|Yes||
+|`repeatHead`|VFX on repeat heads||Yes|Yes|Yes||
+|`repeatNote`|VFX on repeat notes||Yes|Yes|Yes||
+|`repeatHoldOngoingHead`|VFX on heads when playing repeat holds|Yes|Yes|Yes|Yes||
+|`repeatHoldOngoingTrail`|VFX on trails when playing repeat holds|Yes|Yes|Yes|Yes||
+|`repeatHoldComplete`|VFX after repeat holds are complete||Yes|Yes|Yes||
 
 ### Scaling
 
@@ -242,20 +253,20 @@ The `skin.json` file in a combo skin follows the following format:
 
 Each judgement and digit is a sprite sheet.
 
-|Item|Supports `scale`|Supports `speed`|Supports `additiveShader`|
-|--|--|--|--|
-|`feverMaxJudgement`||Yes||
-|`rainbowMaxJudgement`||Yes||
-|`maxJudgement`||Yes||
-|`coolJudgement`||Yes||
-|`goodJudgement`||Yes||
-|`missJudgement`||Yes||
-|`breakJudgement`||Yes||
-|`feverMaxDigits`||Yes||
-|`rainbowMaxDigits`||Yes||
-|`maxDigits`||Yes||
-|`coolDigits`||Yes||
-|`goodDigits`||Yes||
+|Item|Supports `scale`|Supports `speed`|Supports `additiveShader`|Supports `flipWhenScanningLeft`|
+|--|--|--|--|--|
+|`feverMaxJudgement`||Yes|||
+|`rainbowMaxJudgement`||Yes|||
+|`maxJudgement`||Yes|||
+|`coolJudgement`||Yes|||
+|`goodJudgement`||Yes|||
+|`missJudgement`||Yes|||
+|`breakJudgement`||Yes|||
+|`feverMaxDigits`||Yes|||
+|`rainbowMaxDigits`||Yes|||
+|`maxDigits`||Yes|||
+|`coolDigits`||Yes|||
+|`goodDigits`||Yes|||
 
 ### Combo text composition
 
@@ -291,14 +302,14 @@ The `skin.json` file in a game UI skin follows the following format:
 
 Each value, except for `scanCountdownCoversFiveEighthScans` and `touchClickFeedbackSize`, is a sprite sheet.
 
-|Item|Looping|Supports `scale`|Supports `speed`|Supports `additiveShader`|
-|--|--|--|--|--|
-|`scanline`|Yes||||
-|`autoPlayScanline`|Yes||||
-|`scanCountdownBackground`||||Temporary no*|
-|`scanCountdownNumbers`||||Temporary no*|
-|`touchClickFeedback`|Yes||Yes|Temporary no*|
-|`approachOverlay`||Yes|||
+|Item|Looping|Supports `scale`|Supports `speed`|Supports `additiveShader`|Supports `flipWhenScanningLeft`|
+|--|--|--|--|--|--|
+|`scanline`|Yes|||||
+|`autoPlayScanline`|Yes|||||
+|`scanCountdownBackground`||||Temporary no*||
+|`scanCountdownNumbers`||||Temporary no*||
+|`touchClickFeedback`|Yes||Yes|Temporary no*||
+|`approachOverlay`||Yes||||
 
 \* Since 2.0 TECHMANIA's UI is built on UI Toolkit, which does not support shaders. Once supported is added, we will re-enable `additiveShader` on these elements.
 
