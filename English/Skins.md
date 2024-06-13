@@ -326,7 +326,7 @@ Touch/click feedback appears on each touch point (in Touch patterns) or the mous
 
 ### Approach overlay
 
-Approach overlay appears on each basic, chain head, drag head, hold head and repeat head note, 1/2 scans before its correct time, and lasts for 1/2 scans. The sprites are scaled to a square whose side length is equal to `scale * lane height`.
+Approach overlay appears on each basic, chain head, drag head, hold head and repeat head note, 1/2 scans before its correct time, and lasts for 1/2 scans. The sprites are scaled to a square whose side length is equal to `scale * lane height`. TECHMANIA will horizontally flip the sprites for notes on a right-to-left scan.
 
 # Reloading skins
 
