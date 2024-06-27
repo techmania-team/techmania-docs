@@ -33,6 +33,7 @@ The vertical position of a note. Lanes are numbered 0 to 63, from top to bottom.
 The horizontal and temporal position of a note. A pulse is 1/240 of a beat.
 
 # Note components
-![Basic note, Hold head, Hold trail, Chain head, Chain path, Chain node](https://imgur.com/WzyFYkE.png)
-![Repeat head, Repeat path, Repeat note, Repeat hold trail, Repeat hold note](https://imgur.com/mbjbTZM.png)
-![Drag head, Drag curve, Left/right control point, anchor](https://imgur.com/PcbYdpL.png)
+
+![Basic note, Hold head, Hold trail, Chain head, Chain path, Chain node](https://github.com/techmania-team/techmania-docs/assets/30272345/fc924d6f-eed7-455d-8dde-a0d05c162862)
+![Repeat head, Repeat path, Repeat note, Repeat hold trail, Repeat hold note](https://github.com/techmania-team/techmania-docs/assets/30272345/2b466d39-f852-4400-af5e-20a838658280)
+![Drag head, Drag curve, Left/right control point, anchor](https://github.com/techmania-team/techmania-docs/assets/30272345/60d41d0f-522e-4ae9-a5b9-17884cacce5a)
