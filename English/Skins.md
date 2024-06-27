@@ -25,13 +25,13 @@ Each skin is a folder containing a number of sprite sheets and a `skin.json` fil
 
 All skins are based on sprite sheets so it's important to understand them. The term may have different meanings in other fields, but in the context of TECHMANIA skins, a sprite sheet is a series of sprites, tiled horizontally into one image, where each sprite corresponds to one frame of an animation. The sprites must be identical in size, and tiled tightly, with optional paddings inside each tile, but without any space between tiles.
 
-![An image showing a sprite sheet, a tile, a sprite, and padding](https://imgur.com/hiuagYc.png)
+![An image showing a sprite sheet, a tile, a sprite, and padding](https://github.com/techmania-team/techmania-docs/assets/30272345/f6f2f5c9-70c4-45b7-adb2-93b678c2ca00)
 
 (Example sprite sheets in this page are taken from [https://www.gamedesigning.org/animation/sprites/](https://www.gamedesigning.org/animation/sprites/))
 
 Not all tiles in a sprite sheet must contain a sprite. It's okay to leave a few empty at the beginning and/or end of the sprite sheet.
 
-![A sprite sheet with empty tiles at the beginning and end](https://imgur.com/QY62oea.png)
+![A sprite sheet with empty tiles at the beginning and end](https://github.com/techmania-team/techmania-docs/assets/30272345/1ee12894-dc25-4cc7-9c47-7027730d1602)
 
 For each sprite sheet, you need to write an accompanying JSON object to describe it to TECHMANIA, which looks like:
 ```
@@ -72,7 +72,8 @@ By default, TECHMANIA applies bilinear filter when scaling sprites to different 
   * You can use [this Photoshop script](https://gist.github.com/macmillan333/daa66be5ee4bc14f69b2ad95867f1270) to add padding to existing sprite sheets.
 
 It is recommended that you try padding first, and if the result looks weird, fall back to turning off bilinear filter.
-![An image showing the same sprite sheet scaled with bilinear filter on, bilinear filter off, and padding](https://imgur.com/3NyLZ5g.png)
+
+![An image showing the same sprite sheet scaled with bilinear filter on, bilinear filter off, and padding](https://github.com/techmania-team/techmania-docs/assets/30272345/03b9e83b-57da-4db4-aa9a-74a50c4f132a)
 
 ### Default values
 
@@ -99,7 +100,7 @@ This means if you write a filename and nothing else, TECHMANIA will load the ent
 * `additiveShader` determines whether the sprites are rendered with an additive shader. This will cause the colors of the sprites to be added to the layers below them, instead of replace the layers below them.
 * `flipWhenScanningLeft` determines whether the sprites are flipped (usually horizontally) when on a right-to-left scan. For skin items that do not support this field, it's behavior on a right-to-left scan is usually hardcoded.
 
-![An image demonstrating normal and additive shaders](https://imgur.com/oR6gHqA.png)
+![An image demonstrating normal and additive shaders](https://github.com/techmania-team/techmania-docs/assets/30272345/b7c58f03-579f-4d21-a64c-5420ef7bf0a9)
 
 # Note skin
 The `skin.json` file in a note skin follows the following format:
@@ -151,19 +152,19 @@ Each value is a sprite sheet. Refer to the [Terminology](Terminology.md) page fo
 * For items marked "yes \*square", the sprites will be scaled to a square, whose side length is equal to `scale * lane height`. This is only visual, and has no effect on hitbox sizes.
 * For items marked "yes \*1-D", the game will stretch the sprites in one dimension (horizontal, towards other notes, or in the curve's direction) according to the pattern, so the sprite's size in that dimension is unaffected by `scale`. The size in the perpendicular dimension will be scaled to `scale * lane height`.
 
-![An image demonstrating the scale of repeat head and repeat hold trail](https://imgur.com/m1EO3jo.png)
+![An image demonstrating the scale of repeat head and repeat hold trail](https://github.com/techmania-team/techmania-docs/assets/30272345/610c3a80-8e05-410c-902f-cb4aa4aebd78)
 
 `dragCurve` sprites are stretched in a special way: the left half is stretched to form the curve's body, and the right half is left intact to form the curve's end.
 
-![An image demonstrating a drag curve being stretched in the left half](https://imgur.com/1wZbgA6.png)
+![An image demonstrating a drag curve being stretched in the left half](https://github.com/techmania-team/techmania-docs/assets/30272345/0c53fad6-dc04-45d1-922a-b584a652b6e0)
 
 `holdTrailEnd`, `repeatHoldTrailEnd` and `repeatPathEnd` are images attached to the end of their respective trails/paths, typically used for shadows and glows. They will be automatically scaled so that their height match the trail/path, while keeping the aspect ratio of the sprites unchanged.
 
-![An image demonstrating a repeat hold trail and its end](https://imgur.com/lNSPcJk.png)
+![An image demonstrating a repeat hold trail and its end](https://github.com/techmania-team/techmania-docs/assets/30272345/8d16cb5d-202c-4a9d-8a78-56516a0fee94)
 
 `holdOngoingTrail` is the trail drawn over the portion of a hold note that the scanline has passed.
 
-![An image demonstrating a hold ongoing trail](https://imgur.com/6Vib3rT.png)
+![An image demonstrating a hold ongoing trail](https://github.com/techmania-team/techmania-docs/assets/30272345/f7fb2016-9c3f-46d0-b814-73034cb7713e)
 
 ### Animation
 
@@ -283,7 +284,7 @@ While each judgement and combo digit may play animations of their own, you can a
 
 Combo text scales differently from other note and VFX skins in that it's not dependent on lane height. Instead, the combo text's position and size is controlled by `distanceToNote`, `height` and `spaceBetweenJudgementAndCombo`:
 
-![An image showing the meaning of distanceToNote, height and spaceBetweenJudgementAndCombo](https://imgur.com/J3VP1qF.png)
+![An image showing the meaning of distanceToNote, height and spaceBetweenJudgementAndCombo](https://github.com/techmania-team/techmania-docs/assets/30272345/63bacf6e-5192-478e-8b59-a7016750a161)
 
 All 3 numbers are in integer pixels. As a reference, the game window's height is always 1080 pixels regardless of resolution. All sprites in the combo text will be scaled so that their heights are equal to `height`, while keeping their aspect ratios unchanged.
 
