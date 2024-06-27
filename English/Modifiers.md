@@ -88,7 +88,7 @@ Please note that practice mode is unavailable in setlists.
 
 The following controls are available:
 
-![An image showing the available controls in practice mode](https://imgur.com/DY41TW6.png)
+![An image showing the available controls in practice mode](https://github.com/techmania-team/techmania-docs/assets/30272345/75398681-e8dd-4b4c-a680-8154cea0d763)
 
 1. Jump to the previous scan
 2. Shows the current scan number
