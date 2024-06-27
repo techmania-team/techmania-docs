@@ -1,4 +1,4 @@
-Applies to version: 2.2
+Applies to version: 2.3
 
 This page explains how to make skins for TECHMANIA.
 
@@ -173,7 +173,7 @@ All animations will play at a speed of one cycle per beat, and the 1st sprites i
 
 For `chainHead`, `chainNode` and `dragHead`, TECHMANIA assumes the sprites point to the right, and from there will rotate them to point in the direction of the next chain node or the curve. The last node in a chain will point to the same direction as the second last node.
 
-Each `chainPath` connecting two chain head/nodes will be rotated to point from the later to the earlier one. This can be counterintuitive, but is a result as how chain notes are rendered.
+Each `chainPath` connecting two chain head/nodes will be rotated to point from the later to the earlier one. This can be counterintuitive, but is a result of how chain notes are rendered.
 
 ### Flipping
 
@@ -227,6 +227,10 @@ In a VFX skin, each effect (except for Fever overlay) is drawn in multiple layer
 
 All sprites will be scaled so that their heights are equal to `scale * lane height`, while keeping the aspect ratios unchanged.
 
+### Flipping
+
+Besides `feverOverlay`, all VFX are never flipped, whether on a left-to-right or right-to-left scan.
+
 # Combo skin
 The `skin.json` file in a combo skin follows the following format:
 ```
@@ -247,7 +251,8 @@ The `skin.json` file in a combo skin follows the following format:
   "rainbowMaxDigits": [<digit 0>, <digit 1>, ..., <digit 9>],
   "maxDigits": [<digit 0>, <digit 1>, ..., <digit 9>],
   "coolDigits": [<digit 0>, <digit 1>, ..., <digit 9>],
-  "goodDigits": [<digit 0>, <digit 1>, ..., <digit 9>] 
+  "goodDigits": [<digit 0>, <digit 1>, ..., <digit 9>],
+  "animationCurves": [<curve 0>, <curve 1>, ...]
 }
 ```
 
@@ -272,7 +277,7 @@ Each judgement and digit is a sprite sheet.
 
 The combo text contains 3 parts: the judgement, some horizontal space, and up to 4 digits that show the current combo. If the judgement is MISS or BREAK, the space and digits are not shown; otherwise, the digits are taken from the list that matches the judgement.
 
-While each judgement and combo digit may play animations of their own, the game also plays a built-in animation on the entire combo text as a whole, including a fade-in, a fade-out and scaling. Currently this animation cannot be customized.
+While each judgement and combo digit may play animations of their own, you can also define an animation for the combo text as a whole.
 
 ### Scaling
 
@@ -281,6 +286,12 @@ Combo text scales differently from other note and VFX skins in that it's not dep
 ![An image showing the meaning of distanceToNote, height and spaceBetweenJudgementAndCombo](https://imgur.com/J3VP1qF.png)
 
 All 3 numbers are in integer pixels. As a reference, the game window's height is always 1080 pixels regardless of resolution. All sprites in the combo text will be scaled so that their heights are equal to `height`, while keeping their aspect ratios unchanged.
+
+### Animation
+
+Explained in a separate page: [Combo text animation](Combo_text_animation.md)
+
+The animation is optional. If you omit the `"animationCurves"` field altogether, TECHMANIA will play a default, built-in animation on the combo text.
 
 # Game UI skin
 

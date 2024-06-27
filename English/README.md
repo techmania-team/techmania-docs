@@ -2,6 +2,8 @@
 
 [Additional notes on the editor](Additional_notes_on_the_editor.md)
 
+[Combo text animation](Combo_text_animation.md)
+
 [Drag Note curves](Drag_note_curves.md)
 
 [Folders and zips](Folders_and_zips.md)

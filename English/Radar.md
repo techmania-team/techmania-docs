@@ -1,4 +1,4 @@
-Applies to version: 2.2
+Applies to version: 2.3
 
 This page explains how TECHMANIA defines and calculates each value in the radar, seen at the select pattern screen as well as the pattern editor.
 
