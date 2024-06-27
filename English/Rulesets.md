@@ -242,7 +242,7 @@ Short for time windows and HP deltas. These are the parameters that can be diffe
 
 When you play a note, the game will compare the current time and the note's correct time, and reach a judgement as below.
 
-![A diagram illustrating how the game makes judgements.](https://imgur.com/ghdWb0l.png)
+![A diagram illustrating how the game makes judgements.](https://github.com/techmania-team/techmania-docs/assets/30272345/f28c19b1-1791-4459-9422-e75167161c46)
 
 If it's `timeWindows[4]` or more before a note's correct time, the game will ignore all input on the note. If it's `timeWindows[4]` past a note's correct time and the game still received no input on that note, it becomes a BREAK.
 
@@ -260,7 +260,7 @@ The player starts with `maxHp` points of HP. On each judgement, the game looks u
 
 Hitbox is the area where a note receives touches and clicks. Hitbox sizes are in multiples of a lane's height. During gameplay in practice mode, you can press F12 to show/hide the hitboxes.
 
-![An example showing notes at different hitbox widths.](https://imgur.com/04e8IG6.png)
+![An example showing notes at different hitbox widths.](https://github.com/techmania-team/techmania-docs/assets/30272345/bfe9a08b-ea39-48c5-a858-7bb76f6508d3)
 
 Notes that involve dragging (chain, drag) are harder to hit correctly than other notes, so they receive special rules. `chainHeadHitboxWidth` and `chainNodeHitboxWidth` define the hitbox width of chain heads and chain nodes, respectively. Drag notes' hitbox sizes are `dragHitboxWidth` by `dragHitboxHeight` at rest, but once the player starts dragging, the hitbox sizes change to `ongoingDragHitboxWidth` by `ongoingDragHitboxHeight`.
 
@@ -268,7 +268,7 @@ Notes that involve dragging (chain, drag) are harder to hit correctly than other
 
 The game leaves a margin at the top and bottom of each scan to ensure notes don't touch the play area's border. The height of this margin is `scanMarginTopBottom` at the top of the top scan and the bottom of the bottom scan; `scanMarginMiddle` at the bottom of the top scan and the top of the bottom scan.
 
-![A diagram showing the meaning of scanMarginTopBottom and scanMarginMiddle](https://imgur.com/llpBJ4X.png)
+![A diagram showing the meaning of scanMarginTopBottom and scanMarginMiddle](https://github.com/techmania-team/techmania-docs/assets/30272345/5ce0c2f9-2470-4271-b7bc-4938263ae4b5)
 
 Furthermore, each parameter is an array of 3 elements, corresponding to 2-lane, 3-lane and 4-lane patterns, respectively.
 
@@ -278,7 +278,7 @@ All values are in multiples of a scan's height. By default, all margins are 5% o
 
 Likewise, the game leaves a margin before the first beat and after the last beat of each scan, to ensure notes don't touch the screen's border. The width of this margin is `scanMarginBeforeFirstBeat` before the first beat, and `scanMarginAfterLastBeat` after the last beat.
 
-![A diagram showing the meaning of scanMarginBeforeFirstBeat and scanMarginAfterLastBeat](https://imgur.com/PiHpGiJ.png)
+![A diagram showing the meaning of scanMarginBeforeFirstBeat and scanMarginAfterLastBeat](https://github.com/techmania-team/techmania-docs/assets/30272345/e5294045-d7eb-48ad-b905-a5317b2bed7d)
 
 All values are in multiples of the screen's width. In the standard ruleset, the two margins are 15% and 10% of the screen's width respectively; in the legacy ruleset, they are 15.7% and 9.3%.
 
