@@ -109,6 +109,10 @@ The `alpha` curve makes the combo text start half transparent, then gradually be
 
 The three curves apply simultaneously, combining into one animation for the combo text.
 
+Here's an image representation of the 3 curves:
+
+![image](https://github.com/techmania-team/techmania-docs/assets/30272345/138dc1c7-7ccb-4893-88d8-11d55b36ae0c)
+
 # animationCurves format
 
 The animation:
