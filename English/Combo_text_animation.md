@@ -265,7 +265,13 @@ To make it easier to define curves, we provide a script that allows you to use U
 * In Unity Hub, download and install any recent Unity version.
     * The script and following instructions are written in Unity 2022.3.30f1, but I don't expect them to break in future versions.
 * Still in Unity Hub, create a new project, using the "2D (Built-In Render Pipeline)" template. Feel free to turn off "Connect to Unity Cloud".
+
+![A screenshot of creating a new project in Unity Hub](https://github.com/techmania-team/techmania-docs/assets/30272345/a6815ff4-b4fb-4c75-afef-5f82e3432b8b)
+
 * Now in Unity, look at the Project tab, navigate to the "Assets" folder if not already in it. Right click - Create - C# Script, then name the new script `CurveTest`.
+
+![A screenshot of creating a new script](https://github.com/techmania-team/techmania-docs/assets/30272345/1dcd62f3-5c2e-4285-bd57-e33c0e7e008c)
+
 * Double click `CurveTest` to open it in a text editor, which may be Visual Studio that you installed alongside Unity. Delete all existing content in the file, and paste in the following:
 
 ```C#
@@ -312,7 +318,16 @@ public class CurveTest : MonoBehaviour
 }
 ```
 
-* Return to Unity, drag the `CurveTest` script to the `Main Camera` game object in the Hierarchy tab. This adds `CurveTest` as a component to `Main Camera`.
-* In the Inspector tab, scroll to the bottom to find the `CurveTest` component, which should have a property called `Curve`. Click the rectangle right to it to open Unity's curve editor. You can now begin editing your curve.
+* Save and return to Unity, then drag the `CurveTest` script to the `Main Camera` game object in the Hierarchy tab. This adds `CurveTest` as a component to `Main Camera`.
+
+![A screenshot showing where the drag should start and end](https://github.com/techmania-team/techmania-docs/assets/30272345/11bb5d21-b0f6-460d-b0be-b01c09296d35)
+
+* Click the `Main Camera` game object to select it. In the Inspector tab, scroll to the bottom to find the `CurveTest` component, which should have a property called `Curve`. Click the rectangle right to it to open Unity's curve editor. You can now begin editing your curve.
+
+![A screenshot showing where to find the curve property](https://github.com/techmania-team/techmania-docs/assets/30272345/9f43e225-1c59-4e8f-9bfe-d6843cee6695)
+
 * At any time you can click the Play button to enter play mode. In the Game view, you will see a text representation of the curve you made, which you can copy and paste into your combo skin. You can continue to edit your curve and the text will update to reflect your changes.
     * Remember that the combo text animation is an array of curves, you need to write [] outside all curves.
+
+![A screenshot showing the play button and the game view](https://github.com/techmania-team/techmania-docs/assets/30272345/f091bc05-2514-414f-a4bd-55811b978b6b)
+
