@@ -253,7 +253,9 @@ Before setting `inWeight` and `outWeight`, make sure you set `weightedMode` to a
 * 2: `outWeight` affects the curve segment after the key frame; `inWeight` is meaningless
 * 3: `inWeight` and `outWeight` affect the curve segments before and after the key frame, respectively
 
-When `inWeight` and `outWeight` are meaningful, their values should be in [0, 1], and the default value is 0.333. Larger values mean the key frame's value and tangent have a larger influence on the curve's shape before or after the key frame.
+When `inWeight` and `outWeight` are meaningful, their values should be in [0, 1], and the default value is 0. Larger values mean the key frame's value and tangent have a larger influence on the curve's shape before or after the key frame.
+
+When `inWeight` and `outWeight` are meaningless, the curve will be calculated as if the weight is 0.333.
 
 ![An image showing the curve shape at different tangents](https://github.com/techmania-team/techmania-docs/assets/30272345/ad43a77a-09b4-4183-807d-d59d91897ee7)
 
