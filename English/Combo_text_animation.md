@@ -6,7 +6,7 @@ This page explains how to define an animation for [combo text](Skins.md#combo-sk
 
 In the context of combo text, an animation is a collection of curves. Each curve controls one attribute of the combo text, and describes how that attribute changes over time.
 
-A curve is a collection of key frames, which specifies the value of the controlled attribute at a specified time.
+A curve is a collection of key frames, each specifying the value of the controlled attribute at a specified time.
 
 This is rather abstract so let's look at an example. This is also the default animation if a combo skin does not define an animation.
 
@@ -171,6 +171,134 @@ A key frame:
 All fields other than `"time"` and `"value"` are optional and default to 0. Tangents and weights will be explained in a later section.
 
 # Attributes
+
+Here are all the attributes you can control via curves.
+
+### `translationX` and `translationY`
+
+These attributes move the combo text away from its "normal" position (`distanceToNote` pixels above the note being played). `translationX` moves the combo text left (when negative) and right (when positive); `translationY` moves the combo text down (when negative) and up (when negative).
+
+Unit: pixel (scaled so the game window's height is 1080 pixels)
+
+Default value: 0
+
+### `rotationInDegrees`
+
+This attribute rotates the combo text around its center counterclockwise.
+
+Unit: degree
+
+Default value: 0
+
+### `scaleX` and `scaleY`
+
+These attributes stretch or shrink the combo text from its "normal" size, in the horizontal and vertical direction, respectively.
+
+Unit: multiples of the "normal" size
+
+Default value: 1
+
+### `alpha`
+
+This attribute makes the combo text transparent (0) or opaque (1). Values outside of [0, 1] are meaningless.
+
+Unit: none
+
+Default value: 1
+
 # Loop mode
+
+Each curve may optionally specify a loop mode, which indicates how the animation behaves when time is outside of the range defined by key frames.
+
+### `once`
+
+The animation will play once and hold at the value at the final key frame. This is the default loop mode.
+
+### `pingpong`
+
+The animation will play to the end, then reverse to the beginning as if time flows backwards, then play forward to the end again, ad infinitum.
+
+### `loop`
+
+The animation will play to the end, then instantly revert to the beginning and play again to the end, ad infinitum.
+
 # Tangent and weight
+
+If you need finer control of your curve's shape, tangent and weight will come into play. They are defined on key frames, and control how a curve's value is interpolated between each pair of key frames.
+
+### `inTangent` and `outTangent`
+
+`inTangent` controls the slope of the curve as it approaches the key frame from the previous one; `outTangent` controls the slope of the curve as it leaves the key frame towards the next one. Tangents can be any real number, and the default value is zero.
+
+### `inWeight`, `outWeight` and `weightedMode`
+
+By default, each segment of the curve between two key frames is affected equally by their values and tangents, but this can be changed via weight.
+
+Before setting `inWeight` and `outWeight`, make sure you set `weightedMode` to a non-zero value so they are meaningful. The possible values of `weightedMode` are:
+
+* 0: both `inWeight` and `outWeight` are meaningless
+* 1: `inWeight` affects the curve segment before the key frame; `outWeight` is meaningless
+* 2: `outWeight` affects the curve segment after the key frame; `inWeight` is meaningless
+* 3: `inWeight` and `outWeight` affect the curve segments before and after the key frame, respectively
+
+When `inWeight` and `outWeight` are meaningful, their values should be in [0, 1], and the default value is 0.333. Larger values mean the key frame's value and tangent have a larger influence on the curve's shape before or after the key frame.
+
 # A tool to edit curves
+
+To make it easier to define curves, we provide a script that allows you to use Unity's built-in tools to edit a curve, and translate it to the combo skin's format. To use this script:
+
+* Download and install [Unity Hub](https://unity.com/unity-hub).
+* In Unity Hub, download and install any recent Unity version.
+    * The script and following instructions are written in Unity 2022.3.30f1, but I don't expect them to break in future versions.
+* Still in Unity Hub, create a new project, using the "2D (Built-In Render Pipeline)" template. Feel free to turn off "Connect to Unity Cloud".
+* Now in Unity, look at the Project tab, navigate to the "Assets" folder if not already in it. Right click - Create - C# Script, then name the new script `CurveTest`.
+* Double click `CurveTest` to open it in a text editor, which may be Visual Studio that you installed alongside Unity. Delete all existing content in the file, and paste in the following:
+
+```C#
+using System.Text;
+using UnityEngine;
+
+public class CurveTest : MonoBehaviour
+{
+    public AnimationCurve curve;
+
+    private void OnGUI()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.AppendLine("{");
+        stringBuilder.AppendLine("  \"keys\": [");
+        for (int i = 0; i < curve.keys.Length; i++)
+        {
+            Keyframe k = curve.keys[i];
+            stringBuilder.AppendLine("    {");
+            stringBuilder.AppendLine($"      \"time\": {k.time},");
+            stringBuilder.AppendLine($"      \"value\": {k.value},");
+            stringBuilder.AppendLine($"      \"inTangent\": {k.inTangent},");
+            stringBuilder.AppendLine($"      \"outTangent\": {k.outTangent},");
+            stringBuilder.AppendLine($"      \"inWeight\": {k.inWeight},");
+            stringBuilder.AppendLine($"      \"outWeight\": {k.outWeight},");
+            stringBuilder.AppendLine($"      \"weightedMode\": {(int)k.weightedMode}");
+            stringBuilder.Append("    }");
+            if (i < curve.keys.Length - 1)
+            {
+                stringBuilder.Append(",");
+            }
+            stringBuilder.AppendLine();
+        }
+        stringBuilder.AppendLine("  ],");
+        stringBuilder.AppendLine("  \"attribute\": \"REPLACE WITH THE ATTRIBUTE TO ANIMATE\"");
+        stringBuilder.AppendLine("}");
+        GUI.Window(0, new Rect(0, 0, Screen.width, Screen.height),
+            (int windowID) =>
+            {
+                GUI.TextArea(new Rect(0, 20, Screen.width, Screen.height - 20),
+                    stringBuilder.ToString());
+            }, "");
+    }
+}
+```
+
+* Return to Unity, drag the `CurveTest` script to the `Main Camera` game object in the Hierarchy tab. This adds `CurveTest` as a component to `Main Camera`.
+* In the Inspector tab, scroll to the bottom to find the `CurveTest` component, which should have a property called `Curve`. Click the rectangle right to it to open Unity's curve editor. You can now begin editing your curve.
+* At any time you can click the Play button to enter play mode. In the Game view, you will see a text representation of the curve you made, which you can copy and paste into your combo skin. You can continue to edit your curve and the text will update to reflect your changes.
+    * Remember that the combo text animation is an array of curves, you need to write [] outside all curves.
