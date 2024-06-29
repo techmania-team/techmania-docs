@@ -182,6 +182,8 @@ Unit: pixel (scaled so the game window's height is 1080 pixels)
 
 Default value: 0
 
+![An image showing the effect of translationX and translationY](https://github.com/techmania-team/techmania-docs/assets/30272345/a6c06f34-2baa-4c59-b40c-e707f5389c46)
+
 ### `rotationInDegrees`
 
 This attribute rotates the combo text around its center counterclockwise.
@@ -189,6 +191,8 @@ This attribute rotates the combo text around its center counterclockwise.
 Unit: degree
 
 Default value: 0
+
+![An image showing the effect of rotationInDegrees](https://github.com/techmania-team/techmania-docs/assets/30272345/6c23244f-f43e-4a35-bfc8-4e91316580d3)
 
 ### `scaleX` and `scaleY`
 
@@ -198,6 +202,8 @@ Unit: multiples of the "normal" size
 
 Default value: 1
 
+![An image showing the effect of scaleX and scaleY](https://github.com/techmania-team/techmania-docs/assets/30272345/c434fed8-9677-4af2-a988-25c94b493e26)
+
 ### `alpha`
 
 This attribute makes the combo text transparent (0) or opaque (1). Values outside of [0, 1] are meaningless.
@@ -205,6 +211,8 @@ This attribute makes the combo text transparent (0) or opaque (1). Values outsid
 Unit: none
 
 Default value: 1
+
+![An image showing the effect of alpha](https://github.com/techmania-team/techmania-docs/assets/30272345/ed645447-6710-4125-90dd-8132d1318fec)
 
 # Loop mode
 
@@ -222,6 +230,8 @@ The animation will play to the end, then reverse to the beginning as if time flo
 
 The animation will play to the end, then instantly revert to the beginning and play again to the end, ad infinitum.
 
+![An image showing the three loop modes](https://github.com/techmania-team/techmania-docs/assets/30272345/1428d635-06ee-4d35-bbb4-7b9be20ec5cc)
+
 # Tangent and weight
 
 If you need finer control of your curve's shape, tangent and weight will come into play. They are defined on key frames, and control how a curve's value is interpolated between each pair of key frames.
@@ -229,6 +239,8 @@ If you need finer control of your curve's shape, tangent and weight will come in
 ### `inTangent` and `outTangent`
 
 `inTangent` controls the slope of the curve as it approaches the key frame from the previous one; `outTangent` controls the slope of the curve as it leaves the key frame towards the next one. Tangents can be any real number, and the default value is zero.
+
+![An image showing the curve shape at different tangents](https://github.com/techmania-team/techmania-docs/assets/30272345/1fd6323e-16bc-4d9a-befc-042e4b59f2ae)
 
 ### `inWeight`, `outWeight` and `weightedMode`
 
@@ -242,6 +254,8 @@ Before setting `inWeight` and `outWeight`, make sure you set `weightedMode` to a
 * 3: `inWeight` and `outWeight` affect the curve segments before and after the key frame, respectively
 
 When `inWeight` and `outWeight` are meaningful, their values should be in [0, 1], and the default value is 0.333. Larger values mean the key frame's value and tangent have a larger influence on the curve's shape before or after the key frame.
+
+![An image showing the curve shape at different tangents](https://github.com/techmania-team/techmania-docs/assets/30272345/ad43a77a-09b4-4183-807d-d59d91897ee7)
 
 # A tool to edit curves
 
