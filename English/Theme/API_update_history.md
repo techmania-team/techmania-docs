@@ -1,3 +1,21 @@
+# API version 4
+
+TECHMANIA version: 2.3
+
+Unity version: 2022.3.30f1
+
+* Added a parameter to the `ThemeApi.GameSetup.onNoteResolved` callback that provides the time difference on the note.
+* Added field `SpriteSheet.flipWhenScanningLeft` for allowing some skin elements to be horizontally flipped on right-to-left scans.
+* On combo text animation:
+    * Added field `ComboSkin.animationCurves`
+    * Added classes `SkinAnimationCurve` and `SkinAnimationKeyframe`
+* On statistics:
+    * Added class `Statistics`
+    * Added field `ThemeApi.Techmania.stats` to retrieve the current `Statistics` instance
+    * Added field `Paths.GetStatisticsFilePath`
+* Added field `EditorOptions.autoSave`
+* Added field `ThemeApi.IO.ReloadAllSkins`
+
 # API version 3
 
 TECHMANIA version: 2.2

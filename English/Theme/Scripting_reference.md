@@ -297,6 +297,8 @@ List<SpriteSheet> rainbowMaxDigits
 List<SpriteSheet> maxDigits
 List<SpriteSheet> coolDigits
 List<SpriteSheet> goodDigits
+
+List<SkinAnimationCurve> animationCurves
 ```
 
 Refer to [Skins](../Skins.md#combo-skin) for an explanation of these fields.
@@ -371,6 +373,7 @@ bool applyNoteTypeToSelection
 bool lockNotesInTime
 bool lockDragAnchorsInTime
 bool snapDragAnchors
+bool autoSave
 bool metronome
 bool assistTickOnSilentNotes
 bool returnScanlineAfterPlayback
@@ -1142,9 +1145,10 @@ Returns the path to the theme file with the specified name.
 string GetOptionsFilePath()
 string GetRulesetFilePath()
 string GetRecordsFilePath()
+string GetStatisticsFilePath()
 ```
 
-Returns the path to the options file, ruleset file and records file, respectively.
+Returns the path to the options file, ruleset file, records file and statistics file, respectively.
 
 ### Path manipulation
 
@@ -1770,6 +1774,34 @@ float feverAmount
 
 The current fever amount, in \[0, 1\]. It will not reset between stages.
 
+## Class `SkinAnimationCurve`
+
+Describes the curve that animates one attribute of the combo text.
+
+```
+List<SkinAnimationKeyframe> keys
+string attribute
+string loopMode
+```
+
+See [Combo text animation](../Combo_text_animation.md).
+
+## Class `SkinAnimationKeyframe`
+
+Describes one key frame of a [`SkinAnimationCurve`](#class-skinanimationcurve).
+
+```
+float time
+float value
+float inTangent
+float outTangent
+float inWeight
+float outWeight
+int weightedMode
+```
+
+See [Combo text animation](../Combo_text_animation.md).
+
 ## Class `SpriteSheet`
 
 Elements of skins. Each `SpriteSheet` object describes one image file and how it is sliced into sprites.
@@ -1785,6 +1817,7 @@ bool bilinearFilter
 float scale
 float speed
 bool additiveShader
+bool flipWhenScanningLeft
 ```
 
 See [Skins](../Skins.md).
@@ -1794,6 +1827,32 @@ Texture2D texture
 ```
 
 The texture in `filename` loaded into memory.
+
+## Class `Statistics`
+
+Contains statistics. All fields are read only. Access the global `Statistics` instance via `tm.stats`.
+
+```
+string kVersion
+```
+
+The version of the serialization format. The current value is "1". Refer to [format version history](../Format_version_history.md) for more details.
+
+```
+System.TimeSpan totalPlayTime
+System.TimeSpan timeInGame
+System.TimeSpan timeInEditor
+```
+
+Provides the total time the user has spent in the TECHMANIA app, in the game, and in the editor, respectively. These stats are updated in real time.
+
+```
+long timesAppLaunched
+long totalPatternsPlayed
+long totalNotesHit
+```
+
+Provides the total number of times the user has launched the TECHMANIA app, started a pattern (doesn't have to complete), and hit a note, respectively.
 
 ## Class `Status`
 
@@ -2105,7 +2164,12 @@ A callback that is called every frame when TECHMANIA is in `Ongoing` or `Paused`
 function onNoteResolved
 ```
 
-A callback that is called every time a note is resolved. Parameter: [`Note`](#class-note), [`Judgement`](#enum-judgement), [`ScoreKeeper`](#class-scorekeeper).
+A callback that is called every time a note is resolved. Parameters:
+
+* [`Note`](#class-note)
+* [`Judgement`](#enum-judgement)
+* [`ScoreKeeper`](#class-scorekeeper)
+* the time difference as a float, calculated as the current game time minus the note's correct time, in seconds. Negative means the player hit the note earlier than the correct time; positive means later than correct time. For MISS and BREAK, the time difference may be positive infinity.
 
 ```
 function onAllNotesResolved
@@ -2440,9 +2504,10 @@ void ReloadNoteSkin(function progressCallback, function completeCallback)
 void ReloadVfxSkin(function progressCallback, function completeCallback)
 void ReloadComboSkin(function progressCallback, function completeCallback)
 void ReloadGameUiSkin(function progressCallback, function completeCallback)
+void ReloadAllSkins(function progressCallback, function completeCallback)
 ```
 
-Reloads the specified type of skin from disk. The name of the skin to load is read from options.
+Reloads the specified type (or all types) of skin from disk. The name of the skin to load is read from options.
 
 All methods take a while to complete. While the reload is in progress, TECHMANIA will call `progressCallback` with the path of the file currently being loaded, as a string. Once the reload is complete, TECHMANIA will call `completeCallback` with a [`Status`](#class-status) object.
 
@@ -2597,6 +2662,7 @@ Sets the panel settings of the UI document. `path` is the path towards the `.ass
 Options options
 Ruleset ruleset
 Records records
+Statistics stats
 ThemeApi.ThemeL10n l10n
 ThemeApi.GameSetup gameSetup
 ThemeApi.GameState game
