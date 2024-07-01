@@ -12,6 +12,8 @@
 
 [How to play](How_to_play.md)
 
+[Kanban archive](Kanban_archive.md)
+
 [Modifiers](Modifiers.md)
 
 [Offset and latency](Offset_and_latency.md)
