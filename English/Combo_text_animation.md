@@ -265,7 +265,7 @@ To make it easier to define curves, we provide a script that allows you to use U
 
 * Download and install [Unity Hub](https://unity.com/unity-hub).
 * In Unity Hub, download and install any recent Unity version.
-    * The script and following instructions are written in Unity 2022.3.30f1, but I don't expect them to break in future versions.
+    * The script and following instructions are written in Unity 2022.3.36f1, but I don't expect them to break in future versions.
 * Still in Unity Hub, create a new project, using the "2D (Built-In Render Pipeline)" template. Feel free to turn off "Connect to Unity Cloud".
 
 ![A screenshot of creating a new project in Unity Hub](https://github.com/techmania-team/techmania-docs/assets/30272345/a6815ff4-b4fb-4c75-afef-5f82e3432b8b)
