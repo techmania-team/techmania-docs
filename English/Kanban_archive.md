@@ -39,8 +39,6 @@ Note: this is only a collection of ideas. It's unlikely they will be implemented
 
 ## 2.3
 
-2.3
-
 Goal: statistics.
 
 - [x] Internal: keep statistics
