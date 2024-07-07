@@ -37,6 +37,24 @@ Note: this is only a collection of ideas. It's unlikely they will be implemented
 
 # Done
 
+## 2.3
+
+2.3
+
+Goal: statistics.
+
+- [x] Internal: keep statistics
+- [x] Default theme: statistics panel
+- [x] Default theme: performance graph
+- [x] Default theme: jukebox mode
+- [x] Internal: sprite flipping in skins
+- [x] Internal: combo animation in skins
+- [x] Internal: play without BGA if it failed to load
+- [x] Editor: auto save
+- [x] Localization
+- [x] Documentation
+- [x] Complete release
+
 ## 2.2
 
 Goal: setlists.
