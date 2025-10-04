@@ -2,7 +2,7 @@
 
 TECHMANIA version: 2.3
 
-Unity version: 2022.3.36f1
+Unity version: 2022.3.62f2 (was 2022.3.36f1 before the security patch on 10/3/2025)
 
 * Added a parameter to the `ThemeApi.GameSetup.onNoteResolved` callback that provides the time difference on the note.
 * Added field `SpriteSheet.flipWhenScanningLeft` for allowing some skin elements to be horizontally flipped on right-to-left scans.
