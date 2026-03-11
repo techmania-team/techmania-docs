@@ -1,6 +1,6 @@
 # TECHMANIA Theme API scripting reference
 
-Applies to API version: 3
+Applies to API version: 5
 
 When reading on Github, you can click the menu button to the top right to reveal a table of contents.
 
@@ -149,6 +149,9 @@ The `unity` table exposes the following Unity types. You can find documentation 
 |`scale`|`UnityEngine.UIElements.Scale`|
 |`styleTransformOrigin`|`UnityEngine.UIElements.StyleTransformOrigin`|
 |`transformOrigin`|`UnityEngine.UIElements.TransformOrigin`|
+|`styleMaterialDefinition`|`UnityEngine.UIElements.StyleMaterialDefinition`|
+|`materialDefinition`|`UnityEngine.UIElements.MaterialDefinition`|
+|`styleOverflow`|`UnityEngine.UIElements.StyleEnum<UnityEngine.UIElements.Overflow>`|
 |Types related to `Painter2D`|
 |`painter2D`|`UnityEngine.UIElements.Painter2D`|
 |`vectorImage`|`UnityEngine.UIElements.VectorImage`|
@@ -170,6 +173,8 @@ The `unity.enum` table exposes the following Unity enums.
 |`styleKeyword`|`UnityEngine.UIElements.StyleKeyword`|
 |`lengthUnit`|`UnityEngine.UIElements.LengthUnit`|
 |`angleUnit`|`UnityEngine.UIElements.AngleUnit`|
+|`overflow`|`UnityEngine.UIElements.Overflow`|
+|`filterFunctionType`|`UnityEngine.UIElements.FilterFunctionType`|
 |Enums related to `Painter2D`|
 |`lineCap`|`UnityEngine.UIElements.LineCap`|
 |`lineJoin`|`UnityEngine.UIElements.LineJoin`|
@@ -2126,8 +2131,6 @@ VisualElementWrap vfxComboContainer
 
 The [`VisualElementWrap`](#class-themeapivisualelementwrap)s that hold the pattern's background, the game elements (note, scanlines, input feedback, etc.), and VFX and combo text, respectively. The three groups of elements are rendered in separate containers so you can insert other layers between them.
 
-`vfxComboContainer` is currently unused, but you should set it anyway, so in the future when TECHMANIA allows rendering VFX and combo text on UI Toolkit, it will work out of the box.
-
 ```
 FmodSoundWrap assistTick
 ```
@@ -2433,11 +2436,17 @@ Note that resources loaded from files will remain in memory until you release th
 ```
 string LoadTextFileFromTheme(string path)
 UnityEngine.Texture2D LoadTextureFromTheme(string path)
+UnityEngine.UIElements.VectorImage LoadSvgFromTheme(string path)
 FmodSoundWrap LoadAudioFromTheme(string path)
 UnityEngine.TextCore.Text.FontAsset LoadFontFromTheme(string path)
+UnityEngine.Material LoadMaterialFromTheme(string path)
 ```
 
-Loads a text file / texture / sound / font from the theme, respectively. These methods are synchronous and return the resource immediately. The `path` argument should begin with `Assets/UI/`. On error, these methods return `nil`.
+Loads a text file / texture / SVG / sound / font / material from the theme, respectively. These methods are synchronous and return the resource immediately. The `path` argument should begin with `Assets/UI/`. On error, these methods return `nil`.
+
+An SVG is a vector image format. Once loaded, you can set it as a `VisualElementWrap`'s background via its `backgroundSvg` property.
+
+In my experience, when applying a material loaded with `LoadMaterialFromTheme` to a visual element, Unity will print a warning saying the material is not compatible with UI Toolkit, and the visual element will appear pink. I have yet to figure out why this happens, but decided to leave in this API anyway, in case someone else figures it out.
 
 ```
 void LoadVideoFromTheme(string path, function callback)
@@ -3016,6 +3025,8 @@ UnityEngine.UIElements.ITransform transform
 
 Read only. Provides the element's transform, ie. translation, rotation and scale.
 
+As of API version 5, this field is deprecated. You can query an element's translation, rotation and scale via `style` or `resolvedStyle`. Please avoid using this field in new work.
+
 ```
 UnityEngine.Rect contentRect
 UnityEngine.Rect localBound
@@ -3204,6 +3215,49 @@ UnityEngine.Texture2D backgroundImage
 ```
 
 Allows getting or setting the background image as a `Texture2D`.
+
+```
+UnityEngine.UIElements.VectorImage backgroundSvg
+```
+
+Allows getting or setting the background vector image as an SVG.
+
+Note that you can set up masking with an arbitrary shape, by setting the mask element's background as a vector image, and `overflow` as `Hidden`. To set `overflow` from script:
+
+```
+maskElement.style.overflow = unity.styleOverflow.__new(unity.enum.overflow.Hidden)
+```
+
+```
+bool additiveShader
+```
+
+Whether the element is rendered with an additive shader.
+
+```
+table filter
+```
+
+The list of post processing filters applied to the element.
+
+Right now, possibly due to a Unity bug, the getter always returns nil.
+
+The setter works, and expects an array of arrays. Each inner array corresponds to one filter function, and should contain 2 elements: a `UnityEngine.UIElements.FilterFunctionType` enum, and a parameter to this filter, which is either a number or a `UnityEngine.Color`.
+
+For example:
+
+```
+tm.root.Q("demo-element").filter = {
+    {unity.enum.filterFunctionType.Opacity, 0.5},
+    {unity.enum.filterFunctionType.Tint, unity.color.__new(0.8, 0.6, 0.4, 1)}
+}
+```
+
+This snippet applies 2 filters to the element named "demo-element", in order:
+1. 50% opacity
+2. Tinted to RGB(0.8, 0.6, 0.4)
+
+For the full list of filters, as well as what paremeters they use, please refer to [Unity's documentation](https://docs.unity3d.com/ScriptReference/UIElements.FilterFunctionType.html). Note that the `Custom` type is not supported.
 
 ### Visual tree traversal
 

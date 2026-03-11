@@ -1,4 +1,4 @@
-Applies to version: 2.2 (Theme API version 3)
+Applies to version: 2.4 (Theme API version 5)
 
 # Introduction to TECHMANIA themes
 
@@ -106,7 +106,6 @@ When the Theme API exposes a C# class or object to Lua, it becomes a value of ty
 
 ## UI Toolkit limitations
 
-* UI Toolkit does not currently support custom shaders or blend modes.
 * UI Toolkit does not currently support non-rectangular masks. One workaround is to draw texture on a custom mesh, using related functions in `VisualElementWrap`.
 
 ## Next steps

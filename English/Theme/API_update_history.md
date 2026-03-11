@@ -1,3 +1,14 @@
+# API version 5
+
+TECHMANIA version: 2.4
+
+Unity version: ???
+
+* Deprecated field `ThemeApi.VisualElementWrap.transform`.
+* `ThemeApi.GameSetup.vfxComboContainer` is now required instead of optional, so TECHMANIA knows where to layout VFX and combo text.
+* Added `ThemeApi.VisualElementWrap.additiveShader`, allowing any `VisualElementWrap` to use an additive shader.
+* Added `ThemeApi.VisualElementWrap.filter`, allowing you to set filters on an element.
+
 # API version 4
 
 TECHMANIA version: 2.3
@@ -7,14 +18,14 @@ Unity version: 2022.3.62f2 (was 2022.3.36f1 before the security patch on 10/3/20
 * Added a parameter to the `ThemeApi.GameSetup.onNoteResolved` callback that provides the time difference on the note.
 * Added field `SpriteSheet.flipWhenScanningLeft` for allowing some skin elements to be horizontally flipped on right-to-left scans.
 * On combo text animation:
-    * Added field `ComboSkin.animationCurves`
-    * Added classes `SkinAnimationCurve` and `SkinAnimationKeyframe`
+    * Added field `ComboSkin.animationCurves`.
+    * Added classes `SkinAnimationCurve` and `SkinAnimationKeyframe`.
 * On statistics:
-    * Added class `Statistics`
-    * Added field `ThemeApi.Techmania.stats` to retrieve the current `Statistics` instance
-    * Added field `Paths.GetStatisticsFilePath`
-* Added field `EditorOptions.autoSave`
-* Added field `ThemeApi.IO.ReloadAllSkins`
+    * Added class `Statistics`.
+    * Added field `ThemeApi.Techmania.stats` to retrieve the current `Statistics` instance.
+    * Added field `Paths.GetStatisticsFilePath`.
+* Added field `EditorOptions.autoSave`.
+* Added field `ThemeApi.IO.ReloadAllSkins`.
 
 # API version 3
 

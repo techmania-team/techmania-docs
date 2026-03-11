@@ -1,4 +1,7 @@
+Applies to version: 2.4 (Theme API version 5)
+
 # Themes How-to
+
 This article aims to be a reverse index of the [scripting reference](Scripting_reference.md). Instead of listing APIs and telling you what they do, we will list some things you may want to do and point you towards the APIs to do that.
 
 ## Set aspect ratio / dynamic layout
@@ -95,3 +98,11 @@ The following resources need to be manually released after you are done with the
 * Videos loaded from files
 
 See `ThemeApi.IO`.
+
+## Custom shaders / blend modes
+
+TODO
+
+## Custom masking
+
+TODO
