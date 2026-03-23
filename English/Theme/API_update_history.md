@@ -10,6 +10,7 @@ Unity version: 6000.3.9f1
     * Added field `additiveShader`, allowing any `VisualElementWrap` to use an additive shader.
     * Added field `filter`, allowing you to set filters on an element.
     * Added field `backgroundSvg`, allowing you to read and write a `VisualElementWrap`'s background image as a vector image.
+    * It's not an explicit update in the Theme API, but you can now change a `VisualElementWrap`'s material via `style.unityMaterial`.
 * Added `ThemeApi.IO.LoadSvgFromTheme` and `ThemeApi.IO.LoadMaterialFromTheme`, allowing you to load vector images and materials from the theme.
 
 # API version 4
