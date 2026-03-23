@@ -101,8 +101,12 @@ See `ThemeApi.IO`.
 
 ## Custom shaders / blend modes
 
-TODO
+Starting with Unity 6, you can make custom UI shader graphs, create materials, and apply them to `VisualElement`s in your theme.
+
+The TECHMANIA project is already set up to use the Unified Rendering Pipeline.
+
+To get started, follow [Unity's guide](https://docs.unity3d.com/6000.3/Documentation/Manual/ui-systems/get-started-with-ui-shader-graph.html).
 
 ## Custom masking
 
-TODO
+Starting with Unity 6, you can set a `VisualElement`'s background to be a vector image (SVG). Then, if you set the element's `Overflow` style to be `hidden` (default is `visible`), it will clip child elements based on the SVG's shape instead of the `VisualElement`'s rectangle.

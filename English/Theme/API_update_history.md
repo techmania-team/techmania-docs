@@ -2,12 +2,15 @@
 
 TECHMANIA version: 2.4
 
-Unity version: ???
+Unity version: 6000.3.9f1
 
-* Deprecated field `ThemeApi.VisualElementWrap.transform`.
 * `ThemeApi.GameSetup.vfxComboContainer` is now required instead of optional, so TECHMANIA knows where to layout VFX and combo text.
-* Added `ThemeApi.VisualElementWrap.additiveShader`, allowing any `VisualElementWrap` to use an additive shader.
-* Added `ThemeApi.VisualElementWrap.filter`, allowing you to set filters on an element.
+* In class `ThemeApi.VisualElementWrap`:
+    * Deprecated field `transform`.
+    * Added field `additiveShader`, allowing any `VisualElementWrap` to use an additive shader.
+    * Added field `filter`, allowing you to set filters on an element.
+    * Added field `backgroundSvg`, allowing you to read and write a `VisualElementWrap`'s background image as a vector image.
+* Added `ThemeApi.IO.LoadSvgFromTheme` and `ThemeApi.IO.LoadMaterialFromTheme`, allowing you to load vector images and materials from the theme.
 
 # API version 4
 
