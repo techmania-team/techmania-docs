@@ -107,6 +107,12 @@ The TECHMANIA project is already set up to use the Unified Rendering Pipeline.
 
 To get started, follow [Unity's guide](https://docs.unity3d.com/6000.3/Documentation/Manual/ui-systems/get-started-with-ui-shader-graph.html).
 
+If you only need to use an additive shader on elements, you can reuse the one in TECHMANIA. Follow these steps:
+* Find `Assets/Materials/Additive Shader Graph.shadergraph`
+* Make a copy of that shader graph in some location inside `Assets/UI`
+* Right click the copy, then click "Create" - "Material"
+* The resulting material can be applied to any `VisualElement` in your theme
+
 ## Custom masking
 
 Starting with Unity 6, you can set a `VisualElement`'s background to be a vector image (SVG). Then, if you set the element's `Overflow` style to be `hidden` (default is `visible`), it will clip child elements based on the SVG's shape instead of the `VisualElement`'s rectangle.

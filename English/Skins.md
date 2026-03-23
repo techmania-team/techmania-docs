@@ -261,18 +261,18 @@ Each judgement and digit is a sprite sheet.
 
 |Item|Supports `scale`|Supports `speed`|Supports `additiveShader`|Supports `flipWhenScanningLeft`|
 |--|--|--|--|--|
-|`feverMaxJudgement`||Yes|||
-|`rainbowMaxJudgement`||Yes|||
-|`maxJudgement`||Yes|||
-|`coolJudgement`||Yes|||
-|`goodJudgement`||Yes|||
-|`missJudgement`||Yes|||
-|`breakJudgement`||Yes|||
-|`feverMaxDigits`||Yes|||
-|`rainbowMaxDigits`||Yes|||
-|`maxDigits`||Yes|||
-|`coolDigits`||Yes|||
-|`goodDigits`||Yes|||
+|`feverMaxJudgement`||Yes|Yes||
+|`rainbowMaxJudgement`||Yes|Yes||
+|`maxJudgement`||Yes|Yes||
+|`coolJudgement`||Yes|Yes||
+|`goodJudgement`||Yes|Yes||
+|`missJudgement`||Yes|Yes||
+|`breakJudgement`||Yes|Yes||
+|`feverMaxDigits`||Yes|Yes||
+|`rainbowMaxDigits`||Yes|Yes||
+|`maxDigits`||Yes|Yes||
+|`coolDigits`||Yes|Yes||
+|`goodDigits`||Yes|Yes||
 
 ### Combo text composition
 
@@ -318,12 +318,10 @@ Each value, except for `scanCountdownCoversFiveEighthScans` and `touchClickFeedb
 |--|--|--|--|--|--|
 |`scanline`|Yes|||||
 |`autoPlayScanline`|Yes|||||
-|`scanCountdownBackground`||||Temporary no*||
-|`scanCountdownNumbers`||||Temporary no*||
-|`touchClickFeedback`|Yes||Yes|Temporary no*||
-|`approachOverlay`||Yes||||
-
-\* Since 2.0 TECHMANIA's UI is built on UI Toolkit, which does not support shaders. Once supported is added, we will re-enable `additiveShader` on these elements.
+|`scanCountdownBackground`||||Yes||
+|`scanCountdownNumbers`||||Yes||
+|`touchClickFeedback`|Yes||Yes|Yes||
+|`approachOverlay`||Yes||Yes||
 
 ### Scanline
 
