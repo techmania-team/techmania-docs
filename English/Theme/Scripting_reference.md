@@ -2431,6 +2431,14 @@ Contains methods to load resources from either the theme or a file on disk. Acce
 
 Note that resources loaded from files will remain in memory until you release them. To avoid out-of-memory crashes, remember to release resources loaded from files (eg. eyecatches, preview tracks, preview BGAs) after you no longer need them. Resources loaded from the theme are meant to stay in memory for the entire TECHMANIA session, so you do not need to release them (except for videos; see `LoadVideoFromTheme`).
 
+In addition to releasing resources individually, also try to call:
+
+```
+void UnloadUnusedAssets()
+```
+
+This calls Unity's `Resources.UnloadUnusedAssets()`, see [Unity's documentation](https://docs.unity3d.com/ScriptReference/Resources.UnloadUnusedAssets.html) on what it does. This function is asynchronous, so it will not block your script's execution.
+
 ### Loading from the theme
 
 ```
@@ -2446,7 +2454,12 @@ Loads a text file / texture / SVG / sound / font / material from the theme, resp
 
 An SVG is a vector image format. Once loaded, you can set it as a `VisualElementWrap`'s background via its `backgroundSvg` property.
 
-In my experience, when applying a material loaded with `LoadMaterialFromTheme` to a visual element, Unity will print a warning saying the material is not compatible with UI Toolkit, and the visual element will appear pink. I have yet to figure out why this happens, but decided to leave in this API anyway, in case someone else figures it out.
+To apply a loaded material to a `VisualElementWrap`:
+
+```
+local material = tm.io.LoadMaterialFromTheme("Assets/UI/Path/To/Your/Material.mat")
+targetElement.style.unityMaterial = unity.styleMaterialDefinition.__new(material)
+```
 
 ```
 void LoadVideoFromTheme(string path, function callback)
