@@ -20,7 +20,7 @@ Use `VisualElementWrap.RegisterCallback`.
 
 Change styles on a `VisualElementWrap` via `style` field, though a few common ones have a shortcut on the `VisualElementWrap` itself. `style` is of type `UnityEngine.UIElements.IStyle`.
 
-If changing some value inside `style` has no effect, you may need to instantiate new objects. The documentation on `style` provides an example.
+If changing some value inside `style` has no effect, you may need to instantiate new objects. The documentation on `VisualElementWrap.style` provides an example.
 
 ## Animate elements
 

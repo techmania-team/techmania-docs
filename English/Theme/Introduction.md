@@ -45,11 +45,10 @@ At runtime, after TECHMANIA finishes its boot sequence and loads the theme, it w
 
 1. Go to the TECHMANIA release page, find the TECHMANIA version you wish to develop for, and download the source code from its release.
   - If you use git to clone the TECHMANIA repo, make sure you clone at the exact commit that release is created on, as newer commits may contain work-in-progress API changes.
-2. Follow instructions in the "Making your own build" section in [TECHMANIA's readme](https://github.com/techmania-team/techmania#making-your-own-builds) to set up skins, so that your build is playable.
-3. Install [Unity Hub](https://unity.com/download) and use it to open the project. Unity Hub will detect the Unity version of this project; you must install the same Unity version in order to open the project.
-4. In Unity, open the scene `Assets/Scenes/Main.unity` if not already open.
-5. Find the `Assets/UI` folder, which currently holds the official default theme.
-6. If you wish to start from scratch, delete everything in `Assets/UI` except `Assets/UI/.vscode`, then create `Assets/UI/MainTree.uxml` and `Assets/UI/MainScript.txt`. Or you can keep the default theme and start by modifying it. Either way, make sure every resource that the theme references is inside `Assets/UI`. Do not modify anything else in the project.
+2. Follow instructions in the "Making your own build" section in [TECHMANIA's readme](https://github.com/techmania-team/techmania#making-your-own-builds) to set up FMOD and skins, so that your build is playable.
+3. Open the TECHMANIA project with Unity Hub. In Unity, open the scene `Assets/Scenes/Main.unity` if not already open.
+4. Find the `Assets/UI` folder, which currently holds the official default theme.
+5. If you wish to start from scratch, delete everything in `Assets/UI` except `Assets/UI/.vscode`, then create `Assets/UI/MainTree.uxml` and `Assets/UI/MainScript.txt`. Or you can keep the default theme and start by modifying it. Either way, make sure every resource that the theme references is inside `Assets/UI`. Do not modify anything else in the project.
 
 ## Testing and releasing
 
@@ -94,11 +93,22 @@ To debug UI, use UI Toolkit's debugger, available at Window - UI Toolkit - Debug
 
 TECHMANIA provides a broad set of APIs for your script to interact with, allowing your theme to manipulate the visual tree, read tracks and patterns, read or write records, control the game, and more.
 
-These APIs are organized as Lua tables, and you can retrieve them by calling `getApi(version)` with the API version number (as a number, not string) you wish to use. Consult TECHMANIA's release notes to see which releases support which API versions. At the time of writing, TECHMANIA 2.0 supports API version 1.
+These APIs are organized as Lua tables, and you can retrieve them by calling `getApi(version)` with the API version number (as a number, not string) you wish to use. Consult TECHMANIA's release notes to see which releases support which API versions. At the time of writing, TECHMANIA 2.4 supports API version 5.
 
 Once an API version is released it will never change. Whenever a new TECHMANIA release modifies the API, it will increment the version number. We strive to make API changes as backwards-compatible as possible, allowing newer TECHMANIA releases to support older API versions, but we cannot make guarantees. The `getApi(version)` function is the only thing we guarantee to never change across API versions.
 
 To keep the global scope clean, `getApi` is the only thing TECHMANIA Theme API adds to the global scope. Refer to the [scripting reference](Scripting_reference.md) for an explanation on its return value.
+
+All documentation on themes will assume you have the following lines at the beginning of `MainScript.txt`:
+
+```
+api = getApi(5)
+tm = api.tm
+net = api.net
+unity = api.unity
+```
+
+If you get errors around "tm", "net" or "unity", it means you are missing these lines.
 
 ## Class, object and userdata
 

@@ -1,6 +1,4 @@
-Applies to version: 2.3
-
-The TECHMANIA project uses a [kanban](https://github.com/techmania-team/techmania/projects/1?fullscreen=true) to track its progress and roadmap. The kanban relies on the "Project (classic)" GitHub feature, which is [being sunset](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/), and the new Projects does not offer feature parity.
+The TECHMANIA project uses a [kanban](https://github.com/techmania-team/techmania/projects/1?fullscreen=true) to track its progress and roadmap. The kanban relies on the "Project (classic)" GitHub feature, which is [sunset](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/), and the new Projects does not offer feature parity.
 
 This page archives the kanban's content so it can stay even after the sunset.
 

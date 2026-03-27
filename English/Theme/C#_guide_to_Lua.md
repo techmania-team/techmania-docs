@@ -1,4 +1,4 @@
-Applies to version: 2.2 (Theme API version 3)
+Applies to version: 2.4 (Theme API version 5)
 
 # A C# programmer's quick guide to Lua
 

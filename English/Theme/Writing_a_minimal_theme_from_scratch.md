@@ -1,4 +1,4 @@
-Applies to version: 2.2 (Theme API version 3)
+Applies to version: 2.4 (Theme API version 5)
 
 # Writing a minimal theme from scratch
 
@@ -43,7 +43,7 @@ First, return to UI Builder and name both the Label and the Button. In this solu
 
 ```lua
 -- Promote the `tm` table to global scope
-api = getApi(1)
+api = getApi(5)
 tm = api.tm
 
 -- Find the label and button
@@ -85,7 +85,7 @@ There is one problem when designing the UI for this screen: at design time we do
 
 > **Solution 7**
 ```lua
-api = getApi(1)
+api = getApi(5)
 tm = api.tm
 
 -- Get the select track screen
@@ -141,7 +141,7 @@ Next, we would instantiate buttons for patterns the same way as tracks, but to d
 
 > **Solution 10** Notice we wrote a separate function to handle the instantiation of pattern buttons. This is to avoid writing code that is too deeply nested.
 ```lua
-api = getApi(1)
+api = getApi(5)
 tm = api.tm
 
 selectTrackScreen = tm.root.Q("select-track-screen")
@@ -355,7 +355,7 @@ end
 > **Solution 18**
 ```lua
 -- At the top
-api = getApi(1)
+api = getApi(5)
 tm = api.tm
 unity = api.unity  -- new
 
@@ -564,7 +564,7 @@ And that's it! Enter play mode and enjoy your first theme from start to finish!
 `MainScript.txt`
 
 ```lua
-api = getApi(1)
+api = getApi(5)
 tm = api.tm
 unity = api.unity
 

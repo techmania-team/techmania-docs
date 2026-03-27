@@ -1,4 +1,4 @@
-Applies to version: 2.3
+Applies to version: 2.4
 
 TECHMANIA saves/loads many types of data to/from files on the disk. Each type of file follows a specific format, which are versioned alongside the game's version. This page documents the version history of these formats.
 
@@ -9,7 +9,7 @@ TECHMANIA saves/loads many types of data to/from files on the disk. Each type of
 |0.1-0.3|"2"|N/A|N/A|
 |0.4-0.9|"2"|N/A|"1"|
 |1.0-2.1|"3"|N/A|"1"|
-|2.2-2.3|"3"|"1"|"1"|
+|2.2-2.4|"3"|"1"|"1"|
 
 
 |Game version|`options.json` format|`ruleset.json` format|`records.json` format|`stats.json` format|
@@ -19,7 +19,7 @@ TECHMANIA saves/loads many types of data to/from files on the disk. Each type of
 |1.0-1.1|"2"|"2"|"1"|N/A|
 |2.0-2.1|"3"|"2"|"1"|N/A|
 |2.2|"3"|"3"|"1"|N/A|
-|2.3|"3"|"3"|"1"|"1"|
+|2.3-2.4|"3"|"3"|"1"|"1"|
 
 # More notes on format versions
 

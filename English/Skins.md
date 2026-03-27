@@ -1,4 +1,4 @@
-Applies to version: 2.3
+Applies to version: 2.4
 
 This page explains how to make skins for TECHMANIA.
 
@@ -209,7 +209,7 @@ In a VFX skin, each effect (except for Fever overlay) is drawn in multiple layer
 
 |Item|Explanation|Looping|Supports `scale`|Supports `speed`|Supports `additiveShader`|Supports `flipWhenScanningLeft`|
 |--|--|--|--|--|--|--|
-|`feverOverlay`|Overlay when Fever is active|Yes|Yes|Yes||Yes|
+|`feverOverlay`|Overlay when Fever is active|Yes|Yes|Yes|Yes|Yes|
 |`basicMax`|Max on basic/chain notes||Yes|Yes|Yes||
 |`basicCool`|Cool on basic/chain notes||Yes|Yes|Yes||
 |`basicGood`|Good on basic/chain notes||Yes|Yes|Yes||

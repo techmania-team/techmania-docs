@@ -1,4 +1,4 @@
-Applies to version: 2.3
+Applies to version: 2.4
 
 This page explains the specification of TECHMANIA's .tech format for tracks.
 

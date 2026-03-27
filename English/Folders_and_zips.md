@@ -1,4 +1,4 @@
-Applies to version: 2.3
+Applies to version: 2.4
 
 This page explains the files and folders important to the game, and how the game handles zip archives.
 

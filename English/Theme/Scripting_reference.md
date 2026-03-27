@@ -17,7 +17,7 @@ When reading on Github, you can click the menu button to the top right to reveal
 The rest of this document assumes you have promoted these values to the global scope:
 
 ```
-api = getApi(1)
+api = getApi(5)
 tm = api.tm
 net = api.net
 unity = api.unity
