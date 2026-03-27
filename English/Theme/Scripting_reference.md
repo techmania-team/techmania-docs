@@ -2431,14 +2431,6 @@ Contains methods to load resources from either the theme or a file on disk. Acce
 
 Note that resources loaded from files will remain in memory until you release them. To avoid out-of-memory crashes, remember to release resources loaded from files (eg. eyecatches, preview tracks, preview BGAs) after you no longer need them. Resources loaded from the theme are meant to stay in memory for the entire TECHMANIA session, so you do not need to release them (except for videos; see `LoadVideoFromTheme`).
 
-In addition to releasing resources individually, also try to call:
-
-```
-void UnloadUnusedAssets()
-```
-
-This calls Unity's `Resources.UnloadUnusedAssets()`, see [Unity's documentation](https://docs.unity3d.com/ScriptReference/Resources.UnloadUnusedAssets.html) on what it does. This function is asynchronous, so it will not block your script's execution.
-
 ### Loading from the theme
 
 ```
